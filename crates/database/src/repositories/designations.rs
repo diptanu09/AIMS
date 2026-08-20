@@ -30,4 +30,21 @@ impl DesignationRepository {
 
         Ok(des)
     }
+
+    pub async fn list_by_organization(pool: &PgPool, organization_id: Uuid) -> Result<Vec<Designation>> {
+        let designations = sqlx::query_as::<_, Designation>(
+            r#"
+            SELECT id, organization_id, code, title, level, created_at
+            FROM designations
+            WHERE organization_id = $1
+            ORDER BY level ASC, title ASC
+            "#
+        )
+        .bind(organization_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to list designations: {}", e)))?;
+
+        Ok(designations)
+    }
 }

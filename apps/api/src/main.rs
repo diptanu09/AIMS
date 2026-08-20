@@ -53,8 +53,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .allow_headers(Any);
 
     let protected_routes = Router::new()
-        .nest("/employees", routes::employees::router())
+        .nest("/organizations", routes::organizations::router())
         .nest("/sections", routes::sections::router())
+        .nest("/designations", routes::designations::router())
+        .nest("/attendance-rules", routes::attendance_rules::router())
+        .nest("/employees", routes::employees::router())
         .nest("/import", routes::import::router())
         .nest("/attendance", routes::attendance::router())
         .nest("/exceptions", routes::exceptions::router())

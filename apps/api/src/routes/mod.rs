@@ -1,9 +1,12 @@
 pub mod attendance;
+pub mod attendance_rules;
 pub mod auth;
 pub mod corrections;
 pub mod dashboard;
+pub mod designations;
 pub mod employees;
 pub mod exceptions;
 pub mod import;
+pub mod organizations;
 pub mod reports;
 pub mod sections;

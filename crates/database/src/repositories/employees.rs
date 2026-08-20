@@ -53,6 +53,25 @@ impl EmployeeRepository {
         Ok(emp)
     }
 
+    pub async fn find_by_id(pool: &PgPool, id: Uuid) -> Result<Option<Employee>> {
+        let emp = sqlx::query_as::<_, Employee>(
+            r#"
+            SELECT id, organization_id, employee_code, attendance_device_user_id,
+                   first_name, last_name, email, mobile, section_id,
+                   designation_id, attendance_rule_id, joining_date, leaving_date,
+                   status, created_at, updated_at
+            FROM employees
+            WHERE id = $1
+            "#
+        )
+        .bind(id)
+        .fetch_optional(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query employee by id: {}", e)))?;
+
+        Ok(emp)
+    }
+
     pub async fn find_by_device_user_id(
         pool: &PgPool,
         organization_id: Uuid,
@@ -75,5 +94,45 @@ impl EmployeeRepository {
         .map_err(|e| AimsError::Database(format!("Failed to query employee: {}", e)))?;
 
         Ok(emp)
+    }
+
+    pub async fn list_by_organization(pool: &PgPool, organization_id: Uuid) -> Result<Vec<Employee>> {
+        let employees = sqlx::query_as::<_, Employee>(
+            r#"
+            SELECT id, organization_id, employee_code, attendance_device_user_id,
+                   first_name, last_name, email, mobile, section_id,
+                   designation_id, attendance_rule_id, joining_date, leaving_date,
+                   status, created_at, updated_at
+            FROM employees
+            WHERE organization_id = $1
+            ORDER BY first_name ASC, last_name ASC
+            "#
+        )
+        .bind(organization_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to list employees: {}", e)))?;
+
+        Ok(employees)
+    }
+
+    pub async fn list_by_section(pool: &PgPool, section_id: Uuid) -> Result<Vec<Employee>> {
+        let employees = sqlx::query_as::<_, Employee>(
+            r#"
+            SELECT id, organization_id, employee_code, attendance_device_user_id,
+                   first_name, last_name, email, mobile, section_id,
+                   designation_id, attendance_rule_id, joining_date, leaving_date,
+                   status, created_at, updated_at
+            FROM employees
+            WHERE section_id = $1
+            ORDER BY first_name ASC, last_name ASC
+            "#
+        )
+        .bind(section_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to list employees by section: {}", e)))?;
+
+        Ok(employees)
     }
 }
