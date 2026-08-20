@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: aims-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: aims
+      POSTGRES_USER: aims_app
+      POSTGRES_PASSWORD: change_this_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - aims_postgres_data:/var/lib/postgresql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aims_app -d aims"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  aims_postgres_data:

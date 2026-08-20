@@ -1,0 +1,12 @@
+[package]
+name = "aims_database"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sqlx = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+aims_common = { path = "../common" }
+aims_domain = { path = "../domain" }

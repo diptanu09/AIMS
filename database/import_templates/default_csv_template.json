@@ -1,0 +1,19 @@
+{
+  "name": "Standard Biometric CSV Template",
+  "description": "Default CSV format for Aadhaar / Biometric attendance machine exports",
+  "file_type": "CSV",
+  "encoding": "UTF-8",
+  "has_header": true,
+  "punch_mode": "ExplicitDirection",
+  "column_mappings": {
+    "attendance_device_user_id": ["EnrollNo", "DeviceID", "User ID", "EmpCode", "CardNo"],
+    "punch_timestamp": ["DateTime", "LogTime", "PunchTime", "Date_Time", "Time"],
+    "punch_type": ["InOut", "Direction", "Type", "Status", "Mode"],
+    "device_terminal_id": ["TerminalID", "MachineNo", "DeviceName"]
+  },
+  "date_formats": [
+    "yyyy-MM-dd HH:mm:ss",
+    "dd/MM/yyyy HH:mm:ss",
+    "yyyy-MM-dd'T'HH:mm:ssXXX"
+  ]
+}

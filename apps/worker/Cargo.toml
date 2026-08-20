@@ -1,0 +1,11 @@
+[package]
+name = "aims_worker"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+aims_common = { path = "../../crates/common" }
+aims_attendance_engine = { path = "../../crates/attendance_engine" }

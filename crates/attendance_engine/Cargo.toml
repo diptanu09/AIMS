@@ -1,0 +1,11 @@
+[package]
+name = "aims_attendance_engine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+aims_common = { path = "../common" }
+aims_domain = { path = "../domain" }
