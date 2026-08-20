@@ -55,6 +55,24 @@ impl DailyAttendanceRepository {
         Ok(record)
     }
 
+    pub async fn find_by_id(pool: &PgPool, id: Uuid) -> Result<Option<AttendanceDaily>> {
+        let record = sqlx::query_as::<_, AttendanceDaily>(
+            r#"
+            SELECT id, organization_id, employee_id, section_id, attendance_date,
+                   first_in, last_out, total_duty_minutes, minutes_after_shift_start,
+                   late_after_grace_minutes, early_exit_minutes, status, is_corrected, processed_at
+            FROM attendance_daily
+            WHERE id = $1
+            "#
+        )
+        .bind(id)
+        .fetch_optional(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query daily attendance: {}", e)))?;
+
+        Ok(record)
+    }
+
     pub async fn find_by_employee_and_date(
         pool: &PgPool,
         employee_id: Uuid,
@@ -76,5 +94,31 @@ impl DailyAttendanceRepository {
         .map_err(|e| AimsError::Database(format!("Failed to query daily attendance: {}", e)))?;
 
         Ok(record)
+    }
+
+    pub async fn list_by_organization_and_date_range(
+        pool: &PgPool,
+        organization_id: Uuid,
+        start_date: NaiveDate,
+        end_date: NaiveDate,
+    ) -> Result<Vec<AttendanceDaily>> {
+        let records = sqlx::query_as::<_, AttendanceDaily>(
+            r#"
+            SELECT id, organization_id, employee_id, section_id, attendance_date,
+                   first_in, last_out, total_duty_minutes, minutes_after_shift_start,
+                   late_after_grace_minutes, early_exit_minutes, status, is_corrected, processed_at
+            FROM attendance_daily
+            WHERE organization_id = $1 AND attendance_date BETWEEN $2 AND $3
+            ORDER BY attendance_date DESC, employee_id ASC
+            "#
+        )
+        .bind(organization_id)
+        .bind(start_date)
+        .bind(end_date)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query daily attendance list: {}", e)))?;
+
+        Ok(records)
     }
 }

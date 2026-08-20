@@ -5,8 +5,10 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-serde = { workspace = true }
+sqlx = { workspace = true }
 chrono = { workspace = true }
 uuid = { workspace = true }
+serde = { workspace = true }
 aims_common = { path = "../common" }
 aims_domain = { path = "../domain" }
+aims_database = { path = "../database" }

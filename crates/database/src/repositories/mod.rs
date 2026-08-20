@@ -1,5 +1,6 @@
 pub mod attendance_daily;
 pub mod attendance_rules;
+pub mod attendance_sessions;
 pub mod audit;
 pub mod corrections;
 pub mod designations;

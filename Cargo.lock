@@ -39,9 +39,11 @@ name = "aims_attendance_engine"
 version = "0.1.0"
 dependencies = [
  "aims_common",
+ "aims_database",
  "aims_domain",
  "chrono",
  "serde",
+ "sqlx",
  "uuid",
 ]
 
