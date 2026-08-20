@@ -156,7 +156,15 @@ pub fn evaluate_attendance_status(
     total_duty_minutes: i32,
     has_inferred_session: bool,
 ) -> (AttendanceStatus, i32, i32, i32) {
-    if first_in.is_none() || total_duty_minutes == 0 {
+    if first_in.is_none() {
+        return (AttendanceStatus::Absent, 0, 0, 0);
+    }
+
+    if has_inferred_session {
+        return (AttendanceStatus::Incomplete, 0, 0, 0);
+    }
+
+    if total_duty_minutes == 0 {
         return (AttendanceStatus::Absent, 0, 0, 0);
     }
 

@@ -123,6 +123,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "aims_root_tests"
+version = "0.1.0"
+dependencies = [
+ "aims_attendance_engine",
+ "aims_domain",
+ "chrono",
+ "uuid",
+]
+
+[[package]]
 name = "aims_worker"
 version = "0.1.0"
 dependencies = [
