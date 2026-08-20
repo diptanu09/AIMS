@@ -53,6 +53,7 @@ dependencies = [
  "argon2",
  "chrono",
  "jsonwebtoken",
+ "rand_core",
  "serde",
  "uuid",
 ]

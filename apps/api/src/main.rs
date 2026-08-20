@@ -3,7 +3,7 @@ mod routes;
 mod state;
 
 use aims_database::DbPool;
-use axum::{routing::get, Json, Router};
+use axum::{middleware::from_fn_with_state, routing::get, Json, Router};
 use serde::Serialize;
 use state::AppState;
 use std::net::SocketAddr;
@@ -52,8 +52,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .allow_methods(Any)
         .allow_headers(Any);
 
-    let api_routes = Router::new()
-        .nest("/auth", routes::auth::router())
+    let protected_routes = Router::new()
         .nest("/employees", routes::employees::router())
         .nest("/sections", routes::sections::router())
         .nest("/import", routes::import::router())
@@ -61,7 +60,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .nest("/exceptions", routes::exceptions::router())
         .nest("/corrections", routes::corrections::router())
         .nest("/reports", routes::reports::router())
-        .nest("/dashboard", routes::dashboard::router());
+        .nest("/dashboard", routes::dashboard::router())
+        .layer(from_fn_with_state(state.clone(), middleware::auth_middleware));
+
+    let public_routes = Router::new()
+        .nest("/auth", routes::auth::router());
+
+    let api_routes = Router::new()
+        .merge(public_routes)
+        .merge(protected_routes);
 
     let app = Router::new()
         .route("/health", get(health_check))
@@ -70,7 +77,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with_state(state);
 
     let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
-    tracing::info!("AIMS Axum 0.8.9 API Server (Step 5) listening on http://{}", addr);
+    tracing::info!("AIMS Axum 0.8.9 API Server listening on http://{}", addr);
 
     let listener = tokio::net::TcpListener::bind(addr).await?;
     axum::serve(listener, app).await?;

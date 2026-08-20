@@ -63,4 +63,73 @@ impl UserRepository {
 
         Ok(user)
     }
+
+    pub async fn get_user_roles(pool: &PgPool, user_id: Uuid) -> Result<Vec<String>> {
+        let roles = sqlx::query_scalar::<_, String>(
+            r#"
+            SELECT r.name
+            FROM roles r
+            INNER JOIN user_roles ur ON ur.role_id = r.id
+            WHERE ur.user_id = $1
+            "#
+        )
+        .bind(user_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query user roles: {}", e)))?;
+
+        Ok(roles)
+    }
+
+    pub async fn get_user_permissions(pool: &PgPool, user_id: Uuid) -> Result<Vec<String>> {
+        let permissions = sqlx::query_scalar::<_, String>(
+            r#"
+            SELECT DISTINCT p.code
+            FROM permissions p
+            INNER JOIN role_permissions rp ON rp.permission_id = p.id
+            INNER JOIN user_roles ur ON ur.role_id = rp.role_id
+            WHERE ur.user_id = $1
+            "#
+        )
+        .bind(user_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query user permissions: {}", e)))?;
+
+        Ok(permissions)
+    }
+
+    pub async fn get_user_section_ids(pool: &PgPool, user_id: Uuid) -> Result<Vec<Uuid>> {
+        let sections = sqlx::query_scalar::<_, Uuid>(
+            r#"
+            SELECT usa.section_id
+            FROM user_section_assignments usa
+            WHERE usa.user_id = $1
+              AND usa.effective_from <= CURRENT_DATE
+              AND (usa.effective_to IS NULL OR usa.effective_to >= CURRENT_DATE)
+            "#
+        )
+        .bind(user_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query user section assignments: {}", e)))?;
+
+        Ok(sections)
+    }
+
+    pub async fn update_last_login(pool: &PgPool, user_id: Uuid) -> Result<()> {
+        sqlx::query(
+            r#"
+            UPDATE users
+            SET last_login_at = CURRENT_TIMESTAMP
+            WHERE id = $1
+            "#
+        )
+        .bind(user_id)
+        .execute(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to update last login: {}", e)))?;
+
+        Ok(())
+    }
 }

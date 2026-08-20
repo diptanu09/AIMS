@@ -1,3 +1,6 @@
 pub mod auth;
-pub mod rbac;
 pub mod logger;
+pub mod rbac;
+
+pub use auth::auth_middleware;
+pub use rbac::RequirePermission;
