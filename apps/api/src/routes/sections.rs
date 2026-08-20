@@ -10,6 +10,8 @@ pub async fn list_sections() -> impl IntoResponse {
     Json(SectionListResponse { total: 0 })
 }
 
-pub fn router() -> Router {
+use crate::state::AppState;
+
+pub fn router() -> Router<AppState> {
     Router::new().route("/", get(list_sections))
 }

@@ -21,3 +21,4 @@ aims_import_engine = { path = "../../crates/import_engine" }
 aims_attendance_engine = { path = "../../crates/attendance_engine" }
 aims_reporting = { path = "../../crates/reporting" }
 tower-http = { version = "0.6", features = ["cors"] }
+dotenvy = { workspace = true }

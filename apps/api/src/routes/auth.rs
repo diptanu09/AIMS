@@ -12,6 +12,8 @@ pub async fn login() -> impl IntoResponse {
     })
 }
 
-pub fn router() -> Router {
+use crate::state::AppState;
+
+pub fn router() -> Router<AppState> {
     Router::new().route("/login", post(login))
 }

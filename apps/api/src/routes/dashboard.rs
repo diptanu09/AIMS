@@ -24,6 +24,8 @@ pub async fn get_summary() -> impl IntoResponse {
     })
 }
 
-pub fn router() -> Router {
+use crate::state::AppState;
+
+pub fn router() -> Router<AppState> {
     Router::new().route("/summary", get(get_summary))
 }

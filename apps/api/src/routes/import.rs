@@ -14,6 +14,8 @@ pub async fn get_batch(Path(batch_id): Path<String>) -> impl IntoResponse {
     })
 }
 
-pub fn router() -> Router {
+use crate::state::AppState;
+
+pub fn router() -> Router<AppState> {
     Router::new().route("/{batch_id}", get(get_batch))
 }

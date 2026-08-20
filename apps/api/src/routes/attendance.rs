@@ -10,6 +10,8 @@ pub async fn process_attendance() -> impl IntoResponse {
     axum::Json(ProcessResponse { processed_days: 0 })
 }
 
-pub fn router() -> Router {
+use crate::state::AppState;
+
+pub fn router() -> Router<AppState> {
     Router::new().route("/process", post(process_attendance))
 }

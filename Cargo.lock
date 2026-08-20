@@ -24,6 +24,7 @@ dependencies = [
  "aims_reporting",
  "axum",
  "chrono",
+ "dotenvy",
  "serde",
  "serde_json",
  "tokio",
@@ -60,8 +61,10 @@ dependencies = [
 name = "aims_common"
 version = "0.1.0"
 dependencies = [
+ "axum",
  "chrono",
  "serde",
+ "serde_json",
  "thiserror",
  "uuid",
 ]
@@ -74,7 +77,9 @@ dependencies = [
  "aims_domain",
  "chrono",
  "serde",
+ "serde_json",
  "sqlx",
+ "tokio",
  "uuid",
 ]
 

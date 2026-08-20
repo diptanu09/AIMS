@@ -1,5 +1,6 @@
 use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, sqlx::Type)]
@@ -73,7 +74,7 @@ pub enum CorrectionStatus {
     Cancelled,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Organization {
     pub id: Uuid,
     pub code: String,
@@ -83,7 +84,7 @@ pub struct Organization {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Section {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -94,7 +95,7 @@ pub struct Section {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Designation {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -104,7 +105,7 @@ pub struct Designation {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct AttendanceRule {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -120,7 +121,7 @@ pub struct AttendanceRule {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct Employee {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -140,7 +141,7 @@ pub struct Employee {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct AttendanceRawEvent {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -156,7 +157,7 @@ pub struct AttendanceRawEvent {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct AttendanceDaily {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -174,7 +175,7 @@ pub struct AttendanceDaily {
     pub processed_at: DateTime<Utc>,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct AttendanceCorrection {
     pub id: Uuid,
     pub attendance_daily_id: Uuid,

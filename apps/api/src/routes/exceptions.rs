@@ -10,6 +10,8 @@ pub async fn list_exceptions() -> impl IntoResponse {
     axum::Json(ExceptionsResponse { total: 0 })
 }
 
-pub fn router() -> Router {
+use crate::state::AppState;
+
+pub fn router() -> Router<AppState> {
     Router::new().route("/", get(list_exceptions))
 }
