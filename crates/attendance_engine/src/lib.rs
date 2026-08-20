@@ -37,7 +37,7 @@ impl AttendanceCalculator {
         is_weekly_off: bool,
         mut raw_punches: Vec<RawPunchInput>,
     ) -> Result<CalculationResult> {
-        let daily_id = Uuid::new_v4();
+        let daily_id = Uuid::now_v7();
 
         // 1. Calendar overrides priority (HOLIDAY > LEAVE > WEEKLY_OFF)
         if is_holiday {
