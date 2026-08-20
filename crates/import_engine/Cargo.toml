@@ -5,10 +5,11 @@ edition.workspace = true
 license.workspace = true
 
 [dependencies]
-serde = { workspace = true }
-chrono = { workspace = true }
-uuid = { workspace = true }
 csv = "1.3"
 sha2 = "0.10"
+hex = "0.4"
+chrono = { workspace = true }
+uuid = { workspace = true }
+serde = { workspace = true }
 aims_common = { path = "../common" }
 aims_domain = { path = "../domain" }

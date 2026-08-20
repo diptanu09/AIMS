@@ -22,7 +22,7 @@ authors = ["AIMS Development Team"]
 [workspace.dependencies]
 anyhow = "1"
 async-trait = "0.1"
-axum = "0.8"
+axum = { version = "0.8.9", features = ["multipart"] }
 chrono = { version = "0.4", features = ["serde"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

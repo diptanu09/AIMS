@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use sqlx::{FromRow, PgPool};
 use uuid::Uuid;
 
-#[derive(Debug, Clone, FromRow)]
+#[derive(Debug, Clone, FromRow, serde::Serialize)]
 pub struct ImportBatchRecord {
     pub id: Uuid,
     pub organization_id: Uuid,
@@ -48,6 +48,82 @@ impl ImportBatchRepository {
         .fetch_one(pool)
         .await
         .map_err(|e| AimsError::Database(format!("Failed to insert import batch: {}", e)))?;
+
+        Ok(batch)
+    }
+
+    pub async fn update_stats(
+        pool: &PgPool,
+        batch_id: Uuid,
+        total: i32,
+        valid: i32,
+        duplicate: i32,
+        unknown: i32,
+        invalid: i32,
+        status: ImportBatchStatus,
+    ) -> Result<()> {
+        sqlx::query(
+            r#"
+            UPDATE attendance_import_batches
+            SET total_records = $1,
+                valid_records = $2,
+                duplicate_records = $3,
+                unknown_employees = $4,
+                invalid_records = $5,
+                status = $6
+            WHERE id = $7
+            "#
+        )
+        .bind(total)
+        .bind(valid)
+        .bind(duplicate)
+        .bind(unknown)
+        .bind(invalid)
+        .bind(status)
+        .bind(batch_id)
+        .execute(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to update import batch stats: {}", e)))?;
+
+        Ok(())
+    }
+
+    pub async fn list_by_organization(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<Vec<ImportBatchRecord>> {
+        let batches = sqlx::query_as::<_, ImportBatchRecord>(
+            r#"
+            SELECT id, organization_id, file_name, file_hash, uploaded_by,
+                   total_records, valid_records, duplicate_records,
+                   unknown_employees, invalid_records, status, imported_at
+            FROM attendance_import_batches
+            WHERE organization_id = $1
+            ORDER BY imported_at DESC
+            "#
+        )
+        .bind(organization_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to list import batches: {}", e)))?;
+
+        Ok(batches)
+    }
+
+    pub async fn find_by_id(pool: &PgPool, batch_id: Uuid) -> Result<Option<ImportBatchRecord>> {
+        let batch = sqlx::query_as::<_, ImportBatchRecord>(
+            r#"
+            SELECT id, organization_id, file_name, file_hash, uploaded_by,
+                   total_records, valid_records, duplicate_records,
+                   unknown_employees, invalid_records, status, imported_at
+            FROM attendance_import_batches
+            WHERE id = $1
+            "#
+        )
+        .bind(batch_id)
+        .fetch_optional(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query import batch: {}", e)))?;
 
         Ok(batch)
     }
