@@ -9,4 +9,5 @@ pub mod import_batches;
 pub mod organizations;
 pub mod raw_events;
 pub mod sections;
+pub mod sessions;
 pub mod users;

@@ -1,106 +1,296 @@
-use crate::state::AppState;
-use aims_auth::{generate_token, verify_password, Claims};
-use aims_common::{AimsError, Result};
-use aims_database::repositories::users::UserRepository;
 use axum::{
+    Extension,
     extract::State,
-    routing::{get, post},
-    Extension, Json, Router,
+    http::{HeaderMap, StatusCode, header},
+    response::{IntoResponse, Json},
 };
+use axum_extra::extract::cookie::{Cookie, CookieJar, SameSite};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+use aims_auth::{CurrentUser, generate_session_token, hash_session_token, verify_password};
+use aims_database::repositories::{
+    audit::AuditLogRepository, sessions::UserSessionRepository, users::UserRepository,
+};
+
+use crate::{api::response::ApiResponse, error::ErrorResponse, state::AppState};
+
 #[derive(Debug, Deserialize)]
-pub struct LoginRequest {
+pub struct LoginPayload {
     pub username: String,
     pub password: String,
 }
 
 #[derive(Debug, Serialize)]
-pub struct UserProfileResponse {
+pub struct UserSummary {
     pub id: Uuid,
     pub organization_id: Uuid,
     pub username: String,
-    pub email: String,
+    pub full_name: String,
+    pub roles: Vec<String>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct LoginResponse {
+    pub user: UserSummary,
+}
+
+#[derive(Debug, Serialize)]
+pub struct MeResponse {
+    pub id: Uuid,
+    pub organization_id: Uuid,
+    pub username: String,
     pub roles: Vec<String>,
     pub permissions: Vec<String>,
     pub section_ids: Vec<Uuid>,
 }
 
-#[derive(Debug, Serialize)]
-pub struct LoginResponse {
-    pub token: String,
-    pub token_type: &'static str,
-    pub expires_in_seconds: u64,
-    pub user: UserProfileResponse,
-}
-
 pub async fn login(
     State(state): State<AppState>,
-    Json(payload): Json<LoginRequest>,
-) -> Result<Json<LoginResponse>> {
-    let pool = state.db.pool();
+    headers: HeaderMap,
+    Json(payload): Json<LoginPayload>,
+) -> Result<impl IntoResponse, (StatusCode, Json<ErrorResponse>)> {
+    let client_ip = headers
+        .get("x-forwarded-for")
+        .and_then(|v| v.to_str().ok())
+        .or_else(|| headers.get("x-real-ip").and_then(|v| v.to_str().ok()));
 
-    let user = UserRepository::find_by_username(pool, &payload.username)
-        .await?
-        .ok_or_else(|| AimsError::Auth("Invalid username or password".into()))?;
+    let user_agent = headers
+        .get(header::USER_AGENT)
+        .and_then(|v| v.to_str().ok());
 
+    let user_opt = UserRepository::find_by_username(&state.db, &payload.username)
+        .await
+        .map_err(|_| {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(ErrorResponse {
+                    success: false,
+                    code: "DATABASE_ERROR",
+                    message: "Database error during login".to_string(),
+                }),
+            )
+        })?;
+
+    let user = match user_opt {
+        Some(u) => u,
+        None => {
+            // Generic security error message to prevent username enumeration
+            return Err((
+                StatusCode::UNAUTHORIZED,
+                Json(ErrorResponse {
+                    success: false,
+                    code: "INVALID_CREDENTIALS",
+                    message: "Invalid username or password".to_string(),
+                }),
+            ));
+        }
+    };
+
+    // Check account status
     if user.status != aims_domain::UserStatus::Active {
-        return Err(AimsError::Auth("User account is inactive or suspended".into()));
+        return Err((
+            StatusCode::UNAUTHORIZED,
+            Json(ErrorResponse {
+                success: false,
+                code: "ACCOUNT_INACTIVE",
+                message: "Account is inactive or suspended".to_string(),
+            }),
+        ));
     }
 
-    let is_valid = verify_password(&payload.password, &user.password_hash)?;
+    // Check lock state
+    #[allow(clippy::collapsible_if)]
+    if let Some(locked_until) = user.locked_until {
+        if locked_until > chrono::Utc::now() {
+            let _ = AuditLogRepository::log(
+                &state.db,
+                Some(user.organization_id),
+                Some(user.id),
+                "AUTH_LOGIN_BLOCKED_LOCKED",
+                "users",
+                Some(user.id),
+                None,
+                None,
+                client_ip,
+                user_agent,
+            )
+            .await;
+
+            return Err((
+                StatusCode::UNAUTHORIZED,
+                Json(ErrorResponse {
+                    success: false,
+                    code: "ACCOUNT_LOCKED",
+                    message: "Account is temporarily locked. Please try again later.".to_string(),
+                }),
+            ));
+        }
+    }
+
+    // Verify Argon2id password
+    let is_valid = verify_password(&payload.password, &user.password_hash).unwrap_or(false);
+
     if !is_valid {
-        return Err(AimsError::Auth("Invalid username or password".into()));
+        let _ = UserRepository::record_failed_login(&state.db, user.id).await;
+
+        let _ = AuditLogRepository::log(
+            &state.db,
+            Some(user.organization_id),
+            Some(user.id),
+            "AUTH_LOGIN_FAILED",
+            "users",
+            Some(user.id),
+            None,
+            None,
+            client_ip,
+            user_agent,
+        )
+        .await;
+
+        return Err((
+            StatusCode::UNAUTHORIZED,
+            Json(ErrorResponse {
+                success: false,
+                code: "INVALID_CREDENTIALS",
+                message: "Invalid username or password".to_string(),
+            }),
+        ));
     }
 
-    let roles = UserRepository::get_user_roles(pool, user.id).await?;
-    let permissions = UserRepository::get_user_permissions(pool, user.id).await?;
-    let section_ids = UserRepository::get_user_section_ids(pool, user.id).await?;
+    // Successful login: reset failed counter
+    let _ = UserRepository::reset_failed_login_and_update_last_login(&state.db, user.id).await;
 
-    let token = generate_token(
+    // Generate random opaque session token & hash
+    let session_token = generate_session_token();
+    let token_hash = hash_session_token(&session_token);
+
+    let expires_at = chrono::Utc::now() + chrono::Duration::hours(state.config.session_ttl_hours);
+
+    let _session = UserSessionRepository::create(
+        &state.db,
         user.id,
-        user.organization_id,
-        &user.username,
-        roles.clone(),
-        permissions.clone(),
-        section_ids.clone(),
-        &state.jwt_secret,
-        24,
-    )?;
+        &token_hash,
+        expires_at,
+        client_ip,
+        user_agent,
+    )
+    .await
+    .map_err(|_| {
+        (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(ErrorResponse {
+                success: false,
+                code: "SESSION_CREATION_FAILED",
+                message: "Failed to create session".to_string(),
+            }),
+        )
+    })?;
 
-    let _ = UserRepository::update_last_login(pool, user.id).await;
+    // Fetch user roles
+    let roles = UserRepository::get_user_roles(&state.db, user.id)
+        .await
+        .unwrap_or_default();
 
-    Ok(Json(LoginResponse {
-        token,
-        token_type: "Bearer",
-        expires_in_seconds: 86400,
-        user: UserProfileResponse {
+    // Log successful audit event
+    let _ = AuditLogRepository::log(
+        &state.db,
+        Some(user.organization_id),
+        Some(user.id),
+        "AUTH_LOGIN_SUCCESS",
+        "users",
+        Some(user.id),
+        None,
+        None,
+        client_ip,
+        user_agent,
+    )
+    .await;
+
+    // Build HttpOnly cookie
+    let cookie = Cookie::build((state.config.session_cookie_name.clone(), session_token))
+        .path("/")
+        .http_only(true)
+        .same_site(SameSite::Lax)
+        .max_age(time::Duration::seconds(
+            state.config.session_ttl_hours * 3600,
+        ))
+        .secure(state.config.session_cookie_secure)
+        .build();
+
+    let jar = CookieJar::new().add(cookie);
+
+    let response_data = ApiResponse::ok(LoginResponse {
+        user: UserSummary {
             id: user.id,
             organization_id: user.organization_id,
             username: user.username,
-            email: user.email,
+            full_name: user.full_name,
             roles,
-            permissions,
-            section_ids,
         },
+    });
+
+    Ok((jar, Json(response_data)))
+}
+
+pub async fn logout(
+    State(state): State<AppState>,
+    jar: CookieJar,
+    Extension(current_user): Extension<CurrentUser>,
+    headers: HeaderMap,
+) -> Result<impl IntoResponse, (StatusCode, Json<ErrorResponse>)> {
+    if let Some(cookie) = jar.get(&state.config.session_cookie_name) {
+        let token_hash = hash_session_token(cookie.value());
+        let _ = UserSessionRepository::revoke(&state.db, &token_hash).await;
+    }
+
+    let client_ip = headers
+        .get("x-forwarded-for")
+        .and_then(|v| v.to_str().ok())
+        .or_else(|| headers.get("x-real-ip").and_then(|v| v.to_str().ok()));
+
+    let user_agent = headers
+        .get(header::USER_AGENT)
+        .and_then(|v| v.to_str().ok());
+
+    let _ = AuditLogRepository::log(
+        &state.db,
+        Some(current_user.organization_id),
+        Some(current_user.user_id),
+        "AUTH_LOGOUT",
+        "users",
+        Some(current_user.user_id),
+        None,
+        None,
+        client_ip,
+        user_agent,
+    )
+    .await;
+
+    // Clear session cookie
+    let removal_cookie = Cookie::build((state.config.session_cookie_name.clone(), ""))
+        .path("/")
+        .http_only(true)
+        .same_site(SameSite::Lax)
+        .max_age(time::Duration::seconds(0))
+        .secure(state.config.session_cookie_secure)
+        .build();
+
+    let updated_jar = jar.add(removal_cookie);
+
+    Ok((
+        updated_jar,
+        Json(ApiResponse::ok("Logged out successfully")),
+    ))
+}
+
+pub async fn me(Extension(current_user): Extension<CurrentUser>) -> Json<ApiResponse<MeResponse>> {
+    Json(ApiResponse::ok(MeResponse {
+        id: current_user.user_id,
+        organization_id: current_user.organization_id,
+        username: current_user.username,
+        roles: current_user.roles,
+        permissions: current_user.permissions,
+        section_ids: current_user.section_ids,
     }))
-}
-
-pub async fn get_me(Extension(claims): Extension<Claims>) -> Json<UserProfileResponse> {
-    Json(UserProfileResponse {
-        id: claims.sub,
-        organization_id: claims.org_id,
-        username: claims.username,
-        email: "".to_string(),
-        roles: claims.roles,
-        permissions: claims.permissions,
-        section_ids: claims.section_ids,
-    })
-}
-
-pub fn router() -> Router<AppState> {
-    Router::new()
-        .route("/login", post(login))
-        .route("/me", get(get_me))
 }

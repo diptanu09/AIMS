@@ -9,8 +9,10 @@ pub struct Config {
     pub database_url: String,
     pub api_host: String,
     pub api_port: u16,
-    #[allow(dead_code)]
     pub web_origin: String,
+    pub session_ttl_hours: i64,
+    pub session_cookie_name: String,
+    pub session_cookie_secure: bool,
 }
 
 impl Config {
@@ -22,6 +24,19 @@ impl Config {
             .parse::<u16>()
             .context("API_PORT must be a valid u16")?;
 
+        let session_ttl_hours = env::var("SESSION_TTL_HOURS")
+            .unwrap_or_else(|_| "8".to_string())
+            .parse::<i64>()
+            .unwrap_or(8);
+
+        let session_cookie_name =
+            env::var("SESSION_COOKIE_NAME").unwrap_or_else(|_| "aims_session".to_string());
+
+        let session_cookie_secure = env::var("SESSION_COOKIE_SECURE")
+            .unwrap_or_else(|_| "false".to_string())
+            .parse::<bool>()
+            .unwrap_or(false);
+
         Ok(Self {
             app_name: env::var("APP_NAME").unwrap_or_else(|_| "AIMS".to_string()),
             app_env: env::var("APP_ENV").unwrap_or_else(|_| "development".to_string()),
@@ -31,6 +46,9 @@ impl Config {
             api_port,
             web_origin: env::var("WEB_ORIGIN")
                 .unwrap_or_else(|_| "http://localhost:3000".to_string()),
+            session_ttl_hours,
+            session_cookie_name,
+            session_cookie_secure,
         })
     }
 

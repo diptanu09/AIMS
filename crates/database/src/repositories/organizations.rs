@@ -45,6 +45,22 @@ impl OrganizationRepository {
         Ok(org)
     }
 
+    pub async fn find_by_code(pool: &PgPool, code: &str) -> Result<Option<Organization>> {
+        let org = sqlx::query_as::<_, Organization>(
+            r#"
+            SELECT id, code, name, timezone, created_at, updated_at
+            FROM organizations
+            WHERE code = $1
+            "#,
+        )
+        .bind(code)
+        .fetch_optional(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to find organization by code: {}", e)))?;
+
+        Ok(org)
+    }
+
     pub async fn list_all(pool: &PgPool) -> Result<Vec<Organization>> {
         let orgs = sqlx::query_as::<_, Organization>(
             r#"
