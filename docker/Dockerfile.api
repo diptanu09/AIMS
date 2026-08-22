@@ -1,14 +1,25 @@
-FROM rust:1.85-alpine as builder
-WORKDIR /app
-RUN apk add --no-libc-dev musl-dev gcc
-COPY Cargo.toml ./
-COPY crates ./crates
-COPY apps ./apps
-RUN cargo build --release -p aims_api
+# docker/Dockerfile.api
+FROM rust:1.85-slim as builder
 
-FROM alpine:3.21
+WORKDIR /usr/src/aims
+
+RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+
+COPY Cargo.toml Cargo.lock ./
+COPY apps ./apps
+COPY crates ./crates
+
+RUN cargo build --release --package aims-api
+
+FROM debian:bookworm-slim
+
 WORKDIR /app
-RUN apk add --no-cache ca-certificates tzdata
-COPY --from=builder /app/target/release/aims_api /app/aims_api
+
+RUN apt-get update && apt-get install -y ca-certificates libssl3 postgresql-client && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/src/aims/target/release/aims-api /app/aims-api
+COPY database/migrations /app/migrations
+
 EXPOSE 8080
-ENTRYPOINT ["/app/aims_api"]
+
+ENTRYPOINT ["/app/aims-api"]

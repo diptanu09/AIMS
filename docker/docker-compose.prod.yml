@@ -1,0 +1,102 @@
+# docker/docker-compose.prod.yml
+version: '3.8'
+
+services:
+  aims-postgres:
+    image: postgres:16-alpine
+    container_name: aims-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: aims
+      POSTGRES_USER: aims_owner
+      POSTGRES_PASSWORD: ${DB_OWNER_PASSWORD:-change_this_owner_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../database/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aims_owner -d aims"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - aims-internal
+
+  aims-api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.api
+    container_name: aims-api
+    restart: always
+    environment:
+      ENVIRONMENT: production
+      SERVER_HOST: 0.0.0.0
+      SERVER_PORT: 8080
+      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_app_password}@aims-postgres:5432/aims
+      SESSION_COOKIE_NAME: aims_session
+      ALLOWED_ORIGINS: http://aims.internal,https://aims.internal,http://localhost
+    depends_on:
+      aims-postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/live || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - aims-internal
+
+  aims-worker:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.worker
+    container_name: aims-worker
+    restart: always
+    environment:
+      ENVIRONMENT: production
+      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_app_password}@aims-postgres:5432/aims
+      WORKER_CONCURRENCY: 4
+    depends_on:
+      aims-postgres:
+        condition: service_healthy
+    networks:
+      - aims-internal
+
+  aims-web:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.web
+    container_name: aims-web
+    restart: always
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://aims-api:8080
+    depends_on:
+      - aims-api
+    networks:
+      - aims-internal
+
+  aims-proxy:
+    image: caddy:2-alpine
+    container_name: aims-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - aims-web
+      - aims-api
+    networks:
+      - aims-internal
+
+volumes:
+  postgres_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  aims-internal:
+    driver: bridge
