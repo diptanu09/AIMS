@@ -123,6 +123,13 @@ export default function DashboardLayout({
       show: hasPermission("reports.generate") || hasPermission("attendance.view.section"),
     },
     {
+      label: "Scheduled Reports",
+      href: "/admin/scheduled-reports",
+      icon: Calendar,
+      color: "text-indigo-400",
+      show: hasPermission("report.generate") || hasPermission("user.manage"),
+    },
+    {
       label: "Attendance Import",
       href: "/import",
       icon: UploadCloud,

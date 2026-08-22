@@ -88,7 +88,7 @@ pub fn calculate_reconciliation_summary(
         .map(|(category, count)| DiscrepancyCategoryCount { category, count })
         .collect();
 
-    category_breakdown.sort_by(|a, b| b.count.cmp(&a.count));
+    category_breakdown.sort_by_key(|b| std::cmp::Reverse(b.count));
 
     ReconciliationSummary {
         period_name,

@@ -139,6 +139,32 @@ export interface ReconciliationDiscrepancy {
   resolution_notes?: string;
 }
 
+export interface ScheduledReport {
+  id: string;
+  organization_id: string;
+  name: string;
+  cron_expression: string;
+  report_type: string;
+  section_id?: string;
+  recipients: string[];
+  is_active: boolean;
+  last_run_at?: string;
+  next_run_at?: string;
+  created_at: string;
+}
+
+export interface InAppNotification {
+  id: string;
+  organization_id: string;
+  user_id: string;
+  title: string;
+  message: string;
+  alert_type: string;
+  is_read: boolean;
+  created_at: string;
+}
+
+
 export interface ReportDefinition {
   id: string;
   organization_id: string;

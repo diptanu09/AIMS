@@ -11,9 +11,11 @@ pub mod health;
 pub mod holidays;
 pub mod imports;
 pub mod leave;
+pub mod notifications;
 pub mod organizations;
 pub mod reconciliation;
 pub mod reports;
+pub mod scheduled_reports;
 pub mod sections;
 
 use crate::{middleware::security, state::AppState};
@@ -38,6 +40,9 @@ pub fn router(state: AppState) -> Router<AppState> {
         .nest("/exceptions", exceptions::routes())
         // Report Engine
         .nest("/reports", reports::routes())
+        // Scheduled Reports & Proactive Notifications
+        .nest("/scheduled-reports", scheduled_reports::routes())
+        .nest("/notifications", notifications::routes())
         // Pilot Reconciliation Workflow
         .nest("/reconciliation", reconciliation::routes())
         // Corrections Workflow

@@ -18,6 +18,8 @@ import {
   User,
   ReconciliationDiscrepancy,
   ReconciliationSummary,
+  InAppNotification,
+  ScheduledReport,
 } from "../types/api";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
@@ -249,4 +251,27 @@ export const api = {
 
   getReconciliationDiscrepancies: () =>
     request<ReconciliationDiscrepancy[]>("/reconciliation/discrepancies"),
+
+  // Scheduled Reports
+  listScheduledReports: () =>
+    request<ScheduledReport[]>("/scheduled-reports"),
+
+  createScheduledReport: (payload: {
+    name: string;
+    cron_expression: string;
+    report_type: string;
+    section_id?: string;
+    recipients: string[];
+  }) =>
+    request<ScheduledReport>("/scheduled-reports", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  // Notifications
+  listNotifications: () =>
+    request<InAppNotification[]>("/notifications"),
+
+  markNotificationRead: (id: string) =>
+    request<void>(`/notifications/${id}/read`, { method: "POST" }),
 };
