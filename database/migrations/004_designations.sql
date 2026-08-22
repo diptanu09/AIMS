@@ -1,12 +1,28 @@
--- 004_designations.sql
--- Designations Table Definition
-
 CREATE TABLE designations (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
-    organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+
+    organization_id UUID NOT NULL
+        REFERENCES organizations(id) ON DELETE CASCADE,
+
     code VARCHAR(32) NOT NULL,
     title VARCHAR(128) NOT NULL,
-    level INT NOT NULL DEFAULT 1,
+
+    level INTEGER NOT NULL DEFAULT 1
+        CHECK (level >= 1),
+
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(organization_id, code)
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT uq_designations_org_code
+        UNIQUE (organization_id, code)
 );
+
+CREATE INDEX idx_designations_org_level
+    ON designations(organization_id, level);
+
+CREATE TRIGGER trg_designations_updated_at
+BEFORE UPDATE ON designations
+FOR EACH ROW
+EXECUTE FUNCTION set_updated_at();

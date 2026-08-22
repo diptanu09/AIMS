@@ -1,88 +1,75 @@
+use axum::Router;
+use sqlx::postgres::PgPoolOptions;
+use std::sync::Arc;
+use tower_http::{
+    compression::CompressionLayer, cors::CorsLayer, timeout::TimeoutLayer, trace::TraceLayer,
+};
+use tracing::info;
+
+mod api;
+mod config;
+mod error;
 mod middleware;
 mod routes;
 mod state;
 
-use aims_database::DbPool;
-use axum::{middleware::from_fn_with_state, routing::get, Json, Router};
-use serde::Serialize;
+use config::Config;
 use state::AppState;
-use std::net::SocketAddr;
-use tower_http::cors::{Any, CorsLayer};
-use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
-
-#[derive(Serialize)]
-struct HealthResponse {
-    status: &'static str,
-    system: &'static str,
-    version: &'static str,
-    database: &'static str,
-}
-
-async fn health_check() -> impl axum::response::IntoResponse {
-    Json(HealthResponse {
-        status: "ok",
-        system: "AIMS — Attendance Intelligence & Management System (v1.1)",
-        version: "1.1.0",
-        database: "connected",
-    })
-}
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    dotenvy::dotenv().ok();
-
-    tracing_subscriber::registry()
-        .with(tracing_subscriber::EnvFilter::new(
-            std::env::var("RUST_LOG").unwrap_or_else(|_| "info,aims_api=debug".into()),
-        ))
-        .with(tracing_subscriber::fmt::layer())
+async fn main() -> anyhow::Result<()> {
+    tracing_subscriber::fmt()
+        .with_env_filter(
+            std::env::var("RUST_LOG").unwrap_or_else(|_| "info,aims_api=debug".to_string()),
+        )
+        .with_target(true)
+        .with_thread_ids(true)
+        .compact()
         .init();
 
-    let db_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "postgres://aims_app:change_this_password@localhost:5432/aims".into());
-    let jwt_secret = std::env::var("JWT_SECRET")
-        .unwrap_or_else(|_| "super_secret_aims_production_jwt_key_2026_x7f9a".into());
+    let config = Config::from_env()?;
 
-    tracing::info!("Connecting to PostgreSQL database at {}...", db_url);
-    let db_pool = DbPool::connect(&db_url).await?;
-    let state = AppState::new(db_pool, jwt_secret);
+    info!(
+        app = %config.app_name,
+        environment = %config.app_env,
+        timezone = %config.app_timezone,
+        "starting AIMS API"
+    );
 
-    let cors = CorsLayer::new()
-        .allow_origin(Any)
-        .allow_methods(Any)
-        .allow_headers(Any);
+    let db = PgPoolOptions::new()
+        .max_connections(10)
+        .min_connections(2)
+        .acquire_timeout(std::time::Duration::from_secs(5))
+        .connect(&config.database_url)
+        .await?;
 
-    let protected_routes = Router::new()
-        .nest("/organizations", routes::organizations::router())
-        .nest("/sections", routes::sections::router())
-        .nest("/designations", routes::designations::router())
-        .nest("/attendance-rules", routes::attendance_rules::router())
-        .nest("/employees", routes::employees::router())
-        .nest("/import", routes::import::router())
-        .nest("/attendance", routes::attendance::router())
-        .nest("/exceptions", routes::exceptions::router())
-        .nest("/corrections", routes::corrections::router())
-        .nest("/reports", routes::reports::router())
-        .nest("/dashboard", routes::dashboard::router())
-        .layer(from_fn_with_state(state.clone(), middleware::auth_middleware));
+    sqlx::query("SELECT 1").execute(&db).await?;
 
-    let public_routes = Router::new()
-        .nest("/auth", routes::auth::router());
+    info!("database connection verified");
 
-    let api_routes = Router::new()
-        .merge(public_routes)
-        .merge(protected_routes);
+    let state = AppState {
+        config: Arc::new(config.clone()),
+        db,
+    };
 
     let app = Router::new()
-        .route("/health", get(health_check))
-        .nest("/api/v1", api_routes)
-        .layer(cors)
-        .with_state(state);
+        .nest("/api/v1", routes::router())
+        .with_state(state)
+        .layer(TraceLayer::new_for_http())
+        .layer(CompressionLayer::new())
+        .layer(TimeoutLayer::with_status_code(
+            axum::http::StatusCode::REQUEST_TIMEOUT,
+            std::time::Duration::from_secs(30),
+        ))
+        .layer(CorsLayer::permissive());
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 8080));
-    tracing::info!("AIMS Axum 0.8.9 API Server listening on http://{}", addr);
+    let listener = tokio::net::TcpListener::bind(config.bind_address()).await?;
 
-    let listener = tokio::net::TcpListener::bind(addr).await?;
+    info!(
+        address = %listener.local_addr()?,
+        "AIMS API listening"
+    );
+
     axum::serve(listener, app).await?;
 
     Ok(())

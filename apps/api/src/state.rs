@@ -1,13 +1,9 @@
-use aims_database::DbPool;
+use crate::config::Config;
+use sqlx::PgPool;
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct AppState {
-    pub db: DbPool,
-    pub jwt_secret: String,
-}
-
-impl AppState {
-    pub fn new(db: DbPool, jwt_secret: String) -> Self {
-        Self { db, jwt_secret }
-    }
+    pub config: Arc<Config>,
+    pub db: PgPool,
 }

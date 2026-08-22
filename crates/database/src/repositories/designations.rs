@@ -18,7 +18,7 @@ impl DesignationRepository {
             INSERT INTO designations (organization_id, code, title, level)
             VALUES ($1, $2, $3, $4)
             RETURNING id, organization_id, code, title, level, created_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(code)
@@ -31,14 +31,17 @@ impl DesignationRepository {
         Ok(des)
     }
 
-    pub async fn list_by_organization(pool: &PgPool, organization_id: Uuid) -> Result<Vec<Designation>> {
+    pub async fn list_by_organization(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<Vec<Designation>> {
         let designations = sqlx::query_as::<_, Designation>(
             r#"
             SELECT id, organization_id, code, title, level, created_at
             FROM designations
             WHERE organization_id = $1
             ORDER BY level ASC, title ASC
-            "#
+            "#,
         )
         .bind(organization_id)
         .fetch_all(pool)

@@ -1,5 +1,5 @@
 use aims_attendance_engine::{
-    deduplicate_punches, evaluate_attendance_status, pair_sessions, RawPunchInput,
+    RawPunchInput, deduplicate_punches, evaluate_attendance_status, pair_sessions,
 };
 use aims_domain::{AttendanceRule, AttendanceStatus, PunchInterpretationMode, PunchType};
 use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
@@ -23,7 +23,9 @@ fn create_test_rule() -> AttendanceRule {
 }
 
 fn parse_dt(iso_str: &str) -> DateTime<Utc> {
-    DateTime::parse_from_rfc3339(iso_str).unwrap().with_timezone(&Utc)
+    DateTime::parse_from_rfc3339(iso_str)
+        .unwrap()
+        .with_timezone(&Utc)
 }
 
 #[test]
@@ -34,8 +36,14 @@ fn test_scenario_a_ontime_single_session() {
     let t_out = parse_dt("2026-08-20T17:30:00Z");
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
@@ -44,7 +52,12 @@ fn test_scenario_a_ontime_single_session() {
     assert!(!sessions[0].is_inferred);
 
     let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::Present);
@@ -61,13 +74,24 @@ fn test_scenario_b_grace_period_arrival() {
     let t_out = parse_dt("2026-08-20T17:30:00Z");
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::Present);
@@ -84,13 +108,24 @@ fn test_scenario_c_late_arrival_past_grace() {
     let t_out = parse_dt("2026-08-20T17:35:00Z");
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::Late);
@@ -107,13 +142,24 @@ fn test_scenario_d_early_exit() {
     let t_out = parse_dt("2026-08-20T16:50:00Z"); // 40m early exit (end 17:30, threshold 15m)
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::EarlyExit);
@@ -130,13 +176,24 @@ fn test_scenario_e_late_and_early_exit() {
     let t_out = parse_dt("2026-08-20T16:50:00Z"); // Early Exit
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::LateAndEarlyExit);
@@ -155,10 +212,22 @@ fn test_scenario_f_multiple_sessions_break() {
     let t2_out = parse_dt("2026-08-20T17:30:00Z"); // 210m
 
     let punches = vec![
-        RawPunchInput { timestamp: t1_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t1_out, punch_type: PunchType::Out },
-        RawPunchInput { timestamp: t2_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t2_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t1_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t1_out,
+            punch_type: PunchType::Out,
+        },
+        RawPunchInput {
+            timestamp: t2_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t2_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
@@ -166,9 +235,8 @@ fn test_scenario_f_multiple_sessions_break() {
     let total_duty: i32 = sessions.iter().map(|s| s.duration_minutes).sum();
     assert_eq!(total_duty, 450); // 240 + 210
 
-    let (status, _, _, _) = evaluate_attendance_status(
-        &rule, date, Some(t1_in), Some(t2_out), total_duty, false,
-    );
+    let (status, _, _, _) =
+        evaluate_attendance_status(&rule, date, Some(t1_in), Some(t2_out), total_duty, false);
 
     assert_eq!(status, AttendanceStatus::Present);
 }
@@ -179,17 +247,16 @@ fn test_scenario_g_unclosed_session_missing_out() {
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
     let t_in = parse_dt("2026-08-20T09:00:00Z");
 
-    let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-    ];
+    let punches = vec![RawPunchInput {
+        timestamp: t_in,
+        punch_type: PunchType::In,
+    }];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     assert_eq!(sessions.len(), 1);
     assert!(sessions[0].is_inferred);
 
-    let (status, _, _, _) = evaluate_attendance_status(
-        &rule, date, Some(t_in), None, 0, true,
-    );
+    let (status, _, _, _) = evaluate_attendance_status(&rule, date, Some(t_in), None, 0, true);
 
     assert_eq!(status, AttendanceStatus::Incomplete);
 }
@@ -201,9 +268,18 @@ fn test_scenario_h_duplicate_jitter_punches() {
     let t3 = parse_dt("2026-08-20T17:30:00Z");
 
     let punches = vec![
-        RawPunchInput { timestamp: t1, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t2, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t3, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t1,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t2,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t3,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let deduplicated = deduplicate_punches(&punches, 60);
@@ -220,13 +296,24 @@ fn test_scenario_i_half_day_duration() {
     let t_out = parse_dt("2026-08-20T13:30:00Z"); // 270m (>= half 240m, < full 420m)
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     let (status, _, _, _) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::HalfDay);
@@ -240,13 +327,24 @@ fn test_scenario_j_severe_short_shift_absent() {
     let t_out = parse_dt("2026-08-20T11:30:00Z"); // 150m (< half 240m)
 
     let punches = vec![
-        RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-        RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+        RawPunchInput {
+            timestamp: t_in,
+            punch_type: PunchType::In,
+        },
+        RawPunchInput {
+            timestamp: t_out,
+            punch_type: PunchType::Out,
+        },
     ];
 
     let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
     let (status, _, _, _) = evaluate_attendance_status(
-        &rule, date, Some(t_in), Some(t_out), sessions[0].duration_minutes, false,
+        &rule,
+        date,
+        Some(t_in),
+        Some(t_out),
+        sessions[0].duration_minutes,
+        false,
     );
 
     assert_eq!(status, AttendanceStatus::Absent);

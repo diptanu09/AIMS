@@ -51,6 +51,7 @@ pub fn deduplicate_punches(punches: &[RawPunchInput], jitter_seconds: i64) -> Ve
     let mut last_timestamp: Option<DateTime<Utc>> = None;
 
     for p in sorted {
+        #[allow(clippy::collapsible_if)]
         if let Some(last) = last_timestamp {
             if (p.timestamp - last).num_seconds().abs() < jitter_seconds {
                 continue; // Ignore jitter punch within 60s
@@ -225,7 +226,12 @@ pub async fn process_employee_day(
 ) -> Result<CalculationResult> {
     let rule = AttendanceRuleRepository::find_by_id(pool, employee.attendance_rule_id)
         .await?
-        .ok_or_else(|| AimsError::NotFound(format!("Attendance rule '{}' not found", employee.attendance_rule_id)))?;
+        .ok_or_else(|| {
+            AimsError::NotFound(format!(
+                "Attendance rule '{}' not found",
+                employee.attendance_rule_id
+            ))
+        })?;
 
     let raw_records = sqlx::query_as::<_, QueryRawPunch>(
         r#"
@@ -235,14 +241,16 @@ pub async fn process_employee_day(
           AND employee_id = $2
           AND punch_timestamp::date = $3
         ORDER BY punch_timestamp ASC
-        "#
+        "#,
     )
     .bind(organization_id)
     .bind(employee.id)
     .bind(target_date)
     .fetch_all(pool)
     .await
-    .map_err(|e| AimsError::Database(format!("Failed to query raw events for calculation: {}", e)))?;
+    .map_err(|e| {
+        AimsError::Database(format!("Failed to query raw events for calculation: {}", e))
+    })?;
 
     let inputs: Vec<RawPunchInput> = raw_records
         .into_iter()
@@ -255,7 +263,11 @@ pub async fn process_employee_day(
     let deduplicated = deduplicate_punches(&inputs, 60);
     let sessions = pair_sessions(&deduplicated, &PunchInterpretationMode::ExplicitDirection);
 
-    let first_in = sessions.iter().find(|s| !s.is_inferred).map(|s| s.in_timestamp).or_else(|| sessions.first().map(|s| s.in_timestamp));
+    let first_in = sessions
+        .iter()
+        .find(|s| !s.is_inferred)
+        .map(|s| s.in_timestamp)
+        .or_else(|| sessions.first().map(|s| s.in_timestamp));
     let last_out = sessions.iter().rev().find_map(|s| s.out_timestamp);
     let total_duty_minutes: i32 = sessions.iter().map(|s| s.duration_minutes).sum();
     let has_inferred = sessions.iter().any(|s| s.is_inferred);
@@ -302,7 +314,8 @@ pub async fn process_employee_day(
         })
         .collect();
 
-    AttendanceSessionRepository::replace_sessions_for_daily(pool, saved_daily.id, &session_records).await?;
+    AttendanceSessionRepository::replace_sessions_for_daily(pool, saved_daily.id, &session_records)
+        .await?;
 
     Ok(CalculationResult {
         daily: saved_daily,
@@ -362,12 +375,22 @@ mod tests {
             updated_at: Utc::now(),
         };
 
-        let t_in = DateTime::parse_from_rfc3339("2026-08-20T09:22:00Z").unwrap().with_timezone(&Utc);
-        let t_out = DateTime::parse_from_rfc3339("2026-08-20T17:35:00Z").unwrap().with_timezone(&Utc);
+        let t_in = DateTime::parse_from_rfc3339("2026-08-20T09:22:00Z")
+            .unwrap()
+            .with_timezone(&Utc);
+        let t_out = DateTime::parse_from_rfc3339("2026-08-20T17:35:00Z")
+            .unwrap()
+            .with_timezone(&Utc);
 
         let punches = vec![
-            RawPunchInput { timestamp: t_in, punch_type: PunchType::In },
-            RawPunchInput { timestamp: t_out, punch_type: PunchType::Out },
+            RawPunchInput {
+                timestamp: t_in,
+                punch_type: PunchType::In,
+            },
+            RawPunchInput {
+                timestamp: t_out,
+                punch_type: PunchType::Out,
+            },
         ];
 
         let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
@@ -391,14 +414,29 @@ mod tests {
 
     #[test]
     fn test_deduplicate_jitter_punches() {
-        let t1 = DateTime::parse_from_rfc3339("2026-08-20T09:00:00Z").unwrap().with_timezone(&Utc);
-        let t2 = DateTime::parse_from_rfc3339("2026-08-20T09:00:15Z").unwrap().with_timezone(&Utc); // 15s jitter
-        let t3 = DateTime::parse_from_rfc3339("2026-08-20T17:00:00Z").unwrap().with_timezone(&Utc);
+        let t1 = DateTime::parse_from_rfc3339("2026-08-20T09:00:00Z")
+            .unwrap()
+            .with_timezone(&Utc);
+        let t2 = DateTime::parse_from_rfc3339("2026-08-20T09:00:15Z")
+            .unwrap()
+            .with_timezone(&Utc); // 15s jitter
+        let t3 = DateTime::parse_from_rfc3339("2026-08-20T17:00:00Z")
+            .unwrap()
+            .with_timezone(&Utc);
 
         let punches = vec![
-            RawPunchInput { timestamp: t1, punch_type: PunchType::In },
-            RawPunchInput { timestamp: t2, punch_type: PunchType::In },
-            RawPunchInput { timestamp: t3, punch_type: PunchType::Out },
+            RawPunchInput {
+                timestamp: t1,
+                punch_type: PunchType::In,
+            },
+            RawPunchInput {
+                timestamp: t2,
+                punch_type: PunchType::In,
+            },
+            RawPunchInput {
+                timestamp: t3,
+                punch_type: PunchType::Out,
+            },
         ];
 
         let deduplicated = deduplicate_punches(&punches, 60);

@@ -34,7 +34,7 @@ impl UserRepository {
             VALUES ($1, $2, $3, $4)
             RETURNING id, organization_id, employee_id, username, email, password_hash,
                       status, last_login_at, created_at, updated_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(username)
@@ -54,7 +54,7 @@ impl UserRepository {
                    status, last_login_at, created_at, updated_at
             FROM users
             WHERE username = $1
-            "#
+            "#,
         )
         .bind(username)
         .fetch_optional(pool)
@@ -71,7 +71,7 @@ impl UserRepository {
             FROM roles r
             INNER JOIN user_roles ur ON ur.role_id = r.id
             WHERE ur.user_id = $1
-            "#
+            "#,
         )
         .bind(user_id)
         .fetch_all(pool)
@@ -89,7 +89,7 @@ impl UserRepository {
             INNER JOIN role_permissions rp ON rp.permission_id = p.id
             INNER JOIN user_roles ur ON ur.role_id = rp.role_id
             WHERE ur.user_id = $1
-            "#
+            "#,
         )
         .bind(user_id)
         .fetch_all(pool)
@@ -107,12 +107,14 @@ impl UserRepository {
             WHERE usa.user_id = $1
               AND usa.effective_from <= CURRENT_DATE
               AND (usa.effective_to IS NULL OR usa.effective_to >= CURRENT_DATE)
-            "#
+            "#,
         )
         .bind(user_id)
         .fetch_all(pool)
         .await
-        .map_err(|e| AimsError::Database(format!("Failed to query user section assignments: {}", e)))?;
+        .map_err(|e| {
+            AimsError::Database(format!("Failed to query user section assignments: {}", e))
+        })?;
 
         Ok(sections)
     }
@@ -123,7 +125,7 @@ impl UserRepository {
             UPDATE users
             SET last_login_at = CURRENT_TIMESTAMP
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(user_id)
         .execute(pool)

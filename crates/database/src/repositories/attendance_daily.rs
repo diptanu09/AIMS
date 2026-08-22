@@ -7,10 +7,7 @@ use uuid::Uuid;
 pub struct DailyAttendanceRepository;
 
 impl DailyAttendanceRepository {
-    pub async fn save(
-        pool: &PgPool,
-        daily: &AttendanceDaily,
-    ) -> Result<AttendanceDaily> {
+    pub async fn save(pool: &PgPool, daily: &AttendanceDaily) -> Result<AttendanceDaily> {
         let record = sqlx::query_as::<_, AttendanceDaily>(
             r#"
             INSERT INTO attendance_daily (
@@ -63,7 +60,7 @@ impl DailyAttendanceRepository {
                    late_after_grace_minutes, early_exit_minutes, status, is_corrected, processed_at
             FROM attendance_daily
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(id)
         .fetch_optional(pool)
@@ -85,7 +82,7 @@ impl DailyAttendanceRepository {
                    late_after_grace_minutes, early_exit_minutes, status, is_corrected, processed_at
             FROM attendance_daily
             WHERE employee_id = $1 AND attendance_date = $2
-            "#
+            "#,
         )
         .bind(employee_id)
         .bind(attendance_date)
@@ -110,14 +107,16 @@ impl DailyAttendanceRepository {
             FROM attendance_daily
             WHERE organization_id = $1 AND attendance_date BETWEEN $2 AND $3
             ORDER BY attendance_date DESC, employee_id ASC
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(start_date)
         .bind(end_date)
         .fetch_all(pool)
         .await
-        .map_err(|e| AimsError::Database(format!("Failed to query daily attendance list: {}", e)))?;
+        .map_err(|e| {
+            AimsError::Database(format!("Failed to query daily attendance list: {}", e))
+        })?;
 
         Ok(records)
     }

@@ -30,7 +30,7 @@ impl AttendanceRuleRepository {
                       grace_period_minutes, half_day_min_duration_minutes,
                       full_day_min_duration_minutes, early_exit_threshold_minutes,
                       max_single_session_hours, created_at, updated_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(name)
@@ -47,7 +47,10 @@ impl AttendanceRuleRepository {
         Ok(rule)
     }
 
-    pub async fn list_by_organization(pool: &PgPool, organization_id: Uuid) -> Result<Vec<AttendanceRule>> {
+    pub async fn list_by_organization(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<Vec<AttendanceRule>> {
         let rules = sqlx::query_as::<_, AttendanceRule>(
             r#"
             SELECT id, organization_id, name, shift_start_time, shift_end_time,
@@ -57,7 +60,7 @@ impl AttendanceRuleRepository {
             FROM attendance_rules
             WHERE organization_id = $1
             ORDER BY name ASC
-            "#
+            "#,
         )
         .bind(organization_id)
         .fetch_all(pool)
@@ -76,12 +79,14 @@ impl AttendanceRuleRepository {
                    max_single_session_hours, created_at, updated_at
             FROM attendance_rules
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(id)
         .fetch_optional(pool)
         .await
-        .map_err(|e| AimsError::Database(format!("Failed to query attendance rule by id: {}", e)))?;
+        .map_err(|e| {
+            AimsError::Database(format!("Failed to query attendance rule by id: {}", e))
+        })?;
 
         Ok(rule)
     }

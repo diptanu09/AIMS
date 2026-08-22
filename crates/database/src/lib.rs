@@ -1,7 +1,9 @@
+#![allow(clippy::too_many_arguments)]
+
 pub mod repositories;
 
 use aims_common::{AimsError, Result};
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::{PgPool, postgres::PgPoolOptions};
 use std::time::Duration;
 
 #[derive(Clone)]
@@ -33,13 +35,14 @@ mod tests {
 
     #[tokio::test]
     async fn test_repository_crud_flow() {
-        let db_url = std::env::var("DATABASE_URL")
-            .unwrap_or_else(|_| "postgres://aims_app:change_this_password@localhost:5432/aims".into());
+        let db_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| {
+            "postgres://aims_app:change_this_password@localhost:5432/aims".into()
+        });
 
         let pool_res = DbPool::connect(&db_url).await;
         if let Ok(db_pool) = pool_res {
             let pool = db_pool.pool();
-            let test_code = format!("ORG_{}", uuid::Uuid::now_v7());
+            let test_code = format!("ORG_{}", &uuid::Uuid::now_v7().simple().to_string()[..20]);
 
             let org = OrganizationRepository::create(pool, &test_code, "Test Corp", "Asia/Kolkata")
                 .await

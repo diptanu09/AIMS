@@ -31,7 +31,9 @@ impl AttendanceSessionRepository {
             .bind(daily_id)
             .execute(&mut *tx)
             .await
-            .map_err(|e| AimsError::Database(format!("Failed to clear existing sessions: {}", e)))?;
+            .map_err(|e| {
+                AimsError::Database(format!("Failed to clear existing sessions: {}", e))
+            })?;
 
         for s in sessions {
             sqlx::query(
@@ -62,7 +64,10 @@ impl AttendanceSessionRepository {
         Ok(())
     }
 
-    pub async fn list_by_daily(pool: &PgPool, daily_id: Uuid) -> Result<Vec<AttendanceSessionRecord>> {
+    pub async fn list_by_daily(
+        pool: &PgPool,
+        daily_id: Uuid,
+    ) -> Result<Vec<AttendanceSessionRecord>> {
         let sessions = sqlx::query_as::<_, AttendanceSessionRecord>(
             r#"
             SELECT id, attendance_daily_id, in_timestamp, out_timestamp,
@@ -70,7 +75,7 @@ impl AttendanceSessionRepository {
             FROM attendance_sessions
             WHERE attendance_daily_id = $1
             ORDER BY session_order ASC
-            "#
+            "#,
         )
         .bind(daily_id)
         .fetch_all(pool)

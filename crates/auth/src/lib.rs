@@ -1,10 +1,10 @@
 use aims_common::{AimsError, Result};
 use argon2::{
-    password_hash::{PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
+    password_hash::{PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
 };
 use chrono::{Duration, Utc};
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, decode, encode};
 use rand_core::OsRng;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -41,6 +41,7 @@ pub fn verify_password(password: &str, password_hash: &str) -> Result<bool> {
         .is_ok())
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn generate_token(
     user_id: Uuid,
     org_id: Uuid,
@@ -144,8 +145,12 @@ mod tests {
         };
 
         // VIEW_ONLY must NOT have global view access
-        assert!(!view_only_claims.permissions.contains(&"attendance.view.all".to_string()));
-        
+        assert!(
+            !view_only_claims
+                .permissions
+                .contains(&"attendance.view.all".to_string())
+        );
+
         // VIEW_ONLY has access to sec_1 but NOT sec_2
         assert!(view_only_claims.section_ids.contains(&sec_1));
         assert!(!view_only_claims.section_ids.contains(&sec_2));

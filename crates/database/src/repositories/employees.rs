@@ -33,7 +33,7 @@ impl EmployeeRepository {
                       first_name, last_name, email, mobile, section_id,
                       designation_id, attendance_rule_id, joining_date, leaving_date,
                       status, created_at, updated_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(employee_code)
@@ -62,7 +62,7 @@ impl EmployeeRepository {
                    status, created_at, updated_at
             FROM employees
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(id)
         .fetch_optional(pool)
@@ -85,7 +85,7 @@ impl EmployeeRepository {
                    status, created_at, updated_at
             FROM employees
             WHERE organization_id = $1 AND attendance_device_user_id = $2
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(device_user_id)
@@ -96,7 +96,10 @@ impl EmployeeRepository {
         Ok(emp)
     }
 
-    pub async fn list_by_organization(pool: &PgPool, organization_id: Uuid) -> Result<Vec<Employee>> {
+    pub async fn list_by_organization(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<Vec<Employee>> {
         let employees = sqlx::query_as::<_, Employee>(
             r#"
             SELECT id, organization_id, employee_code, attendance_device_user_id,
@@ -106,7 +109,7 @@ impl EmployeeRepository {
             FROM employees
             WHERE organization_id = $1
             ORDER BY first_name ASC, last_name ASC
-            "#
+            "#,
         )
         .bind(organization_id)
         .fetch_all(pool)
@@ -126,7 +129,7 @@ impl EmployeeRepository {
             FROM employees
             WHERE section_id = $1
             ORDER BY first_name ASC, last_name ASC
-            "#
+            "#,
         )
         .bind(section_id)
         .fetch_all(pool)

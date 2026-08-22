@@ -16,7 +16,10 @@ pub struct ReportMetadata {
 pub struct ReportEngine;
 
 impl ReportEngine {
-    pub fn generate_summary_csv(metadata: &ReportMetadata, records: &[AttendanceDaily]) -> Result<String> {
+    pub fn generate_summary_csv(
+        metadata: &ReportMetadata,
+        records: &[AttendanceDaily],
+    ) -> Result<String> {
         let mut out = String::new();
         out.push_str(&format!("# Organization: {}\n", metadata.organization_name));
         out.push_str(&format!("# Report: {}\n", metadata.report_title));

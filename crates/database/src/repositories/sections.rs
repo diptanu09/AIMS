@@ -18,7 +18,7 @@ impl SectionRepository {
             INSERT INTO sections (organization_id, code, name, parent_section_id)
             VALUES ($1, $2, $3, $4)
             RETURNING id, organization_id, code, name, parent_section_id, created_at, updated_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(code)
@@ -31,14 +31,17 @@ impl SectionRepository {
         Ok(sec)
     }
 
-    pub async fn list_by_organization(pool: &PgPool, organization_id: Uuid) -> Result<Vec<Section>> {
+    pub async fn list_by_organization(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<Vec<Section>> {
         let sections = sqlx::query_as::<_, Section>(
             r#"
             SELECT id, organization_id, code, name, parent_section_id, created_at, updated_at
             FROM sections
             WHERE organization_id = $1
             ORDER BY code ASC
-            "#
+            "#,
         )
         .bind(organization_id)
         .fetch_all(pool)

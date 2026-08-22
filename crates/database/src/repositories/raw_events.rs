@@ -32,7 +32,7 @@ impl RawEventRepository {
                       attendance_device_user_id, employee_id, punch_timestamp,
                       punch_type, device_terminal_id, event_fingerprint,
                       raw_text, created_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(batch_id)
@@ -73,7 +73,7 @@ impl RawEventRepository {
             )
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             ON CONFLICT (organization_id, event_fingerprint) DO NOTHING
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(batch_id)
@@ -103,7 +103,7 @@ impl RawEventRepository {
             FROM attendance_raw_events
             WHERE batch_id = $1
             ORDER BY source_row_number ASC
-            "#
+            "#,
         )
         .bind(batch_id)
         .fetch_all(pool)

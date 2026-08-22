@@ -39,7 +39,7 @@ impl ImportBatchRepository {
             RETURNING id, organization_id, file_name, file_hash, uploaded_by,
                       total_records, valid_records, duplicate_records,
                       unknown_employees, invalid_records, status, imported_at
-            "#
+            "#,
         )
         .bind(organization_id)
         .bind(file_name)
@@ -72,7 +72,7 @@ impl ImportBatchRepository {
                 invalid_records = $5,
                 status = $6
             WHERE id = $7
-            "#
+            "#,
         )
         .bind(total)
         .bind(valid)
@@ -100,7 +100,7 @@ impl ImportBatchRepository {
             FROM attendance_import_batches
             WHERE organization_id = $1
             ORDER BY imported_at DESC
-            "#
+            "#,
         )
         .bind(organization_id)
         .fetch_all(pool)
@@ -118,7 +118,7 @@ impl ImportBatchRepository {
                    unknown_employees, invalid_records, status, imported_at
             FROM attendance_import_batches
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(batch_id)
         .fetch_optional(pool)

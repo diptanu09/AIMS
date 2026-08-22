@@ -1,7 +1,6 @@
 use aims_common::{AimsError, Result};
 use aims_domain::PunchType;
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
-use hex;
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
@@ -19,16 +18,39 @@ pub struct ParsedRawPunch {
 
 #[derive(Debug, Deserialize)]
 struct CsvPunchRecord {
-    #[serde(alias = "DeviceUserId", alias = "UserID", alias = "EmployeeCode", alias = "User ID", alias = "Emp Code")]
+    #[serde(
+        alias = "DeviceUserId",
+        alias = "UserID",
+        alias = "EmployeeCode",
+        alias = "User ID",
+        alias = "Emp Code"
+    )]
     device_user_id: String,
 
-    #[serde(alias = "Timestamp", alias = "PunchTime", alias = "DateTime", alias = "Punch Time", alias = "Date Time")]
+    #[serde(
+        alias = "Timestamp",
+        alias = "PunchTime",
+        alias = "DateTime",
+        alias = "Punch Time",
+        alias = "Date Time"
+    )]
     timestamp: String,
 
-    #[serde(alias = "PunchType", alias = "Type", alias = "Direction", alias = "Punch Type", alias = "Status")]
+    #[serde(
+        alias = "PunchType",
+        alias = "Type",
+        alias = "Direction",
+        alias = "Punch Type",
+        alias = "Status"
+    )]
     punch_type: Option<String>,
 
-    #[serde(alias = "TerminalId", alias = "MachineID", alias = "Terminal", alias = "Device ID")]
+    #[serde(
+        alias = "TerminalId",
+        alias = "MachineID",
+        alias = "Terminal",
+        alias = "Device ID"
+    )]
     terminal_id: Option<String>,
 }
 
@@ -177,10 +199,12 @@ mod tests {
 
     #[test]
     fn test_parse_sample_fixture() {
-        let fixture_bytes = include_bytes!("../../../database/fixtures/sample_attendance_punches.csv");
+        let fixture_bytes =
+            include_bytes!("../../../database/fixtures/sample_attendance_punches.csv");
         let org_id = Uuid::now_v7();
 
-        let punches = parse_csv_punches(org_id, fixture_bytes).expect("Should parse sample fixture");
+        let punches =
+            parse_csv_punches(org_id, fixture_bytes).expect("Should parse sample fixture");
         assert_eq!(punches.len(), 6);
 
         let hash = compute_file_hash(fixture_bytes);

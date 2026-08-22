@@ -6,13 +6,18 @@ use uuid::Uuid;
 pub struct OrganizationRepository;
 
 impl OrganizationRepository {
-    pub async fn create(pool: &PgPool, code: &str, name: &str, timezone: &str) -> Result<Organization> {
+    pub async fn create(
+        pool: &PgPool,
+        code: &str,
+        name: &str,
+        timezone: &str,
+    ) -> Result<Organization> {
         let org = sqlx::query_as::<_, Organization>(
             r#"
             INSERT INTO organizations (code, name, timezone)
             VALUES ($1, $2, $3)
             RETURNING id, code, name, timezone, created_at, updated_at
-            "#
+            "#,
         )
         .bind(code)
         .bind(name)
@@ -30,7 +35,7 @@ impl OrganizationRepository {
             SELECT id, code, name, timezone, created_at, updated_at
             FROM organizations
             WHERE id = $1
-            "#
+            "#,
         )
         .bind(id)
         .fetch_optional(pool)
@@ -46,7 +51,7 @@ impl OrganizationRepository {
             SELECT id, code, name, timezone, created_at, updated_at
             FROM organizations
             ORDER BY name ASC
-            "#
+            "#,
         )
         .fetch_all(pool)
         .await
