@@ -2,7 +2,7 @@ use crate::types::MonthlySectionReportData;
 use aims_common::{AimsError, Result};
 
 pub fn generate_monthly_section_csv(data: &MonthlySectionReportData) -> Result<Vec<u8>> {
-    let mut wtr = csv::Writer::from_writer(Vec::new());
+    let mut wtr = csv::WriterBuilder::new().flexible(true).from_writer(Vec::new());
 
     wtr.write_record(["MONTHLY SECTION ATTENDANCE REPORT", ""])
         .map_err(|e| AimsError::Internal(e.to_string()))?;
