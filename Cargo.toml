@@ -59,6 +59,7 @@ aims_database = { path = "crates/database" }
 aims_domain = { path = "crates/domain" }
 aims_import_engine = { path = "crates/import_engine" }
 chrono = { workspace = true }
+chrono-tz = { workspace = true }
 serde_json = { workspace = true }
 sqlx = { workspace = true }
 tokio = { workspace = true }

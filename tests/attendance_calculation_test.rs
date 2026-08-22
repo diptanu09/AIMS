@@ -1,22 +1,24 @@
 use aims_attendance_engine::{
-    RawPunchInput, deduplicate_punches, evaluate_attendance_status, pair_sessions,
+    AttendancePunch, AttendanceWarning, CalendarContext, PunchSourceMode,
+    calculate_attendance_for_employee_date, deduplicate_jitter_punches,
 };
-use aims_domain::{AttendanceRule, AttendanceStatus, PunchInterpretationMode, PunchType};
-use chrono::{DateTime, NaiveDate, NaiveTime, Utc};
+use aims_domain::{AttendanceRule, AttendanceStatus, PunchType};
+use chrono::{NaiveDate, NaiveTime, TimeZone, Utc};
+use chrono_tz::Asia::Kolkata;
 use uuid::Uuid;
 
-fn create_test_rule() -> AttendanceRule {
+fn sample_rule() -> AttendanceRule {
     AttendanceRule {
         id: Uuid::now_v7(),
         organization_id: Uuid::now_v7(),
-        name: "General Office Shift".into(),
-        shift_start_time: NaiveTime::from_hms_opt(9, 0, 0).unwrap(),
+        name: "Standard Office Shift".into(),
+        shift_start_time: NaiveTime::from_hms_opt(9, 30, 0).unwrap(),
         shift_end_time: NaiveTime::from_hms_opt(17, 30, 0).unwrap(),
         grace_period_minutes: 15,
         half_day_min_duration_minutes: 240,
         full_day_min_duration_minutes: 420,
         early_exit_threshold_minutes: 15,
-        max_single_session_hours: 14,
+        max_single_session_hours: 12,
         cross_midnight: false,
         effective_from: NaiveDate::from_ymd_opt(2026, 1, 1).unwrap(),
         effective_to: None,
@@ -26,330 +28,346 @@ fn create_test_rule() -> AttendanceRule {
     }
 }
 
-fn parse_dt(iso_str: &str) -> DateTime<Utc> {
-    DateTime::parse_from_rfc3339(iso_str)
+fn make_utc(date_str: &str, time_str: &str) -> chrono::DateTime<Utc> {
+    let date = NaiveDate::parse_from_str(date_str, "%Y-%m-%d").unwrap();
+    let time = NaiveTime::parse_from_str(time_str, "%H:%M:%S").unwrap();
+    let ndt = chrono::NaiveDateTime::new(date, time);
+    Kolkata
+        .from_local_datetime(&ndt)
         .unwrap()
         .with_timezone(&Utc)
 }
 
 #[test]
 fn test_scenario_a_ontime_single_session() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:00:00Z");
-    let t_out = parse_dt("2026-08-20T17:30:00Z");
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:24:00"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "17:36:00"),
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    assert_eq!(sessions.len(), 1);
-    assert_eq!(sessions[0].duration_minutes, 510);
-    assert!(!sessions[0].is_inferred);
-
-    let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::Present);
-    assert_eq!(start_delay, 0);
-    assert_eq!(late_after_grace, 0);
-    assert_eq!(early_exit, 0);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::Present);
+    assert_eq!(res.total_duty_minutes, 492);
+    assert_eq!(res.late_minutes, 0);
+    assert_eq!(res.early_exit_minutes, 0);
 }
 
 #[test]
 fn test_scenario_b_grace_period_arrival() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:10:00Z"); // 10m after start (within 15m grace)
-    let t_out = parse_dt("2026-08-20T17:30:00Z");
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:44:00"), // 14m after 09:30 -> within 15m grace
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "17:36:00"),
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::Present);
-    assert_eq!(start_delay, 10);
-    assert_eq!(late_after_grace, 0);
-    assert_eq!(early_exit, 0);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::Present);
+    assert_eq!(res.late_minutes, 14);
+    assert_eq!(res.late_minutes_beyond_grace, 0);
 }
 
 #[test]
 fn test_scenario_c_late_arrival_past_grace() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:22:00Z"); // 22m after start (grace 15m)
-    let t_out = parse_dt("2026-08-20T17:35:00Z");
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:51:00"), // 21m after start, 6m beyond grace
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "17:37:00"),
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::Late);
-    assert_eq!(start_delay, 22);
-    assert_eq!(late_after_grace, 7);
-    assert_eq!(early_exit, 0);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::Late);
+    assert_eq!(res.late_minutes, 21);
+    assert_eq!(res.late_minutes_beyond_grace, 6);
 }
 
 #[test]
 fn test_scenario_d_early_exit() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T08:55:00Z");
-    let t_out = parse_dt("2026-08-20T16:50:00Z"); // 40m early exit (end 17:30, threshold 15m)
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:22:00"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "17:00:00"), // 30m early exit (> 15m threshold)
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::EarlyExit);
-    assert_eq!(start_delay, 0);
-    assert_eq!(late_after_grace, 0);
-    assert_eq!(early_exit, 40);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::EarlyExit);
+    assert_eq!(res.early_exit_minutes, 30);
 }
 
 #[test]
 fn test_scenario_e_late_and_early_exit() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:25:00Z"); // Late
-    let t_out = parse_dt("2026-08-20T16:50:00Z"); // Early Exit
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:52:00"), // Late
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "17:02:00"), // Early exit
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    let (status, start_delay, late_after_grace, early_exit) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::LateAndEarlyExit);
-    assert_eq!(start_delay, 25);
-    assert_eq!(late_after_grace, 10);
-    assert_eq!(early_exit, 40);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::LateAndEarlyExit);
 }
 
 #[test]
 fn test_scenario_f_multiple_sessions_break() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t1_in = parse_dt("2026-08-20T09:00:00Z");
-    let t1_out = parse_dt("2026-08-20T13:00:00Z"); // 240m
-    let t2_in = parse_dt("2026-08-20T14:00:00Z");
-    let t2_out = parse_dt("2026-08-20T17:30:00Z"); // 210m
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t1_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:10:00"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t1_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "12:55:00"), // 225m
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t2_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "13:44:00"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t2_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "17:41:00"), // 237m
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    assert_eq!(sessions.len(), 2);
-    let total_duty: i32 = sessions.iter().map(|s| s.duration_minutes).sum();
-    assert_eq!(total_duty, 450); // 240 + 210
-
-    let (status, _, _, _) =
-        evaluate_attendance_status(&rule, date, Some(t1_in), Some(t2_out), total_duty, false);
-
-    assert_eq!(status, AttendanceStatus::Present);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::Present);
+    assert_eq!(res.sessions.len(), 2);
+    assert_eq!(res.total_duty_minutes, 462);
 }
 
 #[test]
 fn test_scenario_g_unclosed_session_missing_out() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:00:00Z");
 
-    let punches = vec![RawPunchInput {
-        timestamp: t_in,
+    let punches = vec![AttendancePunch {
+        id: Uuid::now_v7(),
+        employee_id: emp_id,
+        timestamp: make_utc("2026-08-20", "09:28:00"),
         punch_type: PunchType::In,
+        source_mode: PunchSourceMode::ExplicitDirection,
+        terminal_id: Some("BIO-01".into()),
     }];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    assert_eq!(sessions.len(), 1);
-    assert!(sessions[0].is_inferred);
-
-    let (status, _, _, _) = evaluate_attendance_status(&rule, date, Some(t_in), None, 0, true);
-
-    assert_eq!(status, AttendanceStatus::Incomplete);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::Incomplete);
+    assert!(res.warnings.contains(&AttendanceWarning::MissingOut));
 }
 
 #[test]
 fn test_scenario_h_duplicate_jitter_punches() {
-    let t1 = parse_dt("2026-08-20T08:59:50Z");
-    let t2 = parse_dt("2026-08-20T09:00:10Z"); // 20s jitter
-    let t3 = parse_dt("2026-08-20T17:30:00Z");
-
+    let emp_id = Uuid::now_v7();
     let punches = vec![
-        RawPunchInput {
-            timestamp: t1,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:12:14"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t2,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:12:17"),
             punch_type: PunchType::In,
-        },
-        RawPunchInput {
-            timestamp: t3,
-            punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let deduplicated = deduplicate_punches(&punches, 60);
-    assert_eq!(deduplicated.len(), 2);
-    assert_eq!(deduplicated[0].timestamp, t1);
-    assert_eq!(deduplicated[1].timestamp, t3);
+    let (filtered, warnings) = deduplicate_jitter_punches(&punches, 60);
+    assert_eq!(filtered.len(), 1);
+    assert_eq!(warnings.len(), 1);
 }
 
 #[test]
 fn test_scenario_i_half_day_duration() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:00:00Z");
-    let t_out = parse_dt("2026-08-20T13:30:00Z"); // 270m (>= half 240m, < full 420m)
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:32:00"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "13:47:00"), // 255m (>= 240m half day, < 420m full day)
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    let (status, _, _, _) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::HalfDay);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::HalfDay);
+    assert_eq!(res.total_duty_minutes, 255);
 }
 
 #[test]
 fn test_scenario_j_severe_short_shift_absent() {
-    let rule = create_test_rule();
+    let rule = sample_rule();
+    let calendar = CalendarContext::default();
+    let org_id = rule.organization_id;
+    let emp_id = Uuid::now_v7();
     let date = NaiveDate::from_ymd_opt(2026, 8, 20).unwrap();
-    let t_in = parse_dt("2026-08-20T09:00:00Z");
-    let t_out = parse_dt("2026-08-20T11:30:00Z"); // 150m (< half 240m)
 
     let punches = vec![
-        RawPunchInput {
-            timestamp: t_in,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "09:30:00"),
             punch_type: PunchType::In,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
-        RawPunchInput {
-            timestamp: t_out,
+        AttendancePunch {
+            id: Uuid::now_v7(),
+            employee_id: emp_id,
+            timestamp: make_utc("2026-08-20", "11:30:00"), // 120m (< 240m half day threshold)
             punch_type: PunchType::Out,
+            source_mode: PunchSourceMode::ExplicitDirection,
+            terminal_id: Some("BIO-01".into()),
         },
     ];
 
-    let sessions = pair_sessions(&punches, &PunchInterpretationMode::ExplicitDirection);
-    let (status, _, _, _) = evaluate_attendance_status(
-        &rule,
-        date,
-        Some(t_in),
-        Some(t_out),
-        sessions[0].duration_minutes,
-        false,
-    );
-
-    assert_eq!(status, AttendanceStatus::Absent);
+    let res =
+        calculate_attendance_for_employee_date(org_id, emp_id, date, &rule, &calendar, &punches);
+    assert_eq!(res.status, AttendanceStatus::Absent);
+    assert_eq!(res.total_duty_minutes, 120);
 }

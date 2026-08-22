@@ -28,6 +28,7 @@ tower-http = { version = "0.6", features = [
     "trace"
 ] }
 http = "1"
+aims_attendance_engine = { path = "../../crates/attendance_engine" }
 aims_auth = { path = "../../crates/auth" }
 aims_database = { path = "../../crates/database" }
 aims_common = { path = "../../crates/common" }

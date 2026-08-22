@@ -8,6 +8,7 @@ pub mod employees;
 pub mod import_batches;
 pub mod import_templates;
 pub mod organizations;
+pub mod processing_jobs;
 pub mod raw_events;
 pub mod sections;
 pub mod sessions;

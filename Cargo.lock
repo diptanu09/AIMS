@@ -21,6 +21,7 @@ dependencies = [
 name = "aims-api"
 version = "0.1.0"
 dependencies = [
+ "aims_attendance_engine",
  "aims_auth",
  "aims_common",
  "aims_database",
@@ -55,6 +56,7 @@ dependencies = [
  "aims_database",
  "aims_domain",
  "chrono",
+ "chrono-tz",
  "serde",
  "sqlx",
  "uuid",
@@ -149,6 +151,7 @@ dependencies = [
  "aims_domain",
  "aims_import_engine",
  "chrono",
+ "chrono-tz",
  "serde_json",
  "sqlx",
  "tokio",

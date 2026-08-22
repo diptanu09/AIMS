@@ -1,3 +1,4 @@
+pub mod attendance;
 pub mod attendance_rules;
 pub mod auth;
 pub mod designations;
@@ -97,6 +98,8 @@ pub fn router(state: AppState) -> Router<AppState> {
             "/imports/templates",
             get(imports::list_templates).post(imports::create_template),
         )
+        // Attendance Calculation & Queries
+        .nest("/attendance", attendance::routes())
         .route_layer(middleware::from_fn_with_state(
             state.clone(),
             security::require_auth,

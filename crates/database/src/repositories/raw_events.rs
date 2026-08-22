@@ -1,6 +1,6 @@
 use aims_common::{AimsError, Result};
 use aims_domain::{AttendanceRawEvent, PunchType};
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, NaiveDate, Utc};
 use sqlx::PgPool;
 use std::collections::HashSet;
 use uuid::Uuid;
@@ -128,6 +128,40 @@ impl RawEventRepository {
         .fetch_all(pool)
         .await
         .map_err(|e| AimsError::Database(format!("Failed to list raw events by batch: {}", e)))?;
+
+        Ok(events)
+    }
+
+    pub async fn list_by_employee_and_date(
+        pool: &PgPool,
+        organization_id: Uuid,
+        attendance_device_user_id: &str,
+        date: NaiveDate,
+    ) -> Result<Vec<AttendanceRawEvent>> {
+        let events = sqlx::query_as::<_, AttendanceRawEvent>(
+            r#"
+            SELECT id, organization_id, batch_id, source_row_number,
+                   attendance_device_user_id, employee_id, punch_timestamp,
+                   punch_type, device_terminal_id, event_fingerprint,
+                   raw_text, created_at
+            FROM attendance_raw_events
+            WHERE organization_id = $1
+              AND attendance_device_user_id = $2
+              AND (punch_timestamp AT TIME ZONE 'Asia/Kolkata')::date = $3
+            ORDER BY punch_timestamp ASC
+            "#,
+        )
+        .bind(organization_id)
+        .bind(attendance_device_user_id)
+        .bind(date)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| {
+            AimsError::Database(format!(
+                "Failed to query raw events for employee date: {}",
+                e
+            ))
+        })?;
 
         Ok(events)
     }

@@ -1,39 +1,33 @@
-use crate::state::AppState;
-use aims_attendance_engine::run_calculation_for_date_range;
-use aims_auth::Claims;
-use aims_common::{AimsError, Result};
+use crate::{
+    api::response::ApiResponse,
+    error::AppError,
+    services::attendance::{AttendanceService, ProcessAttendanceRequest},
+    state::AppState,
+};
+use aims_auth::CurrentUser;
 use aims_database::repositories::{
     attendance_daily::DailyAttendanceRepository,
     attendance_sessions::{AttendanceSessionRecord, AttendanceSessionRepository},
+    processing_jobs::ProcessingJobRepository,
 };
 use aims_domain::AttendanceDaily;
 use axum::{
-    extract::{Path, Query, State},
-    routing::{get, post},
     Extension, Json, Router,
+    extract::{Path, Query, State},
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, post},
 };
 use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Debug, Deserialize)]
-pub struct ProcessAttendanceRequest {
-    pub start_date: NaiveDate,
-    pub end_date: NaiveDate,
-    pub employee_id: Option<Uuid>,
-}
-
-#[derive(Debug, Serialize)]
-pub struct ProcessAttendanceResponse {
-    pub processed_days: i32,
-    pub start_date: NaiveDate,
-    pub end_date: NaiveDate,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct DailyAttendanceQuery {
+pub struct DailyQuery {
+    pub date: Option<NaiveDate>,
     pub start_date: Option<NaiveDate>,
     pub end_date: Option<NaiveDate>,
+    pub employee_id: Option<Uuid>,
 }
 
 #[derive(Debug, Serialize)]
@@ -42,78 +36,94 @@ pub struct DailyDetailResponse {
     pub sessions: Vec<AttendanceSessionRecord>,
 }
 
-pub async fn process_attendance(
-    State(state): State<AppState>,
-    Extension(claims): Extension<Claims>,
-    Json(payload): Json<ProcessAttendanceRequest>,
-) -> Result<Json<ProcessAttendanceResponse>> {
-    let pool = state.db.pool();
-    let processed_days = run_calculation_for_date_range(
-        pool,
-        claims.org_id,
-        payload.start_date,
-        payload.end_date,
-        payload.employee_id,
-    )
-    .await?;
-
-    Ok(Json(ProcessAttendanceResponse {
-        processed_days,
-        start_date: payload.start_date,
-        end_date: payload.end_date,
-    }))
-}
-
-pub async fn list_daily_attendance(
-    State(state): State<AppState>,
-    Extension(claims): Extension<Claims>,
-    Query(query): Query<DailyAttendanceQuery>,
-) -> Result<Json<Vec<AttendanceDaily>>> {
-    let pool = state.db.pool();
-    let today = chrono::Utc::now().date_naive();
-    let start_date = query.start_date.unwrap_or(today);
-    let end_date = query.end_date.unwrap_or(today);
-
-    let records = DailyAttendanceRepository::list_by_organization_and_date_range(
-        pool,
-        claims.org_id,
-        start_date,
-        end_date,
-    )
-    .await?;
-
-    // Filter section scope if user lacks global view permission
-    if !claims.roles.contains(&"SYSTEM_ADMIN".to_string())
-        && !claims.roles.contains(&"ORG_ADMIN".to_string())
-        && !claims.permissions.contains(&"attendance.view.all".to_string())
-    {
-        let filtered = records
-            .into_iter()
-            .filter(|r| claims.section_ids.contains(&r.section_id))
-            .collect();
-        return Ok(Json(filtered));
-    }
-
-    Ok(Json(records))
-}
-
-pub async fn get_daily_detail(
-    State(state): State<AppState>,
-    Path(id): Path<Uuid>,
-) -> Result<Json<DailyDetailResponse>> {
-    let pool = state.db.pool();
-    let daily = DailyAttendanceRepository::find_by_id(pool, id)
-        .await?
-        .ok_or_else(|| AimsError::NotFound(format!("Daily attendance record '{}' not found", id)))?;
-
-    let sessions = AttendanceSessionRepository::list_by_daily(pool, daily.id).await?;
-
-    Ok(Json(DailyDetailResponse { daily, sessions }))
-}
-
-pub fn router() -> Router<AppState> {
+pub fn routes() -> Router<AppState> {
     Router::new()
-        .route("/process", post(process_attendance))
-        .route("/daily", get(list_daily_attendance))
-        .route("/daily/{id}", get(get_daily_detail))
+        .route("/process", post(process_attendance_handler))
+        .route("/recalculate", post(process_attendance_handler))
+        .route("/daily", get(list_daily_attendance_handler))
+        .route("/daily/{id}", get(get_daily_detail_handler))
+        .route("/jobs", get(list_processing_jobs_handler))
+}
+
+pub async fn process_attendance_handler(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Json(payload): Json<ProcessAttendanceRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    let res = AttendanceService::process_attendance(
+        &state.db,
+        actor.organization_id,
+        actor.user_id,
+        payload,
+    )
+    .await?;
+
+    Ok((StatusCode::OK, Json(ApiResponse::ok(res))))
+}
+
+pub async fn list_daily_attendance_handler(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Query(query): Query<DailyQuery>,
+) -> Result<impl IntoResponse, AppError> {
+    if let Some(date) = query.date {
+        let records = DailyAttendanceRepository::list_by_organization_and_date_range(
+            &state.db,
+            actor.organization_id,
+            date,
+            date,
+        )
+        .await?;
+        Ok((StatusCode::OK, Json(ApiResponse::ok(records))))
+    } else if let (Some(start), Some(end)) = (query.start_date, query.end_date) {
+        let records = if let Some(emp_id) = query.employee_id {
+            let mut items = Vec::new();
+            if let Some(daily) =
+                DailyAttendanceRepository::find_by_employee_and_date(&state.db, emp_id, start)
+                    .await?
+            {
+                items.push(daily);
+            }
+            items
+        } else {
+            DailyAttendanceRepository::list_by_organization_and_date_range(
+                &state.db,
+                actor.organization_id,
+                start,
+                end,
+            )
+            .await?
+        };
+        Ok((StatusCode::OK, Json(ApiResponse::ok(records))))
+    } else {
+        Err(AppError::Validation(
+            "Either 'date' or ('start_date' and 'end_date') must be provided".into(),
+        ))
+    }
+}
+
+pub async fn get_daily_detail_handler(
+    State(state): State<AppState>,
+    Extension(_actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+) -> Result<impl IntoResponse, AppError> {
+    let daily = DailyAttendanceRepository::find_by_id(&state.db, id)
+        .await?
+        .ok_or_else(|| AppError::NotFound("Daily attendance record not found".into()))?;
+
+    let sessions = AttendanceSessionRepository::list_by_daily(&state.db, id).await?;
+
+    Ok((
+        StatusCode::OK,
+        Json(ApiResponse::ok(DailyDetailResponse { daily, sessions })),
+    ))
+}
+
+pub async fn list_processing_jobs_handler(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+) -> Result<impl IntoResponse, AppError> {
+    let jobs =
+        ProcessingJobRepository::list_by_organization(&state.db, actor.organization_id).await?;
+    Ok((StatusCode::OK, Json(ApiResponse::ok(jobs))))
 }
