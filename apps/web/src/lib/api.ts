@@ -1,9 +1,15 @@
 import {
   ApiResponse,
+  AttendanceCorrectionRow,
   AttendanceExceptionRow,
+  AttendanceRule,
   AttendanceTrendRow,
+  AuditLogRow,
   DashboardSummary,
   DetailedAttendanceRow,
+  Employee,
+  HolidayRow,
+  LeaveRecordRow,
   PaginatedData,
   ReportDefinition,
   ReportRun,
@@ -130,4 +136,108 @@ export const api = {
     }),
 
   getReportDownloadUrl: (runId: string) => `${API_BASE}/reports/runs/${runId}/download`,
+
+  // Corrections Workflow
+  listCorrections: (status?: string) =>
+    request<AttendanceCorrectionRow[]>(`/corrections${status ? `?status=${status}` : ""}`),
+
+  requestCorrection: (payload: {
+    attendance_daily_id: string;
+    corrected_first_in?: string;
+    corrected_last_out?: string;
+    corrected_status: string;
+    reason: string;
+  }) =>
+    request<AttendanceCorrectionRow>("/corrections/request", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  approveCorrection: (id: string) =>
+    request<AttendanceCorrectionRow>(`/corrections/${id}/approve`, {
+      method: "POST",
+    }),
+
+  rejectCorrection: (id: string, reason: string) =>
+    request<AttendanceCorrectionRow>(`/corrections/${id}/reject`, {
+      method: "POST",
+      body: JSON.stringify({ reason }),
+    }),
+
+  // Employee Master Administration
+  listEmployees: (params?: { search?: string; section_id?: string; is_active?: boolean }) => {
+    const query = new URLSearchParams();
+    if (params?.search) query.set("search", params.search);
+    if (params?.section_id) query.set("section_id", params.section_id);
+    if (params?.is_active !== undefined) query.set("is_active", String(params.is_active));
+    return request<PaginatedData<Employee>>(`/employees?${query.toString()}`);
+  },
+
+  createEmployee: (payload: {
+    employee_code: string;
+    attendance_device_user_id: string;
+    first_name: string;
+    last_name?: string;
+    section_id: string;
+    designation_id: string;
+    attendance_rule_id: string;
+  }) =>
+    request<Employee>("/employees", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  activateEmployee: (id: string) =>
+    request<Employee>(`/employees/${id}/activate`, { method: "POST" }),
+
+  deactivateEmployee: (id: string) =>
+    request<Employee>(`/employees/${id}/deactivate`, { method: "POST" }),
+
+  transferEmployee: (id: string, new_section_id: string) =>
+    request<Employee>(`/employees/${id}/transfer`, {
+      method: "POST",
+      body: JSON.stringify({ new_section_id }),
+    }),
+
+  // Shift Rules
+  listRules: () => request<AttendanceRule[]>("/attendance-rules"),
+
+  createRule: (payload: Partial<AttendanceRule>) =>
+    request<AttendanceRule>("/attendance-rules", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  // Holidays
+  listHolidays: () => request<HolidayRow[]>("/holidays"),
+
+  createHoliday: (payload: {
+    holiday_date: string;
+    name: string;
+    description?: string;
+    is_optional?: boolean;
+  }) =>
+    request<HolidayRow>("/holidays", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  // Leave
+  listLeave: () => request<LeaveRecordRow[]>("/leave"),
+
+  submitLeave: (payload: {
+    employee_id: string;
+    leave_type: string;
+    start_date: string;
+    end_date: string;
+    reason?: string;
+  }) =>
+    request<string>("/leave", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  // Audit Logs
+  listAuditLogs: (limit = 50, offset = 0) =>
+    request<AuditLogRow[]>(`/admin/audit?limit=${limit}&offset=${offset}`),
 };

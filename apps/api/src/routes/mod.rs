@@ -1,20 +1,25 @@
 pub mod attendance;
 pub mod attendance_rules;
+pub mod audit;
 pub mod auth;
+pub mod corrections;
 pub mod dashboard;
 pub mod designations;
 pub mod employees;
 pub mod exceptions;
 pub mod health;
+pub mod holidays;
 pub mod imports;
+pub mod leave;
 pub mod organizations;
 pub mod reports;
 pub mod sections;
 
 use crate::{middleware::security, state::AppState};
 use axum::{
-    Router, middleware,
+    middleware,
     routing::{get, post},
+    Router,
 };
 
 pub fn router(state: AppState) -> Router<AppState> {
@@ -32,6 +37,13 @@ pub fn router(state: AppState) -> Router<AppState> {
         .nest("/exceptions", exceptions::routes())
         // Report Engine
         .nest("/reports", reports::routes())
+        // Corrections Workflow
+        .nest("/corrections", corrections::routes())
+        // Holidays & Leave
+        .nest("/holidays", holidays::routes())
+        .nest("/leave", leave::routes())
+        // Audit Logs
+        .nest("/admin/audit", audit::routes())
         // Organizations
         .route(
             "/organizations",

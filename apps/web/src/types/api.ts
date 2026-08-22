@@ -126,3 +126,101 @@ export interface ReportRun {
   completed_at: string | null;
   created_at: string;
 }
+
+export interface AttendanceCorrectionRow {
+  id: string;
+  attendance_daily_id: string;
+  employee_id: string;
+  employee_code: string;
+  employee_name: string;
+  section_name: string;
+  attendance_date: string;
+  requested_by: string;
+  requester_name: string;
+  original_first_in: string | null;
+  original_last_out: string | null;
+  original_status: string;
+  corrected_first_in: string | null;
+  corrected_last_out: string | null;
+  corrected_status: string;
+  reason: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  approved_by: string | null;
+  approver_name: string | null;
+  approved_at: string | null;
+  rejection_reason: string | null;
+  created_at: string;
+}
+
+export interface HolidayRow {
+  id: string;
+  organization_id: string;
+  holiday_date: string;
+  name: string;
+  description: string | null;
+  is_optional: boolean;
+  created_at: string;
+}
+
+export interface LeaveRecordRow {
+  id: string;
+  organization_id: string;
+  employee_id: string;
+  employee_code: string;
+  employee_name: string;
+  leave_type: string;
+  start_date: string;
+  end_date: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
+  reason: string | null;
+  requested_by: string;
+  approved_by: string | null;
+  approved_at: string | null;
+  rejection_reason: string | null;
+  created_at: string;
+}
+
+export interface AuditLogRow {
+  id: string;
+  organization_id: string | null;
+  user_id: string | null;
+  username: string | null;
+  action: string;
+  entity_name: string;
+  entity_id: string | null;
+  old_value: any;
+  new_value: any;
+  client_ip: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
+export interface Employee {
+  id: string;
+  organization_id: string;
+  employee_code: string;
+  attendance_device_user_id: string;
+  first_name: string;
+  last_name: string | null;
+  section_id: string;
+  section_name?: string;
+  designation_id: string;
+  designation_name?: string;
+  attendance_rule_id: string;
+  is_active: boolean;
+  created_at: string;
+}
+
+export interface AttendanceRule {
+  id: string;
+  organization_id: string;
+  code: string;
+  name: string;
+  shift_start: string;
+  shift_end: string;
+  grace_period_minutes: number;
+  half_day_minimum_minutes: number;
+  full_day_minimum_minutes: number;
+  early_exit_threshold_minutes: number;
+  crosses_midnight: boolean;
+}

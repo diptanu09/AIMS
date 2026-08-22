@@ -85,3 +85,7 @@ path = "tests/attendance_query_test.rs"
 [[test]]
 name = "report_engine_test"
 path = "tests/report_engine_test.rs"
+
+[[test]]
+name = "administrative_workflow_test"
+path = "tests/administrative_workflow_test.rs"

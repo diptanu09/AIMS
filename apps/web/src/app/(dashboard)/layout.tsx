@@ -16,6 +16,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  CheckSquare,
+  Calendar,
+  UserCheck,
+  Sliders,
 } from "lucide-react";
 import { useAuth } from "../../lib/auth-context";
 
@@ -82,18 +86,25 @@ export default function DashboardLayout({
       show: hasPermission("section.manage") || hasPermission("attendance.view.all"),
     },
     {
-      label: "Attendance Import",
-      href: "/import",
-      icon: UploadCloud,
-      color: "text-cyan-400",
-      show: hasPermission("import.execute"),
-    },
-    {
       label: "Exception Center",
       href: "/exceptions",
       icon: AlertTriangle,
       color: "text-amber-400",
       show: true,
+    },
+    {
+      label: "Corrections Workflow",
+      href: "/corrections",
+      icon: CheckSquare,
+      color: "text-emerald-400",
+      show: true,
+    },
+    {
+      label: "Attendance Import",
+      href: "/import",
+      icon: UploadCloud,
+      color: "text-cyan-400",
+      show: hasPermission("import.execute"),
     },
     {
       label: "Report Engine",
@@ -112,7 +123,7 @@ export default function DashboardLayout({
           collapsed ? "w-20" : "w-64"
         } border-r border-[#1E293B] bg-[#151D2A] flex flex-col justify-between p-4 shrink-0 transition-all duration-200`}
       >
-        <div>
+        <div className="overflow-y-auto">
           {/* Logo / Header */}
           <div className="flex items-center justify-between px-2 py-3 mb-6 border-b border-[#1E293B]">
             <div className="flex items-center gap-3">
@@ -134,7 +145,7 @@ export default function DashboardLayout({
             </button>
           </div>
 
-          {/* Navigation Links */}
+          {/* Operations Navigation Links */}
           <nav className="space-y-1">
             {navItems
               .filter((item) => item.show)
@@ -166,27 +177,57 @@ export default function DashboardLayout({
               Administration
             </div>
           )}
-          {hasPermission("audit.view") && (
-            <Link
-              href="/admin/audit"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
-            >
-              <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
-              {!collapsed && <span>Audit Trail</span>}
-            </Link>
-          )}
-          {hasPermission("rule.manage") && (
-            <Link
-              href="/admin/rules"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
-            >
-              <Settings className="h-4 w-4 text-slate-400 shrink-0" />
-              {!collapsed && <span>Shift Rules</span>}
-            </Link>
-          )}
+          <Link
+            href="/admin/rules"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
+          >
+            <Settings className="h-4 w-4 text-indigo-400 shrink-0" />
+            {!collapsed && <span>Shift Rules</span>}
+          </Link>
+
+          <Link
+            href="/admin/holidays"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
+          >
+            <Calendar className="h-4 w-4 text-purple-400 shrink-0" />
+            {!collapsed && <span>Holidays</span>}
+          </Link>
+
+          <Link
+            href="/admin/leave"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
+          >
+            <Clock className="h-4 w-4 text-sky-400 shrink-0" />
+            {!collapsed && <span>Leave Authorization</span>}
+          </Link>
+
+          <Link
+            href="/admin/users"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
+          >
+            <UserCheck className="h-4 w-4 text-cyan-400 shrink-0" />
+            {!collapsed && <span>Users & Sessions</span>}
+          </Link>
+
+          <Link
+            href="/admin/audit"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
+          >
+            <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
+            {!collapsed && <span>Audit Trail</span>}
+          </Link>
+
+          <Link
+            href="/admin/settings"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-slate-400 hover:bg-[#1E293B] hover:text-slate-200 transition-colors"
+          >
+            <Sliders className="h-4 w-4 text-slate-400 shrink-0" />
+            {!collapsed && <span>System Settings</span>}
+          </Link>
+
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-500/10 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-500/10 transition-colors mt-2"
           >
             <LogOut className="h-4 w-4 shrink-0" />
             {!collapsed && <span>Sign Out</span>}
