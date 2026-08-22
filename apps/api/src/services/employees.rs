@@ -415,8 +415,8 @@ impl EmployeeService {
         let allowed_section_ids = if actor.has_permission("attendance.view.all") {
             None
         } else {
-        #[allow(clippy::collapsible_if)]
-        if let Some(target_sec) = query.section_id {
+            #[allow(clippy::collapsible_if)]
+            if let Some(target_sec) = query.section_id {
                 if !actor.can_access_section(target_sec) {
                     return Err(AppError::Forbidden(
                         "Access denied: You do not have access to this section".to_string(),

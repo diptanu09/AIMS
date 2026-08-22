@@ -1,10 +1,10 @@
+use aims_auth::CurrentUser;
 use axum::{
+    Extension, Json,
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
-    Extension, Json,
 };
-use aims_auth::CurrentUser;
 use uuid::Uuid;
 
 use crate::{
@@ -22,7 +22,9 @@ pub async fn create_designation(
     Json(payload): Json<CreateDesignationRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.create") && !actor.has_permission("user.manage") {
-        return Err(AppError::Forbidden("Permission 'employee.create' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.create' required".to_string(),
+        ));
     }
 
     let des = DesignationService::create_designation(&state, &actor, payload).await?;
@@ -36,7 +38,9 @@ pub async fn update_designation(
     Json(payload): Json<UpdateDesignationRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") && !actor.has_permission("user.manage") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let des = DesignationService::update_designation(&state, &actor, id, payload).await?;
@@ -49,7 +53,9 @@ pub async fn activate_designation(
     Path(id): Path<Uuid>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") && !actor.has_permission("user.manage") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let des = DesignationService::set_designation_active(&state, &actor, id, true).await?;
@@ -62,7 +68,9 @@ pub async fn deactivate_designation(
     Path(id): Path<Uuid>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") && !actor.has_permission("user.manage") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let des = DesignationService::set_designation_active(&state, &actor, id, false).await?;

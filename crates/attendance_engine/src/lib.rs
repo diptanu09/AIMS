@@ -224,14 +224,15 @@ pub async fn process_employee_day(
     employee: &Employee,
     target_date: NaiveDate,
 ) -> Result<CalculationResult> {
-    let rule = AttendanceRuleRepository::find_by_id(pool, organization_id, employee.attendance_rule_id)
-        .await?
-        .ok_or_else(|| {
-            AimsError::NotFound(format!(
-                "Attendance rule '{}' not found",
-                employee.attendance_rule_id
-            ))
-        })?;
+    let rule =
+        AttendanceRuleRepository::find_by_id(pool, organization_id, employee.attendance_rule_id)
+            .await?
+            .ok_or_else(|| {
+                AimsError::NotFound(format!(
+                    "Attendance rule '{}' not found",
+                    employee.attendance_rule_id
+                ))
+            })?;
 
     let raw_records = sqlx::query_as::<_, QueryRawPunch>(
         r#"

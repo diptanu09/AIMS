@@ -1,10 +1,10 @@
+use aims_auth::CurrentUser;
 use axum::{
+    Extension, Json,
     extract::{Path, State},
     http::StatusCode,
     response::IntoResponse,
-    Extension, Json,
 };
-use aims_auth::CurrentUser;
 use uuid::Uuid;
 
 use crate::{
@@ -19,8 +19,12 @@ pub async fn create_organization(
     Extension(actor): Extension<CurrentUser>,
     Json(payload): Json<CreateOrganizationRequest>,
 ) -> Result<impl IntoResponse, AppError> {
-    if !actor.has_permission("organization.manage") && !actor.roles.contains(&"SUPER_ADMIN".to_string()) {
-        return Err(AppError::Forbidden("Only Super Administrators can create organizations".to_string()));
+    if !actor.has_permission("organization.manage")
+        && !actor.roles.contains(&"SUPER_ADMIN".to_string())
+    {
+        return Err(AppError::Forbidden(
+            "Only Super Administrators can create organizations".to_string(),
+        ));
     }
 
     let org = OrganizationService::create_organization(&state, &actor, payload).await?;

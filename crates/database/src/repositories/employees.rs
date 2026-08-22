@@ -48,7 +48,7 @@ impl EmployeeRepository {
                 first_name, middle_name, last_name, email, mobile, section_id,
                 designation_id, attendance_rule_id, joining_date, status
             )
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
             RETURNING id, organization_id, employee_code, attendance_device_user_id,
                       first_name, middle_name, last_name, email, mobile, section_id,
                       designation_id, attendance_rule_id, joining_date, leaving_date,

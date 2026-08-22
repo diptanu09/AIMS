@@ -16,7 +16,7 @@ impl OrganizationRepository {
             r#"
             INSERT INTO organizations (code, name, timezone)
             VALUES ($1, $2, $3)
-            RETURNING id, code, name, timezone, created_at, updated_at
+            RETURNING id, code, name, timezone, active, created_at, updated_at
             "#,
         )
         .bind(code)
@@ -32,7 +32,7 @@ impl OrganizationRepository {
     pub async fn find_by_id(pool: &PgPool, id: Uuid) -> Result<Option<Organization>> {
         let org = sqlx::query_as::<_, Organization>(
             r#"
-            SELECT id, code, name, timezone, created_at, updated_at
+            SELECT id, code, name, timezone, active, created_at, updated_at
             FROM organizations
             WHERE id = $1
             "#,
@@ -48,7 +48,7 @@ impl OrganizationRepository {
     pub async fn find_by_code(pool: &PgPool, code: &str) -> Result<Option<Organization>> {
         let org = sqlx::query_as::<_, Organization>(
             r#"
-            SELECT id, code, name, timezone, created_at, updated_at
+            SELECT id, code, name, timezone, active, created_at, updated_at
             FROM organizations
             WHERE code = $1
             "#,
@@ -64,7 +64,7 @@ impl OrganizationRepository {
     pub async fn list_all(pool: &PgPool) -> Result<Vec<Organization>> {
         let orgs = sqlx::query_as::<_, Organization>(
             r#"
-            SELECT id, code, name, timezone, created_at, updated_at
+            SELECT id, code, name, timezone, active, created_at, updated_at
             FROM organizations
             ORDER BY name ASC
             "#,

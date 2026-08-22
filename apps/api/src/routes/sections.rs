@@ -1,10 +1,10 @@
+use aims_auth::CurrentUser;
 use axum::{
+    Extension, Json,
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
-    Extension, Json,
 };
-use aims_auth::CurrentUser;
 use uuid::Uuid;
 
 use crate::{
@@ -22,7 +22,9 @@ pub async fn create_section(
     Json(payload): Json<CreateSectionRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("section.manage") && !actor.has_permission("attendance.view.all") {
-        return Err(AppError::Forbidden("Permission 'section.manage' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'section.manage' required".to_string(),
+        ));
     }
 
     let sec = SectionService::create_section(&state, &actor, payload).await?;
@@ -36,7 +38,9 @@ pub async fn update_section(
     Json(payload): Json<UpdateSectionRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("section.manage") && !actor.has_permission("attendance.view.all") {
-        return Err(AppError::Forbidden("Permission 'section.manage' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'section.manage' required".to_string(),
+        ));
     }
 
     let sec = SectionService::update_section(&state, &actor, id, payload).await?;
@@ -49,7 +53,9 @@ pub async fn activate_section(
     Path(id): Path<Uuid>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("section.manage") && !actor.has_permission("attendance.view.all") {
-        return Err(AppError::Forbidden("Permission 'section.manage' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'section.manage' required".to_string(),
+        ));
     }
 
     let sec = SectionService::set_section_active(&state, &actor, id, true).await?;
@@ -62,7 +68,9 @@ pub async fn deactivate_section(
     Path(id): Path<Uuid>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("section.manage") && !actor.has_permission("attendance.view.all") {
-        return Err(AppError::Forbidden("Permission 'section.manage' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'section.manage' required".to_string(),
+        ));
     }
 
     let sec = SectionService::set_section_active(&state, &actor, id, false).await?;

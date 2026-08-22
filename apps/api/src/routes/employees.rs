@@ -1,11 +1,11 @@
+use aims_auth::CurrentUser;
+use aims_domain::EmployeeStatus;
 use axum::{
+    Extension, Json,
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
-    Extension, Json,
 };
-use aims_auth::CurrentUser;
-use aims_domain::EmployeeStatus;
 use uuid::Uuid;
 
 use crate::{
@@ -24,7 +24,9 @@ pub async fn create_employee(
     Json(payload): Json<CreateEmployeeRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.create") {
-        return Err(AppError::Forbidden("Permission 'employee.create' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.create' required".to_string(),
+        ));
     }
 
     let emp = EmployeeService::create_employee(&state, &actor, payload).await?;
@@ -38,7 +40,9 @@ pub async fn update_employee(
     Json(payload): Json<UpdateEmployeeRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let emp = EmployeeService::update_employee(&state, &actor, id, payload).await?;
@@ -51,7 +55,9 @@ pub async fn activate_employee(
     Path(id): Path<Uuid>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let req = EmployeeStatusTransitionRequest {
@@ -71,7 +77,9 @@ pub async fn deactivate_employee(
     Json(payload): Json<Option<EmployeeStatusTransitionRequest>>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let req = payload.unwrap_or(EmployeeStatusTransitionRequest {
@@ -91,7 +99,9 @@ pub async fn transfer_employee(
     Json(payload): Json<TransferEmployeeRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("employee.update") {
-        return Err(AppError::Forbidden("Permission 'employee.update' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.update' required".to_string(),
+        ));
     }
 
     let emp = EmployeeService::transfer_employee(&state, &actor, id, payload).await?;
@@ -107,7 +117,9 @@ pub async fn get_employee(
         && !actor.has_permission("attendance.view.section")
         && !actor.has_permission("attendance.view.all")
     {
-        return Err(AppError::Forbidden("Permission 'employee.view' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.view' required".to_string(),
+        ));
     }
 
     let emp = EmployeeService::get_employee(&state, &actor, id).await?;
@@ -123,7 +135,9 @@ pub async fn list_employees(
         && !actor.has_permission("attendance.view.section")
         && !actor.has_permission("attendance.view.all")
     {
-        return Err(AppError::Forbidden("Permission 'employee.view' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'employee.view' required".to_string(),
+        ));
     }
 
     let res = EmployeeService::list_employees(&state, &actor, query).await?;

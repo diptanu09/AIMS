@@ -1,8 +1,8 @@
 use aims_common::AimsError;
 use axum::{
+    Json,
     http::StatusCode,
     response::{IntoResponse, Response},
-    Json,
 };
 use serde::Serialize;
 use tracing::error;

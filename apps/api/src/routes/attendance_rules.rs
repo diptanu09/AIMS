@@ -1,10 +1,10 @@
+use aims_auth::CurrentUser;
 use axum::{
+    Extension, Json,
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
-    Extension, Json,
 };
-use aims_auth::CurrentUser;
 use uuid::Uuid;
 
 use crate::{
@@ -23,7 +23,9 @@ pub async fn create_rule(
     Json(payload): Json<CreateAttendanceRuleRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("rule.manage") && !actor.has_permission("attendance.view.all") {
-        return Err(AppError::Forbidden("Permission 'rule.manage' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'rule.manage' required".to_string(),
+        ));
     }
 
     let rule = AttendanceRuleService::create_rule(&state, &actor, payload).await?;
@@ -37,7 +39,9 @@ pub async fn update_rule(
     Json(payload): Json<UpdateAttendanceRuleRequest>,
 ) -> Result<impl IntoResponse, AppError> {
     if !actor.has_permission("rule.manage") && !actor.has_permission("attendance.view.all") {
-        return Err(AppError::Forbidden("Permission 'rule.manage' required".to_string()));
+        return Err(AppError::Forbidden(
+            "Permission 'rule.manage' required".to_string(),
+        ));
     }
 
     let rule = AttendanceRuleService::update_rule(&state, &actor, id, payload).await?;
