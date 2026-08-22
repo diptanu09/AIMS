@@ -37,3 +37,4 @@ __pycache__/
 
 # Uploaded attendance files
 /uploads/
+*.csc

@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE attendance_raw_events SET attendance_device_user_id = '9999' WHERE id = $1",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "f5a039e9f559fb95f6d60081a0ea50637f8969eb6bcdc3e258b7f6113b192146"
+}

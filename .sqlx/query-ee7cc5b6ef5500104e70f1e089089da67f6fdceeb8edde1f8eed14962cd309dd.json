@@ -1,0 +1,66 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                COUNT(id) AS total_days,\n                COUNT(id) FILTER (WHERE status = 'PRESENT') AS present_days,\n                COUNT(id) FILTER (WHERE status IN ('LATE', 'LATE_AND_EARLY_EXIT')) AS late_days,\n                COUNT(id) FILTER (WHERE status = 'ABSENT') AS absent_days,\n                COUNT(id) FILTER (WHERE status = 'HALF_DAY') AS half_days,\n                COUNT(id) FILTER (WHERE status = 'INCOMPLETE') AS incomplete_days,\n                COUNT(id) FILTER (WHERE status IN ('EARLY_EXIT', 'LATE_AND_EARLY_EXIT')) AS early_exit_days,\n                COALESCE(AVG(total_duty_minutes) FILTER (WHERE status NOT IN ('ABSENT', 'INCOMPLETE')), 0)::BIGINT AS average_duty_minutes\n            FROM attendance_daily\n            WHERE employee_id = $1\n              AND ($2::date IS NULL OR attendance_date >= $2)\n              AND ($3::date IS NULL OR attendance_date <= $3)\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "total_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "present_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "late_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "absent_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 4,
+        "name": "half_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 5,
+        "name": "incomplete_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 6,
+        "name": "early_exit_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 7,
+        "name": "average_duty_minutes",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Date",
+        "Date"
+      ]
+    },
+    "nullable": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "ee7cc5b6ef5500104e70f1e089089da67f6fdceeb8edde1f8eed14962cd309dd"
+}

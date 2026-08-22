@@ -1,0 +1,73 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                e.employee_code,\n                CONCAT(e.first_name, ' ', COALESCE(e.last_name, '')) AS employee_name,\n                d.title AS designation_title,\n                COUNT(ad.id) AS total_working_days,\n                COUNT(ad.id) FILTER (WHERE ad.status = 'PRESENT') AS present_days,\n                COUNT(ad.id) FILTER (WHERE ad.status IN ('LATE', 'LATE_AND_EARLY_EXIT')) AS late_days,\n                COUNT(ad.id) FILTER (WHERE ad.status = 'ABSENT') AS absent_days,\n                COUNT(ad.id) FILTER (WHERE ad.status = 'HALF_DAY') AS half_days,\n                COUNT(ad.id) FILTER (WHERE ad.status = 'INCOMPLETE') AS incomplete_days\n            FROM employees e\n            JOIN designations d ON e.designation_id = d.id\n            LEFT JOIN attendance_daily ad\n                   ON e.id = ad.employee_id\n                  AND ad.attendance_date BETWEEN $2 AND $3\n            WHERE e.organization_id = $1\n              AND e.section_id = $4\n              AND e.status = 'ACTIVE'\n            GROUP BY e.id, e.employee_code, e.first_name, e.last_name, d.title\n            ORDER BY e.first_name ASC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "employee_code",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "employee_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "designation_title",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "total_working_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 4,
+        "name": "present_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 5,
+        "name": "late_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 6,
+        "name": "absent_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 7,
+        "name": "half_days",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 8,
+        "name": "incomplete_days",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Date",
+        "Date",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      null,
+      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "09765c66ff6dcf8d8f758ba8ee7aab1cfe9ea2f4bdf70971fb0799fe4d45f7f9"
+}

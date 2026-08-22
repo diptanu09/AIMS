@@ -1,0 +1,210 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO attendance_corrections (\n                attendance_daily_id, requested_by, original_first_in, original_last_out, original_status,\n                corrected_first_in, corrected_last_out, corrected_status, reason, status\n            )\n            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'PENDING')\n            RETURNING id, attendance_daily_id, requested_by, original_first_in, original_last_out,\n                      original_status AS \"original_status: AttendanceStatus\", corrected_first_in, corrected_last_out,\n                      corrected_status AS \"corrected_status: AttendanceStatus\", reason, status AS \"status: CorrectionStatus\",\n                      approved_by, approved_at, rejection_reason, created_at\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "attendance_daily_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "requested_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "original_first_in",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 4,
+        "name": "original_last_out",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 5,
+        "name": "original_status: AttendanceStatus",
+        "type_info": {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "corrected_first_in",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 7,
+        "name": "corrected_last_out",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 8,
+        "name": "corrected_status: AttendanceStatus",
+        "type_info": {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 9,
+        "name": "reason",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 10,
+        "name": "status: CorrectionStatus",
+        "type_info": {
+          "Custom": {
+            "name": "correction_status",
+            "kind": {
+              "Enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED",
+                "CANCELLED"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 11,
+        "name": "approved_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 12,
+        "name": "approved_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 13,
+        "name": "rejection_reason",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 14,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Timestamptz",
+        "Timestamptz",
+        {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        },
+        "Timestamptz",
+        "Timestamptz",
+        {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        },
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "5d6c6d10f33072748b18ae4a8116d81197e609a8dfa06efcbf5bba0fc92c8d09"
+}

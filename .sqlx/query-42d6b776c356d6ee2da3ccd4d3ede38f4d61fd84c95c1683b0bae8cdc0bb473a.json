@@ -1,0 +1,90 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                a.id,\n                a.organization_id,\n                a.user_id,\n                u.username AS \"username?\",\n                a.action,\n                a.entity_name,\n                a.entity_id,\n                a.old_value,\n                a.new_value,\n                a.client_ip,\n                a.user_agent,\n                a.created_at\n            FROM audit_logs a\n            LEFT JOIN users u ON a.user_id = u.id\n            WHERE a.organization_id = $1 OR a.organization_id IS NULL\n            ORDER BY a.created_at DESC\n            LIMIT $2 OFFSET $3\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "organization_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "user_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "username?",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "action",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "entity_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "entity_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 7,
+        "name": "old_value",
+        "type_info": "Jsonb"
+      },
+      {
+        "ordinal": 8,
+        "name": "new_value",
+        "type_info": "Jsonb"
+      },
+      {
+        "ordinal": 9,
+        "name": "client_ip",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 10,
+        "name": "user_agent",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 11,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "42d6b776c356d6ee2da3ccd4d3ede38f4d61fd84c95c1683b0bae8cdc0bb473a"
+}

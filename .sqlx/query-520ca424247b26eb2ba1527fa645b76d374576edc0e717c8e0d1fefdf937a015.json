@@ -1,0 +1,28 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            INSERT INTO leave_records (\n                organization_id, employee_id, leave_type, start_date, end_date, reason, requested_by, status\n            )\n            VALUES ($1, $2, $3, $4, $5, $6, $7, 'PENDING'::leave_status)\n            RETURNING id\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Varchar",
+        "Date",
+        "Date",
+        "Text",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "520ca424247b26eb2ba1527fa645b76d374576edc0e717c8e0d1fefdf937a015"
+}

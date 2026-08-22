@@ -1,0 +1,61 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                ad.attendance_date AS \"date!\",\n                COUNT(ad.id) FILTER (WHERE ad.status = 'PRESENT') AS present,\n                COUNT(ad.id) FILTER (WHERE ad.status = 'ABSENT') AS absent,\n                COUNT(ad.id) FILTER (WHERE ad.status IN ('LATE', 'LATE_AND_EARLY_EXIT')) AS late,\n                COUNT(ad.id) FILTER (WHERE ad.status = 'INCOMPLETE') AS incomplete,\n                COUNT(ad.id) AS total_recorded,\n                COALESCE(AVG(ad.total_duty_minutes) FILTER (WHERE ad.status NOT IN ('ABSENT', 'INCOMPLETE')), 0)::BIGINT AS average_duty_minutes\n            FROM attendance_daily ad\n            WHERE ad.organization_id = $1\n              AND ad.attendance_date BETWEEN $2 AND $3\n              AND ($4::uuid IS NULL OR ad.section_id = $4)\n            GROUP BY ad.attendance_date\n            ORDER BY ad.attendance_date ASC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "date!",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 1,
+        "name": "present",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "absent",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "late",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 4,
+        "name": "incomplete",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 5,
+        "name": "total_recorded",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 6,
+        "name": "average_duty_minutes",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Date",
+        "Date",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "408627fb76df21f786e5ffd673129972d15ea940010165d020e23711afafffeb"
+}

@@ -1,17 +1,17 @@
 # docker/docker-compose.prod.yml
 services:
   aims-postgres:
-    image: postgres:16-alpine
+    image: postgres:18
     restart: always
     environment:
       POSTGRES_DB: aims
-      POSTGRES_USER: aims_owner
-      POSTGRES_PASSWORD: ${DB_OWNER_PASSWORD:-change_this_owner_password}
+      POSTGRES_USER: aims_app
+      POSTGRES_PASSWORD: ${DB_APP_PASSWORD:-change_this_password}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql
       - ../database/migrations:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U aims_owner -d aims"]
+      test: ["CMD-SHELL", "pg_isready -U aims_app -d aims"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,6 +25,8 @@ services:
     restart: always
     environment:
       ENVIRONMENT: production
+      API_HOST: 0.0.0.0
+      API_PORT: 8080
       SERVER_HOST: 0.0.0.0
       SERVER_PORT: 8080
       DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_password}@aims-postgres:5432/aims
@@ -34,7 +36,7 @@ services:
       aims-postgres:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/live || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/v1/health/live || exit 1"]
       interval: 15s
       timeout: 5s
       retries: 3
@@ -63,7 +65,7 @@ services:
     restart: always
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_URL: http://aims-api:8080
+      NEXT_PUBLIC_API_URL: /api/v1
     depends_on:
       - aims-api
     networks:

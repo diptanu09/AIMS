@@ -18,6 +18,7 @@ use crate::{api::response::ApiResponse, error::ErrorResponse, state::AppState};
 #[derive(Debug, Deserialize)]
 pub struct LoginPayload {
     pub username: String,
+    #[serde(alias = "password_hash")]
     pub password: String,
 }
 

@@ -1,0 +1,106 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                l.id,\n                l.organization_id,\n                l.employee_id,\n                e.employee_code,\n                CONCAT(e.first_name, ' ', COALESCE(e.last_name, '')) AS employee_name,\n                l.leave_type,\n                l.start_date,\n                l.end_date,\n                l.status::text AS \"status!\",\n                l.reason,\n                l.requested_by,\n                l.approved_by,\n                l.approved_at,\n                l.rejection_reason,\n                l.created_at\n            FROM leave_records l\n            JOIN employees e ON l.employee_id = e.id\n            WHERE l.organization_id = $1\n            ORDER BY l.created_at DESC\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "organization_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "employee_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "employee_code",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "employee_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "leave_type",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "start_date",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 7,
+        "name": "end_date",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 8,
+        "name": "status!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 9,
+        "name": "reason",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 10,
+        "name": "requested_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 11,
+        "name": "approved_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 12,
+        "name": "approved_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 13,
+        "name": "rejection_reason",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 14,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      null,
+      false,
+      false,
+      false,
+      null,
+      true,
+      false,
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "f8e9e01be71299b36a49b9636786e25a7ad307b007a8c53bd02a2c5a5289ca98"
+}

@@ -1,0 +1,161 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            UPDATE attendance_corrections\n            SET status = 'APPROVED',\n                approved_by = $2,\n                approved_at = CURRENT_TIMESTAMP\n            WHERE id = $1\n            RETURNING id, attendance_daily_id, requested_by, original_first_in, original_last_out,\n                      original_status AS \"original_status: AttendanceStatus\", corrected_first_in, corrected_last_out,\n                      corrected_status AS \"corrected_status: AttendanceStatus\", reason, status AS \"status: CorrectionStatus\",\n                      approved_by, approved_at, rejection_reason, created_at\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "attendance_daily_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "requested_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "original_first_in",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 4,
+        "name": "original_last_out",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 5,
+        "name": "original_status: AttendanceStatus",
+        "type_info": {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 6,
+        "name": "corrected_first_in",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 7,
+        "name": "corrected_last_out",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 8,
+        "name": "corrected_status: AttendanceStatus",
+        "type_info": {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 9,
+        "name": "reason",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 10,
+        "name": "status: CorrectionStatus",
+        "type_info": {
+          "Custom": {
+            "name": "correction_status",
+            "kind": {
+              "Enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED",
+                "CANCELLED"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 11,
+        "name": "approved_by",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 12,
+        "name": "approved_at",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 13,
+        "name": "rejection_reason",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 14,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "c0bd0052bc3b3eef50ba6092e1e8cf2ad2a350999576868758e6ce7da5e81185"
+}

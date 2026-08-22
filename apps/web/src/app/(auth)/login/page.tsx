@@ -9,7 +9,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
   const [username, setUsername] = useState("admin");
-  const [password, setPassword] = useState("Admin@123456");
+  const [password, setPassword] = useState("Admin@Aims123!");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

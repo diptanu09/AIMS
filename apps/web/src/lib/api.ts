@@ -22,7 +22,7 @@ import {
   ScheduledReport,
 } from "../types/api";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -38,8 +38,17 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     let errorMsg = `HTTP error ${res.status}`;
     try {
       const errBody = await res.json();
-      if (errBody.message) errorMsg = errBody.message;
-    } catch {}
+      if (errBody.message) {
+        errorMsg = errBody.message;
+      } else if (errBody.error) {
+        errorMsg = errBody.error;
+      }
+    } catch {
+      try {
+        const text = await res.text();
+        if (text) errorMsg = text;
+      } catch {}
+    }
     throw new Error(errorMsg);
   }
 
@@ -48,11 +57,13 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
 }
 
 export const api = {
-  // Auth
-  login: (credentials: { username: string; password_hash: string }) =>
+  login: (credentials: { username: string; password?: string; password_hash?: string }) =>
     request<{ user: User }>("/auth/login", {
       method: "POST",
-      body: JSON.stringify(credentials),
+      body: JSON.stringify({
+        username: credentials.username,
+        password: credentials.password || credentials.password_hash || "",
+      }),
     }),
 
   logout: () =>

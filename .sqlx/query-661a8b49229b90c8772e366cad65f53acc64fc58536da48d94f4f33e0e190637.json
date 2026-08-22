@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        INSERT INTO attendance_raw_events (organization_id, batch_id, source_row_number, attendance_device_user_id, punch_timestamp, punch_type, source_mode, event_fingerprint, raw_text)\n        VALUES ($1, $2, 1, '1001', CURRENT_TIMESTAMP, 'IN', 'EXPLICIT_DIRECTION', $3, '1001,2026-08-22 09:30:00,IN')\n        RETURNING id\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Uuid",
+        "Bpchar"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "661a8b49229b90c8772e366cad65f53acc64fc58536da48d94f4f33e0e190637"
+}

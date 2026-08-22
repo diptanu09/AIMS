@@ -1,0 +1,176 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n            SELECT\n                ad.id,\n                ad.organization_id,\n                ad.employee_id,\n                e.employee_code,\n                CONCAT(e.first_name, ' ', COALESCE(e.last_name, '')) AS employee_name,\n                e.designation_id,\n                d.title AS designation_name,\n                ad.section_id,\n                s.name AS section_name,\n                ad.attendance_date,\n                ad.first_in,\n                ad.last_out,\n                ad.total_duty_minutes,\n                ad.minutes_after_shift_start AS late_minutes,\n                ad.late_after_grace_minutes,\n                ad.early_exit_minutes,\n                ad.status AS \"status: AttendanceStatus\",\n                COUNT(*) OVER() AS total_count\n            FROM attendance_daily ad\n            JOIN employees e ON ad.employee_id = e.id\n            JOIN designations d ON e.designation_id = d.id\n            JOIN sections s ON ad.section_id = s.id\n            WHERE ad.organization_id = $1\n              AND ($2::date IS NULL OR ad.attendance_date = $2)\n              AND ($3::date IS NULL OR ad.attendance_date >= $3)\n              AND ($4::date IS NULL OR ad.attendance_date <= $4)\n              AND ($5::uuid IS NULL OR ad.section_id = $5)\n              AND ($6::uuid IS NULL OR ad.employee_id = $6)\n              AND ($7::uuid IS NULL OR e.designation_id = $7)\n              AND ($8::attendance_status IS NULL OR ad.status = $8)\n              AND ($9::text IS NULL OR (\n                    e.first_name ILIKE $9 OR\n                    e.last_name ILIKE $9 OR\n                    e.employee_code ILIKE $9 OR\n                    e.attendance_device_user_id ILIKE $9\n                  ))\n            ORDER BY ad.attendance_date DESC, e.first_name ASC\n            LIMIT $10 OFFSET $11\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 1,
+        "name": "organization_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 2,
+        "name": "employee_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 3,
+        "name": "employee_code",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "employee_name",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "designation_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 6,
+        "name": "designation_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "section_id",
+        "type_info": "Uuid"
+      },
+      {
+        "ordinal": 8,
+        "name": "section_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 9,
+        "name": "attendance_date",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 10,
+        "name": "first_in",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 11,
+        "name": "last_out",
+        "type_info": "Timestamptz"
+      },
+      {
+        "ordinal": 12,
+        "name": "total_duty_minutes",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 13,
+        "name": "late_minutes",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 14,
+        "name": "late_after_grace_minutes",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 15,
+        "name": "early_exit_minutes",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 16,
+        "name": "status: AttendanceStatus",
+        "type_info": {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 17,
+        "name": "total_count",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Date",
+        "Date",
+        "Date",
+        "Uuid",
+        "Uuid",
+        "Uuid",
+        {
+          "Custom": {
+            "name": "attendance_status",
+            "kind": {
+              "Enum": [
+                "PRESENT",
+                "LATE",
+                "ABSENT",
+                "HALF_DAY",
+                "EARLY_EXIT",
+                "LATE_AND_EARLY_EXIT",
+                "INCOMPLETE",
+                "HOLIDAY",
+                "WEEKLY_OFF",
+                "LEAVE",
+                "ON_DUTY",
+                "EXEMPTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        },
+        "Text",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      null,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "ac7584932181ce4dd33e0a5b03ef881119fb001c88a4b1392053fa0e92c482c5"
+}

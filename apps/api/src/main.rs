@@ -121,13 +121,8 @@ async fn main() -> anyhow::Result<()> {
         db,
     };
 
-    let allowed_origin = config
-        .web_origin
-        .parse::<HeaderValue>()
-        .unwrap_or_else(|_| HeaderValue::from_static("http://localhost:3000"));
-
     let cors = CorsLayer::new()
-        .allow_origin(allowed_origin)
+        .allow_origin(tower_http::cors::AllowOrigin::mirror_request())
         .allow_methods([
             Method::GET,
             Method::POST,
