@@ -1,10 +1,7 @@
 # docker/docker-compose.prod.yml
-version: '3.8'
-
 services:
   aims-postgres:
     image: postgres:16-alpine
-    container_name: aims-postgres
     restart: always
     environment:
       POSTGRES_DB: aims
@@ -25,13 +22,12 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.api
-    container_name: aims-api
     restart: always
     environment:
       ENVIRONMENT: production
       SERVER_HOST: 0.0.0.0
       SERVER_PORT: 8080
-      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_app_password}@aims-postgres:5432/aims
+      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_password}@aims-postgres:5432/aims
       SESSION_COOKIE_NAME: aims_session
       ALLOWED_ORIGINS: http://aims.internal,https://aims.internal,http://localhost
     depends_on:
@@ -49,11 +45,10 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.worker
-    container_name: aims-worker
     restart: always
     environment:
       ENVIRONMENT: production
-      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_app_password}@aims-postgres:5432/aims
+      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_password}@aims-postgres:5432/aims
       WORKER_CONCURRENCY: 4
     depends_on:
       aims-postgres:
@@ -65,7 +60,6 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile.web
-    container_name: aims-web
     restart: always
     environment:
       NODE_ENV: production
@@ -77,11 +71,10 @@ services:
 
   aims-proxy:
     image: caddy:2-alpine
-    container_name: aims-proxy
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "8085:80"
+      - "8443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
