@@ -20,6 +20,8 @@ import {
   Calendar,
   UserCheck,
   Sliders,
+  FileSpreadsheet,
+  Layers,
 } from "lucide-react";
 import { useAuth } from "../../lib/auth-context";
 
@@ -100,18 +102,32 @@ export default function DashboardLayout({
       show: true,
     },
     {
+      label: "Report Generator",
+      href: "/reports",
+      icon: FileSpreadsheet,
+      color: "text-blue-400",
+      show: hasPermission("report.generate"),
+    },
+    {
+      label: "Pilot Validation",
+      href: "/pilot",
+      icon: Layers,
+      color: "text-cyan-400",
+      show: true,
+    },
+    {
+      label: "Attendance Rules",
+      href: "/reports",
+      icon: FileText,
+      color: "text-sky-400",
+      show: hasPermission("reports.generate") || hasPermission("attendance.view.section"),
+    },
+    {
       label: "Attendance Import",
       href: "/import",
       icon: UploadCloud,
       color: "text-cyan-400",
       show: hasPermission("import.execute"),
-    },
-    {
-      label: "Report Engine",
-      href: "/reports",
-      icon: FileText,
-      color: "text-sky-400",
-      show: hasPermission("reports.generate") || hasPermission("attendance.view.section"),
     },
   ];
 

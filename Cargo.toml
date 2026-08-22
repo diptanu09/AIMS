@@ -97,3 +97,7 @@ path = "tests/security_hardening_test.rs"
 [[test]]
 name = "performance_benchmark_test"
 path = "tests/performance_benchmark_test.rs"
+
+[[test]]
+name = "pilot_validation_test"
+path = "tests/pilot_validation_test.rs"

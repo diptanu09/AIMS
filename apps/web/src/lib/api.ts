@@ -16,6 +16,8 @@ import {
   SectionHierarchy,
   SectionSummary,
   User,
+  ReconciliationDiscrepancy,
+  ReconciliationSummary,
 } from "../types/api";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
@@ -240,4 +242,11 @@ export const api = {
   // Audit Logs
   listAuditLogs: (limit = 50, offset = 0) =>
     request<AuditLogRow[]>(`/admin/audit?limit=${limit}&offset=${offset}`),
+
+  // Pilot Reconciliation
+  getReconciliationSummary: () =>
+    request<ReconciliationSummary>("/reconciliation/summary"),
+
+  getReconciliationDiscrepancies: () =>
+    request<ReconciliationDiscrepancy[]>("/reconciliation/discrepancies"),
 };

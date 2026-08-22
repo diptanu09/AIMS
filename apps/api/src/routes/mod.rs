@@ -12,6 +12,7 @@ pub mod holidays;
 pub mod imports;
 pub mod leave;
 pub mod organizations;
+pub mod reconciliation;
 pub mod reports;
 pub mod sections;
 
@@ -37,6 +38,8 @@ pub fn router(state: AppState) -> Router<AppState> {
         .nest("/exceptions", exceptions::routes())
         // Report Engine
         .nest("/reports", reports::routes())
+        // Pilot Reconciliation Workflow
+        .nest("/reconciliation", reconciliation::routes())
         // Corrections Workflow
         .nest("/corrections", corrections::routes())
         // Holidays & Leave

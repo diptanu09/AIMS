@@ -102,6 +102,43 @@ export interface SectionHierarchy {
   total_employees: number;
 }
 
+export interface SystemSetting {
+  id: string;
+  setting_key: string;
+  setting_value: string;
+  description?: string;
+  updated_at: string;
+}
+
+export interface DiscrepancyCategoryCount {
+  category: string;
+  count: number;
+}
+
+export interface ReconciliationSummary {
+  period_name: string;
+  total_official_records: number;
+  total_aims_records: number;
+  exact_matches: number;
+  differences: number;
+  match_rate_percentage: number;
+  category_breakdown: DiscrepancyCategoryCount[];
+}
+
+export interface ReconciliationDiscrepancy {
+  id: string;
+  employee_id: string;
+  employee_code: string;
+  employee_name: string;
+  attendance_date: string;
+  official_status: string;
+  aims_status: string;
+  official_duty_minutes: number;
+  aims_duty_minutes: number;
+  category: string;
+  resolution_notes?: string;
+}
+
 export interface ReportDefinition {
   id: string;
   organization_id: string;
