@@ -1,8 +1,10 @@
 pub mod attendance;
 pub mod attendance_rules;
 pub mod auth;
+pub mod dashboard;
 pub mod designations;
 pub mod employees;
+pub mod exceptions;
 pub mod health;
 pub mod imports;
 pub mod organizations;
@@ -23,6 +25,10 @@ pub fn router(state: AppState) -> Router<AppState> {
     let protected_routes = Router::new()
         .route("/auth/logout", post(auth::logout))
         .route("/auth/me", get(auth::me))
+        // Dashboard
+        .nest("/dashboard", dashboard::routes())
+        // Exception Center
+        .nest("/exceptions", exceptions::routes())
         // Organizations
         .route(
             "/organizations",
@@ -42,6 +48,14 @@ pub fn router(state: AppState) -> Router<AppState> {
         .route(
             "/sections/{id}/deactivate",
             post(sections::deactivate_section),
+        )
+        .route(
+            "/sections/{id}/attendance",
+            get(sections::get_section_attendance),
+        )
+        .route(
+            "/sections/{id}/hierarchy",
+            get(sections::get_section_hierarchy),
         )
         // Designations
         .route(
@@ -89,6 +103,14 @@ pub fn router(state: AppState) -> Router<AppState> {
         .route(
             "/employees/{id}/transfer",
             post(employees::transfer_employee),
+        )
+        .route(
+            "/employees/{id}/attendance",
+            get(employees::get_employee_attendance),
+        )
+        .route(
+            "/employees/{id}/attendance-summary",
+            get(employees::get_employee_attendance_summary),
         )
         // Imports
         .route("/imports/preview", post(imports::preview_import))

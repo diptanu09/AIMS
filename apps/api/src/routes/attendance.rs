@@ -1,5 +1,5 @@
 use crate::{
-    api::response::ApiResponse,
+    api::response::{ApiResponse, PaginatedResponse},
     error::AppError,
     services::attendance::{AttendanceService, ProcessAttendanceRequest},
     state::AppState,
@@ -7,10 +7,11 @@ use crate::{
 use aims_auth::CurrentUser;
 use aims_database::repositories::{
     attendance_daily::DailyAttendanceRepository,
+    attendance_query::{AttendanceQueryRepository, DailyAttendanceFilter},
     attendance_sessions::{AttendanceSessionRecord, AttendanceSessionRepository},
     processing_jobs::ProcessingJobRepository,
 };
-use aims_domain::AttendanceDaily;
+use aims_domain::{AttendanceDaily, AttendanceStatus};
 use axum::{
     Extension, Json, Router,
     extract::{Path, Query, State},
@@ -23,11 +24,17 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 #[derive(Debug, Deserialize)]
-pub struct DailyQuery {
+pub struct DetailedDailyQuery {
     pub date: Option<NaiveDate>,
     pub start_date: Option<NaiveDate>,
     pub end_date: Option<NaiveDate>,
+    pub section_id: Option<Uuid>,
     pub employee_id: Option<Uuid>,
+    pub designation_id: Option<Uuid>,
+    pub status: Option<AttendanceStatus>,
+    pub search: Option<String>,
+    pub page: Option<i64>,
+    pub page_size: Option<i64>,
 }
 
 #[derive(Debug, Serialize)]
@@ -64,42 +71,31 @@ pub async fn process_attendance_handler(
 pub async fn list_daily_attendance_handler(
     State(state): State<AppState>,
     Extension(actor): Extension<CurrentUser>,
-    Query(query): Query<DailyQuery>,
+    Query(query): Query<DetailedDailyQuery>,
 ) -> Result<impl IntoResponse, AppError> {
-    if let Some(date) = query.date {
-        let records = DailyAttendanceRepository::list_by_organization_and_date_range(
-            &state.db,
-            actor.organization_id,
-            date,
-            date,
-        )
-        .await?;
-        Ok((StatusCode::OK, Json(ApiResponse::ok(records))))
-    } else if let (Some(start), Some(end)) = (query.start_date, query.end_date) {
-        let records = if let Some(emp_id) = query.employee_id {
-            let mut items = Vec::new();
-            if let Some(daily) =
-                DailyAttendanceRepository::find_by_employee_and_date(&state.db, emp_id, start)
-                    .await?
-            {
-                items.push(daily);
-            }
-            items
-        } else {
-            DailyAttendanceRepository::list_by_organization_and_date_range(
-                &state.db,
-                actor.organization_id,
-                start,
-                end,
-            )
-            .await?
-        };
-        Ok((StatusCode::OK, Json(ApiResponse::ok(records))))
-    } else {
-        Err(AppError::Validation(
-            "Either 'date' or ('start_date' and 'end_date') must be provided".into(),
-        ))
-    }
+    let page = query.page.unwrap_or(1).max(1);
+    let page_size = query.page_size.unwrap_or(20).clamp(1, 100);
+    let offset = (page - 1) * page_size;
+
+    let filter = DailyAttendanceFilter {
+        date: query.date,
+        start_date: query.start_date,
+        end_date: query.end_date,
+        section_id: query.section_id,
+        employee_id: query.employee_id,
+        designation_id: query.designation_id,
+        status: query.status,
+        search: query.search,
+        limit: page_size,
+        offset,
+    };
+
+    let (items, total) =
+        AttendanceQueryRepository::list_detailed_daily(&state.db, actor.organization_id, filter)
+            .await?;
+
+    let paginated = PaginatedResponse::new(items, page as u32, page_size as u32, total as u64);
+    Ok((StatusCode::OK, Json(ApiResponse::ok(paginated))))
 }
 
 pub async fn get_daily_detail_handler(

@@ -1,10 +1,15 @@
 use aims_auth::CurrentUser;
+use aims_database::repositories::{
+    attendance_query::AttendanceQueryRepository, dashboard::DashboardRepository,
+};
 use axum::{
     Extension, Json,
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
 };
+use chrono::{Local, NaiveDate};
+use serde::Deserialize;
 use uuid::Uuid;
 
 use crate::{
@@ -15,6 +20,11 @@ use crate::{
     },
     state::AppState,
 };
+
+#[derive(Debug, Deserialize)]
+pub struct SectionAttendanceDateQuery {
+    pub date: Option<NaiveDate>,
+}
 
 pub async fn create_section(
     State(state): State<AppState>,
@@ -93,4 +103,30 @@ pub async fn list_sections(
 ) -> Result<impl IntoResponse, AppError> {
     let secs = SectionService::list_sections(&state, &actor, query).await?;
     Ok(Json(ApiResponse::ok(secs)))
+}
+
+pub async fn get_section_attendance(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+    Query(query): Query<SectionAttendanceDateQuery>,
+) -> Result<impl IntoResponse, AppError> {
+    let date = query.date.unwrap_or_else(|| Local::now().date_naive());
+    let all_sections =
+        DashboardRepository::get_section_summaries(&state.db, actor.organization_id, date).await?;
+    let sec_summary = all_sections
+        .into_iter()
+        .find(|s| s.section_id == id)
+        .ok_or_else(|| AppError::NotFound("Section attendance summary not found".into()))?;
+
+    Ok((StatusCode::OK, Json(ApiResponse::ok(sec_summary))))
+}
+
+pub async fn get_section_hierarchy(
+    State(state): State<AppState>,
+    Extension(_actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+) -> Result<impl IntoResponse, AppError> {
+    let hierarchy = AttendanceQueryRepository::get_section_hierarchy(&state.db, id).await?;
+    Ok((StatusCode::OK, Json(ApiResponse::ok(hierarchy))))
 }

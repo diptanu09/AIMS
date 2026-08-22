@@ -1,10 +1,13 @@
 pub mod attendance_daily;
+pub mod attendance_query;
 pub mod attendance_rules;
 pub mod attendance_sessions;
 pub mod audit;
 pub mod corrections;
+pub mod dashboard;
 pub mod designations;
 pub mod employees;
+pub mod exceptions;
 pub mod import_batches;
 pub mod import_templates;
 pub mod organizations;

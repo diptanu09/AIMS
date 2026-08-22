@@ -76,3 +76,7 @@ path = "tests/master_data_test.rs"
 [[test]]
 name = "attendance_import_test"
 path = "tests/attendance_import_test.rs"
+
+[[test]]
+name = "attendance_query_test"
+path = "tests/attendance_query_test.rs"
