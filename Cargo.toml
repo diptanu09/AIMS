@@ -93,3 +93,7 @@ path = "tests/administrative_workflow_test.rs"
 [[test]]
 name = "security_hardening_test"
 path = "tests/security_hardening_test.rs"
+
+[[test]]
+name = "performance_benchmark_test"
+path = "tests/performance_benchmark_test.rs"
