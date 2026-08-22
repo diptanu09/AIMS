@@ -1,174 +1,208 @@
 "use client";
 
-import React, { useState } from "react";
-import { AlertTriangle, Clock, UserX, AlertCircle, Search, Filter } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { AlertTriangle, Clock, UserX, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import { api } from "../../../lib/api";
+import { AttendanceExceptionRow } from "../../../types/api";
 
 export default function ExceptionsPage() {
-  const [activeFilter, setActiveFilter] = useState<"all" | "late" | "absent" | "incomplete">("late");
+  const [items, setItems] = useState<AttendanceExceptionRow[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(20);
+  const [loading, setLoading] = useState(true);
+  const [exceptionType, setExceptionType] = useState<string>("");
+
+  const loadExceptions = async () => {
+    setLoading(true);
+    try {
+      const data = await api.getExceptions({
+        exception_type: exceptionType || undefined,
+        page,
+        page_size: pageSize,
+      });
+      setItems(data.items);
+      setTotal(data.total);
+    } catch (err) {
+      console.error("Failed to load exceptions:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadExceptions();
+  }, [exceptionType, page]);
+
+  const totalPages = Math.ceil(total / pageSize) || 1;
+
+  const renderSeverityBadge = (sev: string) => {
+    if (sev === "HIGH") {
+      return (
+        <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30 font-mono text-[10px] font-bold">
+          HIGH SEVERITY
+        </span>
+      );
+    }
+    return (
+      <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-mono text-[10px] font-bold">
+        MEDIUM SEVERITY
+      </span>
+    );
+  };
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div className="pb-2 border-b border-[#1E293B]">
-        <h1 className="text-2xl font-bold text-slate-100 tracking-tight">Attendance Exception Center</h1>
-        <p className="text-xs text-slate-400">Operational management of late arrivals, absences, and missing punches</p>
-      </div>
-
-      {/* Filter Tabs Header */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <button
-          onClick={() => setActiveFilter("late")}
-          className={`p-4 rounded-xl border text-left transition-all ${
-            activeFilter === "late"
-              ? "bg-amber-500/10 border-amber-500 text-amber-400"
-              : "bg-[#151D2A] border-[#1E293B] text-slate-400 hover:border-slate-700"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase">Late Arrivals</span>
-            <Clock className="h-4 w-4" />
-          </div>
-          <p className="text-2xl font-bold font-mono mt-2">19</p>
-        </button>
-
-        <button
-          onClick={() => setActiveFilter("absent")}
-          className={`p-4 rounded-xl border text-left transition-all ${
-            activeFilter === "absent"
-              ? "bg-rose-500/10 border-rose-500 text-rose-400"
-              : "bg-[#151D2A] border-[#1E293B] text-slate-400 hover:border-slate-700"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase">Absences</span>
-            <UserX className="h-4 w-4" />
-          </div>
-          <p className="text-2xl font-bold font-mono mt-2">16</p>
-        </button>
-
-        <button
-          onClick={() => setActiveFilter("incomplete")}
-          className={`p-4 rounded-xl border text-left transition-all ${
-            activeFilter === "incomplete"
-              ? "bg-sky-500/10 border-sky-500 text-sky-400"
-              : "bg-[#151D2A] border-[#1E293B] text-slate-400 hover:border-slate-700"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase">Incomplete</span>
-            <AlertCircle className="h-4 w-4" />
-          </div>
-          <p className="text-2xl font-bold font-mono mt-2">7</p>
-        </button>
-
-        <button
-          onClick={() => setActiveFilter("all")}
-          className={`p-4 rounded-xl border text-left transition-all ${
-            activeFilter === "all"
-              ? "bg-indigo-500/10 border-indigo-500 text-indigo-400"
-              : "bg-[#151D2A] border-[#1E293B] text-slate-400 hover:border-slate-700"
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase">Total Exceptions</span>
-            <AlertTriangle className="h-4 w-4" />
-          </div>
-          <p className="text-2xl font-bold font-mono mt-2">42</p>
-        </button>
-      </div>
-
-      {/* Exception Table Container */}
-      <div className="bg-[#151D2A] border border-[#1E293B] rounded-xl p-5 space-y-4">
-        {/* Search Bar */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="relative flex-1 max-w-sm">
-            <Search className="h-4 w-4 absolute left-3 top-2.5 text-slate-500" />
-            <input
-              type="text"
-              placeholder="Search employee code, name or section..."
-              className="w-full bg-[#1E293B] border border-[#2A364F] rounded-lg pl-9 pr-4 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
-            />
-          </div>
-          <button className="flex items-center gap-2 bg-[#1E293B] border border-[#2A364F] px-3 py-2 rounded-lg text-xs font-medium text-slate-300">
-            <Filter className="h-3.5 w-3.5" />
-            <span>Filter Section</span>
-          </button>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#1E293B]">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-100 tracking-tight flex items-center gap-2">
+            <AlertTriangle className="h-6 w-6 text-amber-400" />
+            <span>Actionable Exception Center</span>
+          </h1>
+          <p className="text-xs text-slate-400">
+            Real-time tracking of late arrivals, absences, and unclosed punch sessions
+          </p>
         </div>
+      </div>
 
-        {/* Records Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#1E293B]/50 text-slate-400 uppercase font-semibold text-[10px]">
-              <tr>
-                <th className="p-3">Employee Code</th>
-                <th className="p-3">Name</th>
-                <th className="p-3">Section</th>
-                <th className="p-3">First IN</th>
-                <th className="p-3">Expected IN</th>
-                <th className="p-3">Variance / Late</th>
-                <th className="p-3">Status</th>
-                <th className="p-3 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#1E293B] text-slate-200 font-mono">
-              <tr className="hover:bg-[#1E293B]/30 transition-colors">
-                <td className="p-3 font-semibold text-slate-100">EMP-1042</td>
-                <td className="p-3 font-sans font-medium text-slate-300">Amitabh Banerjee</td>
-                <td className="p-3 font-sans text-indigo-300">SECTION A</td>
-                <td className="p-3 text-amber-400">09:54:12</td>
-                <td className="p-3 text-slate-400">09:30:00</td>
-                <td className="p-3 text-amber-400 font-semibold">+24 min</td>
-                <td className="p-3">
-                  <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-sans text-[10px] font-semibold">
-                    LATE
-                  </span>
-                </td>
-                <td className="p-3 text-right font-sans">
-                  <button className="text-indigo-400 hover:text-indigo-300 text-xs font-medium">
-                    Request Correction
-                  </button>
-                </td>
-              </tr>
+      {/* Exception Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2">
+        <button
+          onClick={() => {
+            setExceptionType("");
+            setPage(1);
+          }}
+          className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors shrink-0 ${
+            exceptionType === ""
+              ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/30"
+              : "bg-[#151D2A] border border-[#1E293B] text-slate-400 hover:text-slate-200"
+          }`}
+        >
+          All Exceptions ({total})
+        </button>
 
-              <tr className="hover:bg-[#1E293B]/30 transition-colors">
-                <td className="p-3 font-semibold text-slate-100">EMP-1089</td>
-                <td className="p-3 font-sans font-medium text-slate-300">Sunita Sharma</td>
-                <td className="p-3 font-sans text-indigo-300">SECTION B</td>
-                <td className="p-3 text-amber-400">10:02:45</td>
-                <td className="p-3 text-slate-400">09:30:00</td>
-                <td className="p-3 text-amber-400 font-semibold">+32 min</td>
-                <td className="p-3">
-                  <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 font-sans text-[10px] font-semibold">
-                    LATE
-                  </span>
-                </td>
-                <td className="p-3 text-right font-sans">
-                  <button className="text-indigo-400 hover:text-indigo-300 text-xs font-medium">
-                    Request Correction
-                  </button>
-                </td>
-              </tr>
+        <button
+          onClick={() => {
+            setExceptionType("LATE");
+            setPage(1);
+          }}
+          className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors shrink-0 ${
+            exceptionType === "LATE"
+              ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30"
+              : "bg-[#151D2A] border border-[#1E293B] text-amber-400 hover:bg-[#1E293B]"
+          }`}
+        >
+          <Clock className="h-3.5 w-3.5" />
+          <span>Late Arrivals</span>
+        </button>
 
-              <tr className="hover:bg-[#1E293B]/30 transition-colors">
-                <td className="p-3 font-semibold text-slate-100">EMP-1102</td>
-                <td className="p-3 font-sans font-medium text-slate-300">Rohan Kulkarni</td>
-                <td className="p-3 font-sans text-indigo-300">SECTION C</td>
-                <td className="p-3 text-sky-400">09:28:10</td>
-                <td className="p-3 text-slate-400">09:30:00</td>
-                <td className="p-3 text-sky-400 font-semibold">MISSING OUT</td>
-                <td className="p-3">
-                  <span className="px-2 py-0.5 rounded bg-sky-500/20 text-sky-400 font-sans text-[10px] font-semibold">
-                    INCOMPLETE
-                  </span>
-                </td>
-                <td className="p-3 text-right font-sans">
-                  <button className="text-indigo-400 hover:text-indigo-300 text-xs font-medium">
-                    Add OUT Punch
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <button
+          onClick={() => {
+            setExceptionType("ABSENT");
+            setPage(1);
+          }}
+          className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors shrink-0 ${
+            exceptionType === "ABSENT"
+              ? "bg-rose-600 text-white shadow-lg shadow-rose-600/30"
+              : "bg-[#151D2A] border border-[#1E293B] text-rose-400 hover:bg-[#1E293B]"
+          }`}
+        >
+          <UserX className="h-3.5 w-3.5" />
+          <span>Absences</span>
+        </button>
+
+        <button
+          onClick={() => {
+            setExceptionType("INCOMPLETE");
+            setPage(1);
+          }}
+          className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors shrink-0 ${
+            exceptionType === "INCOMPLETE"
+              ? "bg-sky-600 text-white shadow-lg shadow-sky-600/30"
+              : "bg-[#151D2A] border border-[#1E293B] text-sky-400 hover:bg-[#1E293B]"
+          }`}
+        >
+          <AlertCircle className="h-3.5 w-3.5" />
+          <span>Incomplete Punches</span>
+        </button>
+      </div>
+
+      {/* Exception Table */}
+      <div className="bg-[#151D2A] border border-[#1E293B] rounded-xl overflow-hidden shadow-lg">
+        {loading ? (
+          <div className="flex h-64 items-center justify-center text-slate-400 text-xs">
+            <div className="flex items-center gap-2">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent" />
+              <span>Querying Exception Records...</span>
+            </div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-[#1E293B]/60 text-slate-400 uppercase font-semibold text-[10px]">
+                <tr>
+                  <th className="p-3">Date</th>
+                  <th className="p-3">Employee</th>
+                  <th className="p-3">Section</th>
+                  <th className="p-3">Exception Type</th>
+                  <th className="p-3 text-center">Late / Exit Shift</th>
+                  <th className="p-3 text-center">Severity</th>
+                  <th className="p-3 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#1E293B] text-slate-200">
+                {items.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-slate-500">
+                      No attendance exceptions found for selected category.
+                    </td>
+                  </tr>
+                ) : (
+                  items.map((row) => (
+                    <tr key={row.id} className="hover:bg-[#1E293B]/30 transition-colors">
+                      <td className="p-3 font-mono text-slate-300">{row.attendance_date}</td>
+                      <td className="p-3">
+                        <div className="font-semibold text-slate-100">{row.employee_name}</div>
+                        <div className="text-[10px] font-mono text-indigo-400">{row.employee_code}</div>
+                      </td>
+                      <td className="p-3 text-slate-400">{row.section_name}</td>
+                      <td className="p-3 font-semibold text-amber-400">{row.exception_type}</td>
+                      <td className="p-3 text-center font-mono text-amber-300">
+                        {row.late_minutes > 0 ? `+${row.late_minutes}m late` : "--"}
+                      </td>
+                      <td className="p-3 text-center">{renderSeverityBadge(row.severity)}</td>
+                      <td className="p-3 text-right font-mono font-bold text-slate-300">{row.status}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Pagination Bar */}
+        <div className="flex items-center justify-between p-4 border-t border-[#1E293B] bg-[#151D2A]">
+          <span className="text-xs text-slate-400 font-mono">
+            Page {page} of {totalPages} ({total} exception records)
+          </span>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page <= 1}
+              className="p-1.5 rounded-lg bg-[#0B0F17] border border-[#1E293B] text-slate-300 disabled:opacity-30 hover:bg-[#1E293B] transition-colors"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages}
+              className="p-1.5 rounded-lg bg-[#0B0F17] border border-[#1E293B] text-slate-300 disabled:opacity-30 hover:bg-[#1E293B] transition-colors"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

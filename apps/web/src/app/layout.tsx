@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import React from "react";
+import { AuthProvider } from "../lib/auth-context";
 
 export const metadata = {
   title: "AIMS — Attendance Intelligence & Management System",
@@ -14,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased bg-[#0B0F17] text-slate-100 min-h-screen">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
