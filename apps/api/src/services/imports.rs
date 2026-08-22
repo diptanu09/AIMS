@@ -213,6 +213,7 @@ impl ImportService {
                 date_format: tpl_rec.date_format,
                 time_format: tpl_rec.time_format,
                 interpretation_mode: mode,
+                file_layout: aims_import_engine::FileLayout::RowPerPunch,
             })
         } else {
             Ok(ImportTemplate::canonical_default())

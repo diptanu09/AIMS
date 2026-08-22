@@ -114,6 +114,14 @@ pub fn parse_csv_bytes(
     bytes: &[u8],
     template: &ImportTemplate,
 ) -> Result<Vec<ParsedRawPunch>> {
+    let sample = String::from_utf8_lossy(bytes);
+    if template.file_layout == crate::template::FileLayout::MonthlyEmployeeMatrix
+        || sample.contains("Month and Year")
+        || sample.contains("In-Time")
+    {
+        return crate::matrix_parser::parse_monthly_matrix_csv(organization_id, bytes, template);
+    }
+
     let mut reader = csv::ReaderBuilder::new()
         .trim(csv::Trim::All)
         .flexible(true)

@@ -7,8 +7,8 @@ use aims_database::repositories::{
 };
 use aims_domain::{EmployeeStatus, PunchType};
 use aims_import_engine::{
-    ColumnMapping, ImportTemplate, ImportValidationSummary, InterpretationMode, compute_file_hash,
-    parse_csv_bytes, validate_parsed_punches,
+    compute_file_hash, parse_csv_bytes, validate_parsed_punches, ColumnMapping, FileLayout,
+    ImportTemplate, ImportValidationSummary, InterpretationMode,
 };
 use chrono::{NaiveDate, NaiveTime};
 use sqlx::postgres::PgPoolOptions;
@@ -152,6 +152,7 @@ async fn test_alternating_punches_mode() -> Result<()> {
         date_format: "%Y-%m-%d".into(),
         time_format: "%H:%M:%S".into(),
         interpretation_mode: InterpretationMode::AlternatingPunches,
+        file_layout: FileLayout::RowPerPunch,
     };
 
     let punches = parse_csv_bytes(org_id, sample_csv, &template)?;

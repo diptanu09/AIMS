@@ -3,6 +3,14 @@ use uuid::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum FileLayout {
+    #[default]
+    RowPerPunch,
+    MonthlyEmployeeMatrix,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum InterpretationMode {
     #[default]
     ExplicitDirection,
@@ -33,6 +41,8 @@ pub struct ImportTemplate {
     pub date_format: String,
     pub time_format: String,
     pub interpretation_mode: InterpretationMode,
+    #[serde(default)]
+    pub file_layout: FileLayout,
 }
 
 impl ImportTemplate {
@@ -55,6 +65,32 @@ impl ImportTemplate {
             date_format: "%Y-%m-%d".into(),
             time_format: "%H:%M:%S".into(),
             interpretation_mode: InterpretationMode::ExplicitDirection,
+            file_layout: FileLayout::RowPerPunch,
+        }
+    }
+
+    pub fn nic_aadhaar_default() -> Self {
+        Self {
+            id: None,
+            name: "NIC Aadhaar BAS Monthly Export".into(),
+            description: Some(
+                "Monthly employee matrix format from CAG / NIC Aadhaar Attendance System".into(),
+            ),
+            file_type: "CSV".into(),
+            delimiter: ",".into(),
+            header_row_index: 3,
+            column_mapping: ColumnMapping {
+                device_user_id: "Attendance ID".into(),
+                date: Some("Date".into()),
+                time: None,
+                datetime: None,
+                punch_type: None,
+                device_id: None,
+            },
+            date_format: "%Y-%m-%d".into(),
+            time_format: "%H:%M".into(),
+            interpretation_mode: InterpretationMode::ExplicitDirection,
+            file_layout: FileLayout::MonthlyEmployeeMatrix,
         }
     }
 

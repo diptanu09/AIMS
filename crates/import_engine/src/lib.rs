@@ -1,3 +1,4 @@
+pub mod matrix_parser;
 pub mod parser;
 pub mod preview;
 pub mod template;
@@ -8,7 +9,7 @@ pub use parser::{
     parse_date_time_to_utc, parse_punch_type,
 };
 pub use preview::ImportPreviewResponse;
-pub use template::{ColumnMapping, ImportTemplate, InterpretationMode};
+pub use template::{ColumnMapping, FileLayout, ImportTemplate, InterpretationMode};
 pub use validation::{
     ImportRowError, ImportValidationSummary, ImportWarning, validate_parsed_punches,
 };
@@ -39,6 +40,44 @@ mod tests {
         assert_eq!(p2.source_row_number, 3);
 
         assert_ne!(p1.event_fingerprint, p2.event_fingerprint);
+    }
+
+    #[test]
+    fn test_parse_real_cag_sample_csv() {
+        let sample_bytes = include_bytes!("../../../sample.csv");
+        let org_id = Uuid::now_v7();
+        let template = ImportTemplate::nic_aadhaar_default();
+
+        let punches = parse_csv_bytes(org_id, sample_bytes, &template)
+            .expect("Should parse real CAG NIC Aadhaar sample CSV");
+
+        // sample.csv contains 414 lines, ~138 employees with punches across August 2026
+        assert!(punches.len() > 100);
+
+        // Verify first employee ("404232" - Ajoy Dutta)
+        let emp1_punches: Vec<&ParsedRawPunch> = punches
+            .iter()
+            .filter(|p| p.attendance_device_user_id == "404232")
+            .collect();
+
+        assert!(!emp1_punches.is_empty());
+        let in_punches: Vec<&&ParsedRawPunch> = emp1_punches
+            .iter()
+            .filter(|p| p.punch_type == PunchType::In)
+            .collect();
+        let out_punches: Vec<&&ParsedRawPunch> = emp1_punches
+            .iter()
+            .filter(|p| p.punch_type == PunchType::Out)
+            .collect();
+        assert!(!in_punches.is_empty());
+        assert!(!out_punches.is_empty());
+
+        // Verify leading zero preservation for employee "045677"
+        let emp_leading_zero: Vec<&ParsedRawPunch> = punches
+            .iter()
+            .filter(|p| p.attendance_device_user_id == "045677")
+            .collect();
+        assert!(!emp_leading_zero.is_empty());
     }
 
     #[test]
