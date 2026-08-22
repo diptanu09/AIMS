@@ -9,6 +9,7 @@ csv = "1.3"
 sha2 = "0.10"
 hex = "0.4"
 chrono = { workspace = true }
+chrono-tz = { workspace = true }
 uuid = { workspace = true }
 serde = { workspace = true }
 aims_common = { path = "../common" }

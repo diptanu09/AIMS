@@ -2,6 +2,7 @@ use aims_common::{AimsError, Result};
 use aims_domain::{AttendanceRawEvent, PunchType};
 use chrono::{DateTime, Utc};
 use sqlx::PgPool;
+use std::collections::HashSet;
 use uuid::Uuid;
 
 pub struct RawEventRepository;
@@ -89,8 +90,26 @@ impl RawEventRepository {
         .await
         .map_err(|e| AimsError::Database(format!("Failed to insert raw punch event: {}", e)))?;
 
-        // Returns true if inserted, false if duplicate ignored
         Ok(result.rows_affected() > 0)
+    }
+
+    pub async fn list_fingerprints_by_organization(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<HashSet<String>> {
+        let rows = sqlx::query_scalar::<_, String>(
+            r#"
+            SELECT event_fingerprint
+            FROM attendance_raw_events
+            WHERE organization_id = $1
+            "#,
+        )
+        .bind(organization_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query event fingerprints: {}", e)))?;
+
+        Ok(rows.into_iter().collect())
     }
 
     pub async fn list_by_batch(pool: &PgPool, batch_id: Uuid) -> Result<Vec<AttendanceRawEvent>> {

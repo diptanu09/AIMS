@@ -88,6 +88,31 @@ impl ImportBatchRepository {
         Ok(())
     }
 
+    pub async fn find_by_file_hash(
+        pool: &PgPool,
+        organization_id: Uuid,
+        file_hash: &str,
+    ) -> Result<Option<ImportBatchRecord>> {
+        let batch = sqlx::query_as::<_, ImportBatchRecord>(
+            r#"
+            SELECT id, organization_id, file_name, file_hash, uploaded_by,
+                   total_records, valid_records, duplicate_records,
+                   unknown_employees, invalid_records, status, imported_at
+            FROM attendance_import_batches
+            WHERE organization_id = $1 AND file_hash = $2 AND status != 'FAILED'
+            "#,
+        )
+        .bind(organization_id)
+        .bind(file_hash)
+        .fetch_optional(pool)
+        .await
+        .map_err(|e| {
+            AimsError::Database(format!("Failed to query import batch by file hash: {}", e))
+        })?;
+
+        Ok(batch)
+    }
+
     pub async fn list_by_organization(
         pool: &PgPool,
         organization_id: Uuid,

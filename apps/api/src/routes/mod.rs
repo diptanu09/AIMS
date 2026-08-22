@@ -3,6 +3,7 @@ pub mod auth;
 pub mod designations;
 pub mod employees;
 pub mod health;
+pub mod imports;
 pub mod organizations;
 pub mod sections;
 
@@ -87,6 +88,14 @@ pub fn router(state: AppState) -> Router<AppState> {
         .route(
             "/employees/{id}/transfer",
             post(employees::transfer_employee),
+        )
+        // Imports
+        .route("/imports/preview", post(imports::preview_import))
+        .route("/imports/commit", post(imports::commit_import))
+        .route("/imports/batches", get(imports::list_batches))
+        .route(
+            "/imports/templates",
+            get(imports::list_templates).post(imports::create_template),
         )
         .route_layer(middleware::from_fn_with_state(
             state.clone(),
