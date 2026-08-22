@@ -1,61 +1,63 @@
-use crate::state::AppState;
-use aims_auth::Claims;
-use aims_common::Result;
-use aims_database::repositories::attendance_rules::AttendanceRuleRepository;
-use aims_domain::AttendanceRule;
 use axum::{
-    extract::State,
-    routing::post,
-    Extension, Json, Router,
+    extract::{Path, Query, State},
+    http::StatusCode,
+    response::IntoResponse,
+    Extension, Json,
 };
-use chrono::NaiveTime;
-use serde::Deserialize;
+use aims_auth::CurrentUser;
 use uuid::Uuid;
 
-#[derive(Debug, Deserialize)]
-pub struct CreateAttendanceRuleRequest {
-    pub organization_id: Uuid,
-    pub name: String,
-    pub shift_start_time: NaiveTime,
-    pub shift_end_time: NaiveTime,
-    pub grace_period_minutes: Option<i32>,
-    pub half_day_min_duration_minutes: Option<i32>,
-    pub full_day_min_duration_minutes: Option<i32>,
-    pub early_exit_threshold_minutes: Option<i32>,
-}
+use crate::{
+    api::response::ApiResponse,
+    error::AppError,
+    services::attendance_rules::{
+        AttendanceRuleQuery, AttendanceRuleService, CreateAttendanceRuleRequest,
+        UpdateAttendanceRuleRequest,
+    },
+    state::AppState,
+};
 
 pub async fn create_rule(
     State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
     Json(payload): Json<CreateAttendanceRuleRequest>,
-) -> Result<Json<AttendanceRule>> {
-    let pool = state.db.pool();
-    let rule = AttendanceRuleRepository::create(
-        pool,
-        payload.organization_id,
-        &payload.name,
-        payload.shift_start_time,
-        payload.shift_end_time,
-        payload.grace_period_minutes.unwrap_or(15),
-        payload.half_day_min_duration_minutes.unwrap_or(240),
-        payload.full_day_min_duration_minutes.unwrap_or(420),
-        payload.early_exit_threshold_minutes.unwrap_or(15),
-    )
-    .await?;
+) -> Result<impl IntoResponse, AppError> {
+    if !actor.has_permission("rule.manage") && !actor.has_permission("attendance.view.all") {
+        return Err(AppError::Forbidden("Permission 'rule.manage' required".to_string()));
+    }
 
-    Ok(Json(rule))
+    let rule = AttendanceRuleService::create_rule(&state, &actor, payload).await?;
+    Ok((StatusCode::CREATED, Json(ApiResponse::ok(rule))))
+}
+
+pub async fn update_rule(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+    Json(payload): Json<UpdateAttendanceRuleRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    if !actor.has_permission("rule.manage") && !actor.has_permission("attendance.view.all") {
+        return Err(AppError::Forbidden("Permission 'rule.manage' required".to_string()));
+    }
+
+    let rule = AttendanceRuleService::update_rule(&state, &actor, id, payload).await?;
+    Ok(Json(ApiResponse::ok(rule)))
+}
+
+pub async fn get_rule(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+) -> Result<impl IntoResponse, AppError> {
+    let rule = AttendanceRuleService::get_rule(&state, &actor, id).await?;
+    Ok(Json(ApiResponse::ok(rule)))
 }
 
 pub async fn list_rules(
     State(state): State<AppState>,
-    Extension(claims): Extension<Claims>,
-) -> Result<Json<Vec<AttendanceRule>>> {
-    let pool = state.db.pool();
-    let rules = AttendanceRuleRepository::list_by_organization(pool, claims.org_id).await?;
-
-    Ok(Json(rules))
-}
-
-pub fn router() -> Router<AppState> {
-    Router::new()
-        .route("/", post(create_rule).get(list_rules))
+    Extension(actor): Extension<CurrentUser>,
+    Query(query): Query<AttendanceRuleQuery>,
+) -> Result<impl IntoResponse, AppError> {
+    let rules = AttendanceRuleService::list_rules(&state, &actor, query).await?;
+    Ok(Json(ApiResponse::ok(rules)))
 }

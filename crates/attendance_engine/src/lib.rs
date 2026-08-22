@@ -224,7 +224,7 @@ pub async fn process_employee_day(
     employee: &Employee,
     target_date: NaiveDate,
 ) -> Result<CalculationResult> {
-    let rule = AttendanceRuleRepository::find_by_id(pool, employee.attendance_rule_id)
+    let rule = AttendanceRuleRepository::find_by_id(pool, organization_id, employee.attendance_rule_id)
         .await?
         .ok_or_else(|| {
             AimsError::NotFound(format!(
@@ -331,7 +331,7 @@ pub async fn run_calculation_for_date_range(
     employee_id: Option<Uuid>,
 ) -> Result<i32> {
     let employees = if let Some(emp_id) = employee_id {
-        let emp = EmployeeRepository::find_by_id(pool, emp_id)
+        let emp = EmployeeRepository::find_by_id(pool, organization_id, emp_id)
             .await?
             .ok_or_else(|| AimsError::NotFound(format!("Employee '{}' not found", emp_id)))?;
         vec![emp]
@@ -371,6 +371,10 @@ mod tests {
             full_day_min_duration_minutes: 420,
             early_exit_threshold_minutes: 15,
             max_single_session_hours: 14,
+            cross_midnight: false,
+            effective_from: NaiveDate::from_ymd_opt(2026, 1, 1).unwrap(),
+            effective_to: None,
+            active: true,
             created_at: Utc::now(),
             updated_at: Utc::now(),
         };

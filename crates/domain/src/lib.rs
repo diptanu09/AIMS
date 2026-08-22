@@ -80,6 +80,7 @@ pub struct Organization {
     pub code: String,
     pub name: String,
     pub timezone: String,
+    pub active: bool,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -91,6 +92,7 @@ pub struct Section {
     pub code: String,
     pub name: String,
     pub parent_section_id: Option<Uuid>,
+    pub active: bool,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -102,7 +104,9 @@ pub struct Designation {
     pub code: String,
     pub title: String,
     pub level: i32,
+    pub active: bool,
     pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
@@ -117,6 +121,10 @@ pub struct AttendanceRule {
     pub full_day_min_duration_minutes: i32,
     pub early_exit_threshold_minutes: i32,
     pub max_single_session_hours: i32,
+    pub cross_midnight: bool,
+    pub effective_from: NaiveDate,
+    pub effective_to: Option<NaiveDate>,
+    pub active: bool,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
@@ -128,7 +136,8 @@ pub struct Employee {
     pub employee_code: String,
     pub attendance_device_user_id: String,
     pub first_name: String,
-    pub last_name: String,
+    pub middle_name: Option<String>,
+    pub last_name: Option<String>,
     pub email: Option<String>,
     pub mobile: Option<String>,
     pub section_id: Uuid,
@@ -139,6 +148,18 @@ pub struct Employee {
     pub status: EmployeeStatus,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct EmployeeSectionAssignment {
+    pub id: Uuid,
+    pub employee_id: Uuid,
+    pub section_id: Uuid,
+    pub effective_from: NaiveDate,
+    pub effective_to: Option<NaiveDate>,
+    pub reason: Option<String>,
+    pub created_by: Option<Uuid>,
+    pub created_at: DateTime<Utc>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]

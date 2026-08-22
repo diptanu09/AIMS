@@ -20,3 +20,28 @@ where
         }
     }
 }
+
+#[derive(Debug, Serialize)]
+pub struct PaginatedResponse<T>
+where
+    T: Serialize,
+{
+    pub items: Vec<T>,
+    pub page: u32,
+    pub page_size: u32,
+    pub total: u64,
+}
+
+impl<T> PaginatedResponse<T>
+where
+    T: Serialize,
+{
+    pub fn new(items: Vec<T>, page: u32, page_size: u32, total: u64) -> Self {
+        Self {
+            items,
+            page,
+            page_size,
+            total,
+        }
+    }
+}

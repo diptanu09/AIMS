@@ -1,55 +1,43 @@
-use crate::state::AppState;
-use aims_common::{AimsError, Result};
-use aims_database::repositories::organizations::OrganizationRepository;
-use aims_domain::Organization;
 use axum::{
     extract::{Path, State},
-    routing::{get, post},
-    Json, Router,
+    http::StatusCode,
+    response::IntoResponse,
+    Extension, Json,
 };
-use serde::Deserialize;
+use aims_auth::CurrentUser;
 use uuid::Uuid;
 
-#[derive(Debug, Deserialize)]
-pub struct CreateOrganizationRequest {
-    pub code: String,
-    pub name: String,
-    pub timezone: Option<String>,
-}
+use crate::{
+    api::response::ApiResponse,
+    error::AppError,
+    services::organizations::{CreateOrganizationRequest, OrganizationService},
+    state::AppState,
+};
 
 pub async fn create_organization(
     State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
     Json(payload): Json<CreateOrganizationRequest>,
-) -> Result<Json<Organization>> {
-    let pool = state.db.pool();
-    let tz = payload.timezone.as_deref().unwrap_or("Asia/Kolkata");
+) -> Result<impl IntoResponse, AppError> {
+    if !actor.has_permission("organization.manage") && !actor.roles.contains(&"SUPER_ADMIN".to_string()) {
+        return Err(AppError::Forbidden("Only Super Administrators can create organizations".to_string()));
+    }
 
-    let org = OrganizationRepository::create(pool, &payload.code, &payload.name, tz).await?;
-    Ok(Json(org))
-}
-
-pub async fn list_organizations(
-    State(state): State<AppState>,
-) -> Result<Json<Vec<Organization>>> {
-    let pool = state.db.pool();
-    let orgs = OrganizationRepository::list_all(pool).await?;
-    Ok(Json(orgs))
+    let org = OrganizationService::create_organization(&state, &actor, payload).await?;
+    Ok((StatusCode::CREATED, Json(ApiResponse::ok(org))))
 }
 
 pub async fn get_organization(
     State(state): State<AppState>,
     Path(id): Path<Uuid>,
-) -> Result<Json<Organization>> {
-    let pool = state.db.pool();
-    let org = OrganizationRepository::find_by_id(pool, id)
-        .await?
-        .ok_or_else(|| AimsError::NotFound(format!("Organization '{}' not found", id)))?;
-
-    Ok(Json(org))
+) -> Result<impl IntoResponse, AppError> {
+    let org = OrganizationService::get_organization(&state, id).await?;
+    Ok(Json(ApiResponse::ok(org)))
 }
 
-pub fn router() -> Router<AppState> {
-    Router::new()
-        .route("/", post(create_organization).get(list_organizations))
-        .route("/{id}", get(get_organization))
+pub async fn list_organizations(
+    State(state): State<AppState>,
+) -> Result<impl IntoResponse, AppError> {
+    let orgs = OrganizationService::list_organizations(&state).await?;
+    Ok(Json(ApiResponse::ok(orgs)))
 }

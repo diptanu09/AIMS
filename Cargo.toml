@@ -41,6 +41,8 @@ rand = "0.8"
 sha2 = "0.10"
 hex = "0.4"
 time = "0.3"
+validator = { version = "0.20", features = ["derive"] }
+chrono-tz = "0.10"
 
 [package]
 name = "aims_root_tests"
@@ -50,10 +52,18 @@ license.workspace = true
 
 [dependencies]
 aims_attendance_engine = { path = "crates/attendance_engine" }
+aims_auth = { path = "crates/auth" }
+aims_database = { path = "crates/database" }
 aims_domain = { path = "crates/domain" }
 chrono = { workspace = true }
+sqlx = { workspace = true }
+tokio = { workspace = true }
 uuid = { workspace = true }
 
 [[test]]
 name = "attendance_calculation_test"
 path = "tests/attendance_calculation_test.rs"
+
+[[test]]
+name = "master_data_test"
+path = "tests/master_data_test.rs"

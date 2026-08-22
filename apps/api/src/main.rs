@@ -16,6 +16,7 @@ mod config;
 mod error;
 mod middleware;
 mod routes;
+mod services;
 mod state;
 
 use config::Config;

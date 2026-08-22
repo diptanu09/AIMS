@@ -17,6 +17,10 @@ fn create_test_rule() -> AttendanceRule {
         full_day_min_duration_minutes: 420,
         early_exit_threshold_minutes: 15,
         max_single_session_hours: 14,
+        cross_midnight: false,
+        effective_from: NaiveDate::from_ymd_opt(2026, 1, 1).unwrap(),
+        effective_to: None,
+        active: true,
         created_at: Utc::now(),
         updated_at: Utc::now(),
     }
