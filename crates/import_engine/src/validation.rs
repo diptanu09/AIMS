@@ -38,7 +38,7 @@ pub struct ImportValidationSummary {
 impl ImportValidationSummary {
     pub fn new(file_name: String, file_hash: String) -> Self {
         Self {
-            file_name,
+            file_name: sanitize_csv_formula(&file_name),
             file_hash,
             total_records: 0,
             valid_records: 0,
@@ -53,6 +53,19 @@ impl ImportValidationSummary {
     }
 }
 
+pub fn sanitize_csv_formula(val: &str) -> String {
+    let trimmed = val.trim();
+    if trimmed.starts_with('=')
+        || trimmed.starts_with('+')
+        || trimmed.starts_with('-')
+        || trimmed.starts_with('@')
+    {
+        format!("'{}", trimmed)
+    } else {
+        trimmed.to_string()
+    }
+}
+
 pub fn validate_parsed_punches(
     punches: Vec<ParsedRawPunch>,
     known_device_user_ids: &std::collections::HashSet<String>,
@@ -64,7 +77,9 @@ pub fn validate_parsed_punches(
     let mut seen_in_file_fingerprints = std::collections::HashSet::new();
     let now = Utc::now();
 
-    for p in punches {
+    for mut p in punches {
+        p.raw_text = sanitize_csv_formula(&p.raw_text);
+
         let is_unknown_emp = !known_device_user_ids.contains(&p.attendance_device_user_id);
         let is_dup_in_file = seen_in_file_fingerprints.contains(&p.event_fingerprint);
         let is_dup_in_db = existing_fingerprints.contains(&p.event_fingerprint);

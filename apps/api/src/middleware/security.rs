@@ -3,13 +3,62 @@ use aims_database::repositories::{sessions::UserSessionRepository, users::UserRe
 use axum::{
     Json,
     extract::State,
-    http::{Request, StatusCode, header},
+    http::{HeaderValue, Request, StatusCode, header},
     middleware::Next,
     response::Response,
 };
 use axum_extra::extract::cookie::CookieJar;
+use uuid::Uuid;
 
 use crate::{error::ErrorResponse, state::AppState};
+
+pub async fn inject_security_headers(
+    req: Request<axum::body::Body>,
+    next: Next,
+) -> Response {
+    let request_id = req
+        .headers()
+        .get("x-request-id")
+        .cloned()
+        .unwrap_or_else(|| HeaderValue::from_str(&Uuid::new_v4().to_string()).unwrap());
+
+    let mut response = next.run(req).await;
+
+    let headers = response.headers_mut();
+    headers.insert("x-request-id", request_id);
+    headers.insert(
+        header::CACHE_CONTROL,
+        HeaderValue::from_static("no-store, no-cache, must-revalidate, private"),
+    );
+    headers.insert(
+        header::CONTENT_SECURITY_POLICY,
+        HeaderValue::from_static(
+            "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-ancestors 'none'; object-src 'none';",
+        ),
+    );
+    headers.insert(
+        header::X_CONTENT_TYPE_OPTIONS,
+        HeaderValue::from_static("nosniff"),
+    );
+    headers.insert(
+        header::X_FRAME_OPTIONS,
+        HeaderValue::from_static("DENY"),
+    );
+    headers.insert(
+        header::REFERRER_POLICY,
+        HeaderValue::from_static("no-referrer"),
+    );
+    headers.insert(
+        "permissions-policy",
+        HeaderValue::from_static("camera=(), microphone=(), geolocation=()"),
+    );
+    headers.insert(
+        header::STRICT_TRANSPORT_SECURITY,
+        HeaderValue::from_static("max-age=31536000; includeSubDomains"),
+    );
+
+    response
+}
 
 pub async fn require_auth(
     State(state): State<AppState>,
@@ -129,10 +178,6 @@ pub async fn require_auth(
 
     req.extensions_mut().insert(current_user);
 
-    let mut response = next.run(req).await;
-    response
-        .headers_mut()
-        .insert(header::CACHE_CONTROL, "no-store".parse().unwrap());
-
+    let response = next.run(req).await;
     Ok(response)
 }

@@ -142,5 +142,7 @@ pub fn router(state: AppState) -> Router<AppState> {
             security::require_auth,
         ));
 
-    public_routes.merge(protected_routes)
+    public_routes
+        .merge(protected_routes)
+        .layer(middleware::from_fn(security::inject_security_headers))
 }
