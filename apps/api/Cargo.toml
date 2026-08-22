@@ -34,6 +34,7 @@ aims_database = { path = "../../crates/database" }
 aims_common = { path = "../../crates/common" }
 aims_domain = { path = "../../crates/domain" }
 aims_import_engine = { path = "../../crates/import_engine" }
+aims_reporting = { path = "../../crates/reporting" }
 time = { workspace = true }
 validator = { workspace = true }
 chrono-tz = { workspace = true }

@@ -13,6 +13,7 @@ pub mod import_templates;
 pub mod organizations;
 pub mod processing_jobs;
 pub mod raw_events;
+pub mod reports;
 pub mod sections;
 pub mod sessions;
 pub mod users;

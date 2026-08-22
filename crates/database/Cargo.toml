@@ -12,6 +12,7 @@ chrono = { workspace = true }
 uuid = { workspace = true }
 aims_common = { path = "../common" }
 aims_domain = { path = "../domain" }
+aims_reporting = { path = "../reporting" }
 
 [dev-dependencies]
 tokio = { workspace = true }

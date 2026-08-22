@@ -58,6 +58,7 @@ aims_common = { path = "crates/common" }
 aims_database = { path = "crates/database" }
 aims_domain = { path = "crates/domain" }
 aims_import_engine = { path = "crates/import_engine" }
+aims_reporting = { path = "crates/reporting" }
 chrono = { workspace = true }
 chrono-tz = { workspace = true }
 serde_json = { workspace = true }
@@ -80,3 +81,7 @@ path = "tests/attendance_import_test.rs"
 [[test]]
 name = "attendance_query_test"
 path = "tests/attendance_query_test.rs"
+
+[[test]]
+name = "report_engine_test"
+path = "tests/report_engine_test.rs"

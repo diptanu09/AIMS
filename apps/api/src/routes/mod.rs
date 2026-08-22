@@ -8,6 +8,7 @@ pub mod exceptions;
 pub mod health;
 pub mod imports;
 pub mod organizations;
+pub mod reports;
 pub mod sections;
 
 use crate::{middleware::security, state::AppState};
@@ -29,6 +30,8 @@ pub fn router(state: AppState) -> Router<AppState> {
         .nest("/dashboard", dashboard::routes())
         // Exception Center
         .nest("/exceptions", exceptions::routes())
+        // Report Engine
+        .nest("/reports", reports::routes())
         // Organizations
         .route(
             "/organizations",

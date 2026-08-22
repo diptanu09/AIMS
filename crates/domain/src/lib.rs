@@ -32,6 +32,31 @@ pub enum ImportBatchStatus {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, sqlx::Type)]
+#[sqlx(type_name = "report_run_status", rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum ReportRunStatus {
+    Queued,
+    Processing,
+    Completed,
+    Failed,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum ReportFormat {
+    Pdf,
+    Xlsx,
+    Csv,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub enum ReportType {
+    MonthlySection,
+    DailyRegister,
+    EmployeeHistory,
+    SectionException,
+    OrganizationSummary,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, sqlx::Type)]
 #[sqlx(type_name = "punch_type", rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PunchType {
     In,
@@ -212,5 +237,34 @@ pub struct AttendanceCorrection {
     pub approved_by: Option<Uuid>,
     pub approved_at: Option<DateTime<Utc>>,
     pub rejection_reason: Option<String>,
+    pub created_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct ReportDefinition {
+    pub id: Uuid,
+    pub organization_id: Uuid,
+    pub code: String,
+    pub name: String,
+    pub description: Option<String>,
+    pub category: String,
+    pub active: bool,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct ReportRun {
+    pub id: Uuid,
+    pub organization_id: Uuid,
+    pub report_definition_id: Uuid,
+    pub generated_by: Uuid,
+    pub parameters: serde_json::Value,
+    pub output_format: String,
+    pub status: ReportRunStatus,
+    pub file_path: Option<String>,
+    pub error_message: Option<String>,
+    pub started_at: Option<DateTime<Utc>>,
+    pub completed_at: Option<DateTime<Utc>>,
     pub created_at: DateTime<Utc>,
 }

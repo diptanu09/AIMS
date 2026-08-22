@@ -27,6 +27,7 @@ dependencies = [
  "aims_database",
  "aims_domain",
  "aims_import_engine",
+ "aims_reporting",
  "anyhow",
  "axum",
  "axum-extra",
@@ -95,6 +96,7 @@ version = "0.1.0"
 dependencies = [
  "aims_common",
  "aims_domain",
+ "aims_reporting",
  "chrono",
  "serde",
  "serde_json",
@@ -110,6 +112,7 @@ dependencies = [
  "aims_common",
  "chrono",
  "serde",
+ "serde_json",
  "sqlx",
  "uuid",
 ]
@@ -136,6 +139,7 @@ dependencies = [
  "aims_common",
  "aims_domain",
  "chrono",
+ "csv",
  "serde",
  "uuid",
 ]
@@ -150,6 +154,7 @@ dependencies = [
  "aims_database",
  "aims_domain",
  "aims_import_engine",
+ "aims_reporting",
  "chrono",
  "chrono-tz",
  "serde_json",

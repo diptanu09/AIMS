@@ -6,4 +6,5 @@ pub mod employees;
 pub mod exceptions;
 pub mod imports;
 pub mod organizations;
+pub mod reporting;
 pub mod sections;

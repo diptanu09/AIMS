@@ -4,10 +4,10 @@ use aims_database::repositories::attendance_query::{
 };
 use aims_domain::{AttendanceStatus, EmployeeStatus};
 use axum::{
+    Extension, Json,
     extract::{Path, Query, State},
     http::StatusCode,
     response::IntoResponse,
-    Extension, Json,
 };
 use chrono::NaiveDate;
 use serde::Deserialize;
@@ -180,12 +180,9 @@ pub async fn get_employee_attendance(
         offset,
     };
 
-    let (items, total) = AttendanceQueryRepository::list_detailed_daily(
-        &state.db,
-        actor.organization_id,
-        filter,
-    )
-    .await?;
+    let (items, total) =
+        AttendanceQueryRepository::list_detailed_daily(&state.db, actor.organization_id, filter)
+            .await?;
 
     let paginated = PaginatedResponse::new(items, page as u32, page_size as u32, total as u64);
     Ok((StatusCode::OK, Json(ApiResponse::ok(paginated))))

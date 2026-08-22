@@ -1,5 +1,5 @@
 use aims_attendance_engine::{
-    calculate_attendance_for_employee_date, AttendancePunch, CalendarContext, PunchSourceMode,
+    AttendancePunch, CalendarContext, PunchSourceMode, calculate_attendance_for_employee_date,
 };
 use aims_common::Result;
 use aims_database::repositories::{
@@ -34,7 +34,10 @@ fn make_utc(date_str: &str, time_str: &str) -> chrono::DateTime<Utc> {
     let date = NaiveDate::parse_from_str(date_str, "%Y-%m-%d").unwrap();
     let time = NaiveTime::parse_from_str(time_str, "%H:%M:%S").unwrap();
     let ndt = chrono::NaiveDateTime::new(date, time);
-    Kolkata.from_local_datetime(&ndt).unwrap().with_timezone(&Utc)
+    Kolkata
+        .from_local_datetime(&ndt)
+        .unwrap()
+        .with_timezone(&Utc)
 }
 
 #[tokio::test]
@@ -42,16 +45,13 @@ async fn test_dashboard_and_exception_query_flow() -> Result<()> {
     let pool = setup_test_db().await?;
 
     let unique_code = format!("QTY_{}", &Uuid::now_v7().to_string()[..18]);
-    let org = OrganizationRepository::create(
-        &pool,
-        &unique_code,
-        "Query Test Org",
-        "Asia/Kolkata",
-    )
-    .await?;
+    let org = OrganizationRepository::create(&pool, &unique_code, "Query Test Org", "Asia/Kolkata")
+        .await?;
 
-    let sec = SectionRepository::create(&pool, org.id, "SEC_ACCOUNTS", "Accounts Section", None).await?;
-    let des = DesignationRepository::create(&pool, org.id, "SAO", "Senior Accounts Officer", 1).await?;
+    let sec =
+        SectionRepository::create(&pool, org.id, "SEC_ACCOUNTS", "Accounts Section", None).await?;
+    let des =
+        DesignationRepository::create(&pool, org.id, "SAO", "Senior Accounts Officer", 1).await?;
 
     let rule = AttendanceRuleRepository::create(
         &pool,
@@ -130,7 +130,14 @@ async fn test_dashboard_and_exception_query_flow() -> Result<()> {
         },
     ];
 
-    let calc1 = calculate_attendance_for_employee_date(org.id, emp1.id, date, &rule, &CalendarContext::default(), &p1);
+    let calc1 = calculate_attendance_for_employee_date(
+        org.id,
+        emp1.id,
+        date,
+        &rule,
+        &CalendarContext::default(),
+        &p1,
+    );
     let daily1 = AttendanceDaily {
         id: Uuid::now_v7(),
         organization_id: org.id,
@@ -169,7 +176,14 @@ async fn test_dashboard_and_exception_query_flow() -> Result<()> {
         },
     ];
 
-    let calc2 = calculate_attendance_for_employee_date(org.id, emp2.id, date, &rule, &CalendarContext::default(), &p2);
+    let calc2 = calculate_attendance_for_employee_date(
+        org.id,
+        emp2.id,
+        date,
+        &rule,
+        &CalendarContext::default(),
+        &p2,
+    );
     let daily2 = AttendanceDaily {
         id: Uuid::now_v7(),
         organization_id: org.id,

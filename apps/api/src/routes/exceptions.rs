@@ -7,11 +7,11 @@ use crate::{
 use aims_auth::CurrentUser;
 use aims_database::repositories::exceptions::ExceptionFilter;
 use axum::{
+    Extension, Json, Router,
     extract::{Query, State},
     http::StatusCode,
     response::IntoResponse,
     routing::get,
-    Extension, Json, Router,
 };
 use chrono::NaiveDate;
 use serde::Deserialize;
@@ -51,7 +51,8 @@ pub async fn list_exceptions_handler(
         offset,
     };
 
-    let (items, total) = ExceptionsService::list_exceptions(&state.db, actor.organization_id, filter).await?;
+    let (items, total) =
+        ExceptionsService::list_exceptions(&state.db, actor.organization_id, filter).await?;
     let paginated = PaginatedResponse::new(items, page as u32, page_size as u32, total as u64);
 
     Ok((StatusCode::OK, Json(ApiResponse::ok(paginated))))
