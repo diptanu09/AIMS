@@ -199,16 +199,28 @@ async fn auto_bootstrap_admin(db: &sqlx::PgPool) -> anyhow::Result<()> {
         }
     };
 
-    let role = sqlx::query_scalar::<_, uuid::Uuid>(
-        "SELECT id FROM roles WHERE organization_id = $1 AND name = 'SUPER_ADMIN'",
+    // Ensure SUPER_ADMIN role exists in database
+    let role_id = match sqlx::query_scalar::<_, uuid::Uuid>(
+        "SELECT id FROM roles WHERE organization_id = $1 AND (code = 'SUPER_ADMIN' OR name = 'SUPER_ADMIN')",
     )
     .bind(org.id)
     .fetch_optional(db)
-    .await?;
+    .await? {
+        Some(id) => id,
+        None => {
+            let new_id = uuid::Uuid::now_v7();
+            sqlx::query(
+                "INSERT INTO roles (id, organization_id, code, name, description, is_system) VALUES ($1, $2, 'SUPER_ADMIN', 'SUPER_ADMIN', 'Super Administrator Role', true)",
+            )
+            .bind(new_id)
+            .bind(org.id)
+            .execute(db)
+            .await?;
+            new_id
+        }
+    };
 
-    if let Some(role_id) = role {
-        let _ = UserRepository::assign_role(db, user.id, role_id).await;
-    }
+    let _ = UserRepository::assign_role(db, user.id, role_id).await;
 
     Ok(())
 }
