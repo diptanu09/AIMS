@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use std::env;
 
+#[allow(dead_code)]
 #[derive(Clone, Debug)]
 pub struct Config {
     pub app_name: String,

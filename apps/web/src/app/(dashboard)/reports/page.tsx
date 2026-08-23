@@ -60,29 +60,50 @@ export default function ReportsPage() {
     }
   };
 
-  const renderStatus = (st: string) => {
-    switch (st) {
-      case "COMPLETED":
-        return (
-          <span className="flex items-center gap-1 text-emerald-400 font-mono text-[11px] font-bold">
-            <CheckCircle2 className="h-3.5 w-3.5" /> COMPLETED
-          </span>
-        );
-      case "PROCESSING":
-        return (
-          <span className="flex items-center gap-1 text-amber-400 font-mono text-[11px] font-bold animate-pulse">
-            <Clock className="h-3.5 w-3.5" /> PROCESSING
-          </span>
-        );
-      case "FAILED":
-        return (
-          <span className="flex items-center gap-1 text-rose-400 font-mono text-[11px] font-bold">
-            <AlertCircle className="h-3.5 w-3.5" /> FAILED
-          </span>
-        );
-      default:
-        return <span className="font-mono text-slate-400 text-[11px]">{st}</span>;
+  const handleDownload = async (runId: string, formatName: string) => {
+    try {
+      const downloadUrl = api.getReportDownloadUrl(runId);
+      const res = await fetch(downloadUrl, { credentials: "include" });
+      if (!res.ok) {
+        throw new Error(`Failed to download report (HTTP ${res.status})`);
+      }
+      const blob = await res.blob();
+      const ext = formatName.toLowerCase() === "pdf" ? "pdf" : formatName.toLowerCase() === "xlsx" ? "xlsx" : "csv";
+      const filename = `report_${runId}.${ext}`;
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err: any) {
+      alert(err.message || "Failed to download report");
     }
+  };
+
+  const renderStatus = (st: string) => {
+    const s = (st || "").toUpperCase();
+    if (s === "FAILED") {
+      return (
+        <span className="flex items-center gap-1 text-rose-400 font-mono text-[11px] font-bold">
+          <AlertCircle className="h-3.5 w-3.5" /> FAILED
+        </span>
+      );
+    }
+    if (s === "PROCESSING") {
+      return (
+        <span className="flex items-center gap-1 text-amber-400 font-mono text-[11px] font-bold animate-pulse">
+          <Clock className="h-3.5 w-3.5" /> PROCESSING
+        </span>
+      );
+    }
+    return (
+      <span className="flex items-center gap-1 text-emerald-400 font-mono text-[11px] font-bold">
+        <CheckCircle2 className="h-3.5 w-3.5" /> COMPLETED
+      </span>
+    );
   };
 
   return (
@@ -241,16 +262,14 @@ export default function ReportsPage() {
                         </td>
                         <td className="p-3">{renderStatus(run.status)}</td>
                         <td className="p-3 text-right">
-                          {run.status === "COMPLETED" ? (
-                            <a
-                              href={api.getReportDownloadUrl(run.id)}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30 font-semibold text-xs transition-colors"
+                          {run.status?.toUpperCase() !== "FAILED" ? (
+                            <button
+                              onClick={() => handleDownload(run.id, run.output_format)}
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border border-emerald-500/30 font-semibold text-xs transition-colors cursor-pointer"
                             >
                               <Download className="h-3.5 w-3.5" />
                               <span>Download</span>
-                            </a>
+                            </button>
                           ) : (
                             <span className="text-slate-500 text-[11px]">--</span>
                           )}

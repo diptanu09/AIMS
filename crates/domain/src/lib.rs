@@ -33,6 +33,7 @@ pub enum ImportBatchStatus {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, sqlx::Type)]
 #[sqlx(type_name = "report_run_status", rename_all = "SCREAMING_SNAKE_CASE")]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ReportRunStatus {
     Queued,
     Processing,

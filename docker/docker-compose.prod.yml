@@ -1,25 +1,5 @@
 # docker/docker-compose.prod.yml
 services:
-  aims-postgres:
-    image: postgres:18
-    restart: always
-    environment:
-      POSTGRES_DB: aims
-      POSTGRES_USER: aims_app
-      POSTGRES_PASSWORD: ${DB_APP_PASSWORD:-change_this_password}
-    volumes:
-      - postgres_data:/var/lib/postgresql
-      - ../database/migrations:/docker-entrypoint-initdb.d
-      - ../database/seeds/001_default_roles_permissions.sql:/docker-entrypoint-initdb.d/024_default_roles_permissions.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U aims_app -d aims"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      - aims-internal
-      - production_default
-
   aims-api:
     build:
       context: ..
@@ -31,12 +11,11 @@ services:
       API_PORT: 8080
       SERVER_HOST: 0.0.0.0
       SERVER_PORT: 8080
-      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_password}@aims-postgres:5432/aims
+      DATABASE_URL: postgres://${DB_USER:-postgres}:${DB_PASSWORD:-root@123}@host.docker.internal:5432/AIMS
       SESSION_COOKIE_NAME: aims_session
       ALLOWED_ORIGINS: http://aims.internal,https://aims.internal,http://aims.local,https://aims.local,http://amis.local,https://amis.local,http://localhost
-    depends_on:
-      aims-postgres:
-        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/api/v1/health/live || exit 1"]
       interval: 15s
@@ -53,11 +32,10 @@ services:
     restart: always
     environment:
       ENVIRONMENT: production
-      DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_password}@aims-postgres:5432/aims
+      DATABASE_URL: postgres://${DB_USER:-postgres}:${DB_PASSWORD:-root@123}@host.docker.internal:5432/AIMS
       WORKER_CONCURRENCY: 4
-    depends_on:
-      aims-postgres:
-        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - aims-internal
 

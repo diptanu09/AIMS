@@ -2,7 +2,7 @@ use aims_auth::hash_password;
 use aims_database::repositories::{organizations::OrganizationRepository, users::UserRepository};
 use axum::{
     Router,
-    http::{HeaderValue, Method, header},
+    http::{Method, header},
 };
 use sqlx::postgres::PgPoolOptions;
 use std::{env, sync::Arc};
