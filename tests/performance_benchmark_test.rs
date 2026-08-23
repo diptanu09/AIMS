@@ -19,7 +19,7 @@ use std::time::Instant;
 
 async fn get_test_pool() -> PgPool {
     let db_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "postgres://aims_app:change_this_password@127.0.0.1:5434/aims".to_string());
+        .unwrap_or_else(|_| "postgres://postgres:root@123@127.0.0.1:5432/AIMS?search_path=AIMS".to_string());
     PgPool::connect(&db_url)
         .await
         .expect("Failed to connect to test database")

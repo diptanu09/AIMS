@@ -21,7 +21,7 @@ use uuid::Uuid;
 
 async fn setup_test_db() -> Result<sqlx::PgPool> {
     let db_url = std::env::var("DATABASE_URL")
-        .unwrap_or_else(|_| "postgres://aims_app:change_this_password@127.0.0.1:5434/aims".into());
+        .unwrap_or_else(|_| "postgres://postgres:root@123@127.0.0.1:5432/AIMS?search_path=AIMS".into());
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&db_url)

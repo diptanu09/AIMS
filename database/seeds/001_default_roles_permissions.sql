@@ -21,8 +21,8 @@ INSERT INTO permissions (code, name, module, description) VALUES
 ON CONFLICT (code) DO NOTHING;
 
 -- Create default organization if not exists for seed mapping
-INSERT INTO organizations (code, name, timezone)
-VALUES ('DEFAULT', 'Default Organization', 'Asia/Kolkata')
+INSERT INTO organizations (id, code, name, timezone)
+VALUES ('01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DEFAULT', 'Default Organization', 'Asia/Kolkata')
 ON CONFLICT (code) DO NOTHING;
 
 -- Seed default roles for DEFAULT organization

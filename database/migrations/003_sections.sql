@@ -1,4 +1,4 @@
-CREATE TABLE sections (
+CREATE TABLE IF NOT EXISTS sections (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -19,9 +19,10 @@ CREATE TABLE sections (
         UNIQUE (organization_id, code)
 );
 
-CREATE INDEX idx_sections_org_parent
+CREATE INDEX IF NOT EXISTS idx_sections_org_parent
     ON sections(organization_id, parent_section_id);
 
+DROP TRIGGER IF EXISTS trg_sections_updated_at ON sections;
 CREATE TRIGGER trg_sections_updated_at
 BEFORE UPDATE ON sections
 FOR EACH ROW

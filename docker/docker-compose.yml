@@ -5,18 +5,18 @@ services:
     restart: unless-stopped
 
     environment:
-      POSTGRES_DB: aims
-      POSTGRES_USER: aims_app
-      POSTGRES_PASSWORD: change_this_password
+      POSTGRES_DB: AIMS
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root@123
 
     ports:
-      - "5434:5432"
+      - "5432:5432"
 
     volumes:
       - aims_postgres_data:/var/lib/postgresql
 
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U aims_app -d aims"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d AIMS"]
       interval: 5s
       timeout: 5s
       retries: 10

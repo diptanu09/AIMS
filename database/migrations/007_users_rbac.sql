@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -25,12 +25,13 @@ CREATE TABLE users (
         UNIQUE (organization_id, email)
 );
 
+DROP TRIGGER IF EXISTS trg_users_updated_at ON users;
 CREATE TRIGGER trg_users_updated_at
 BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE roles (
+CREATE TABLE IF NOT EXISTS roles (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -48,12 +49,13 @@ CREATE TABLE roles (
         UNIQUE (organization_id, code)
 );
 
+DROP TRIGGER IF EXISTS trg_roles_updated_at ON roles;
 CREATE TRIGGER trg_roles_updated_at
 BEFORE UPDATE ON roles
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE permissions (
+CREATE TABLE IF NOT EXISTS permissions (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
     code VARCHAR(64) NOT NULL UNIQUE,
     name VARCHAR(128) NOT NULL,
@@ -62,7 +64,7 @@ CREATE TABLE permissions (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE role_permissions (
+CREATE TABLE IF NOT EXISTS role_permissions (
     role_id UUID NOT NULL
         REFERENCES roles(id) ON DELETE CASCADE,
     permission_id UUID NOT NULL
@@ -70,7 +72,7 @@ CREATE TABLE role_permissions (
     PRIMARY KEY (role_id, permission_id)
 );
 
-CREATE TABLE user_roles (
+CREATE TABLE IF NOT EXISTS user_roles (
     user_id UUID NOT NULL
         REFERENCES users(id) ON DELETE CASCADE,
     role_id UUID NOT NULL
@@ -78,7 +80,7 @@ CREATE TABLE user_roles (
     PRIMARY KEY (user_id, role_id)
 );
 
-CREATE TABLE user_section_assignments (
+CREATE TABLE IF NOT EXISTS user_section_assignments (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     user_id UUID NOT NULL
@@ -95,8 +97,8 @@ CREATE TABLE user_section_assignments (
         UNIQUE (user_id, section_id)
 );
 
-CREATE INDEX idx_user_section_assignments_user
+CREATE INDEX IF NOT EXISTS idx_user_section_assignments_user
     ON user_section_assignments(user_id);
 
-CREATE INDEX idx_user_section_assignments_section
+CREATE INDEX IF NOT EXISTS idx_user_section_assignments_section
     ON user_section_assignments(section_id);

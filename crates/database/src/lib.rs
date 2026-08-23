@@ -3,8 +3,19 @@
 pub mod repositories;
 
 use aims_common::{AimsError, Result};
-use sqlx::{PgPool, postgres::PgPoolOptions};
-use std::time::Duration;
+use sqlx::{
+    PgPool,
+    postgres::{PgConnectOptions, PgPoolOptions},
+};
+use std::{str::FromStr, time::Duration};
+
+pub fn parse_connect_options(database_url: &str) -> Result<PgConnectOptions> {
+    let clean_url = database_url.split('?').next().unwrap_or(database_url);
+    let options = PgConnectOptions::from_str(clean_url)
+        .map_err(|e| AimsError::Database(format!("Invalid DATABASE_URL: {}", e)))?
+        .options([("search_path", "\"AIMS\",public")]);
+    Ok(options)
+}
 
 #[derive(Clone)]
 pub struct DbPool {
@@ -13,10 +24,11 @@ pub struct DbPool {
 
 impl DbPool {
     pub async fn connect(database_url: &str) -> Result<Self> {
+        let connect_options = parse_connect_options(database_url)?;
         let pool = PgPoolOptions::new()
             .max_connections(20)
             .acquire_timeout(Duration::from_secs(5))
-            .connect(database_url)
+            .connect_with(connect_options)
             .await
             .map_err(|e| AimsError::Database(format!("Failed to connect to PostgreSQL: {}", e)))?;
 
@@ -36,7 +48,7 @@ mod tests {
     #[tokio::test]
     async fn test_repository_crud_flow() {
         let db_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| {
-            "postgres://aims_app:change_this_password@localhost:5432/aims".into()
+            "postgres://postgres:root@123@localhost:5432/AIMS?search_path=AIMS".into()
         });
 
         let pool_res = DbPool::connect(&db_url).await;

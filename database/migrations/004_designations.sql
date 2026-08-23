@@ -1,4 +1,4 @@
-CREATE TABLE designations (
+CREATE TABLE IF NOT EXISTS designations (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -19,9 +19,10 @@ CREATE TABLE designations (
         UNIQUE (organization_id, code)
 );
 
-CREATE INDEX idx_designations_org_level
+CREATE INDEX IF NOT EXISTS idx_designations_org_level
     ON designations(organization_id, level);
 
+DROP TRIGGER IF EXISTS trg_designations_updated_at ON designations;
 CREATE TRIGGER trg_designations_updated_at
 BEFORE UPDATE ON designations
 FOR EACH ROW

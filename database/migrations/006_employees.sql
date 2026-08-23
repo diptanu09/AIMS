@@ -1,4 +1,4 @@
-CREATE TABLE employees (
+CREATE TABLE IF NOT EXISTS employees (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -48,18 +48,19 @@ CREATE TABLE employees (
         )
 );
 
-CREATE INDEX idx_employees_org_section
+CREATE INDEX IF NOT EXISTS idx_employees_org_section
     ON employees(organization_id, section_id);
 
-CREATE INDEX idx_employees_org_designation
+CREATE INDEX IF NOT EXISTS idx_employees_org_designation
     ON employees(organization_id, designation_id);
 
-CREATE INDEX idx_employees_attendance_device
+CREATE INDEX IF NOT EXISTS idx_employees_attendance_device
     ON employees(
         organization_id,
         attendance_device_user_id
     );
 
+DROP TRIGGER IF EXISTS trg_employees_updated_at ON employees;
 CREATE TRIGGER trg_employees_updated_at
 BEFORE UPDATE ON employees
 FOR EACH ROW

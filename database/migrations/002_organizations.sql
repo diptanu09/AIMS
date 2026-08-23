@@ -1,4 +1,4 @@
-CREATE TABLE organizations (
+CREATE TABLE IF NOT EXISTS organizations (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
     code VARCHAR(32) NOT NULL,
     name VARCHAR(128) NOT NULL,
@@ -10,6 +10,7 @@ CREATE TABLE organizations (
     CONSTRAINT uq_organizations_code UNIQUE (code)
 );
 
+DROP TRIGGER IF EXISTS trg_organizations_updated_at ON organizations;
 CREATE TRIGGER trg_organizations_updated_at
 BEFORE UPDATE ON organizations
 FOR EACH ROW

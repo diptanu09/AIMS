@@ -35,9 +35,11 @@ async fn main() -> anyhow::Result<()> {
 
     let args: Vec<String> = env::args().collect();
 
+    let connect_opts = aims_database::parse_connect_options(&config.database_url)?;
+
     // Check for CLI bootstrap command: cargo run -p aims-api -- admin create [username] [email] [password]
     if args.len() >= 3 && args[1] == "admin" && args[2] == "create" {
-        let db = PgPoolOptions::new().connect(&config.database_url).await?;
+        let db = PgPoolOptions::new().connect_with(connect_opts.clone()).await?;
 
         let username = args.get(3).cloned().unwrap_or_else(|| "admin".to_string());
         let email = args
@@ -109,12 +111,18 @@ async fn main() -> anyhow::Result<()> {
         .max_connections(10)
         .min_connections(2)
         .acquire_timeout(std::time::Duration::from_secs(5))
-        .connect(&config.database_url)
+        .connect_with(connect_opts)
         .await?;
 
     sqlx::query("SELECT 1").execute(&db).await?;
 
     info!("database connection verified");
+
+    if let Err(e) = sqlx::migrate!("../../database/migrations").run(&db).await {
+        tracing::warn!("Migration notice: {:?}", e);
+    } else {
+        info!("database migrations verified and applied");
+    }
 
     if let Err(e) = auto_bootstrap_admin(&db).await {
         tracing::warn!("Auto-bootstrap admin check notice: {:?}", e);

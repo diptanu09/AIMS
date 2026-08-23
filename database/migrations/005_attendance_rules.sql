@@ -1,4 +1,4 @@
-CREATE TABLE attendance_rules (
+CREATE TABLE IF NOT EXISTS attendance_rules (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -50,13 +50,14 @@ CREATE TABLE attendance_rules (
         UNIQUE (organization_id, name, effective_from)
 );
 
-CREATE INDEX idx_attendance_rules_org_effective
+CREATE INDEX IF NOT EXISTS idx_attendance_rules_org_effective
     ON attendance_rules(
         organization_id,
         effective_from,
         effective_to
     );
 
+DROP TRIGGER IF EXISTS trg_attendance_rules_updated_at ON attendance_rules;
 CREATE TRIGGER trg_attendance_rules_updated_at
 BEFORE UPDATE ON attendance_rules
 FOR EACH ROW

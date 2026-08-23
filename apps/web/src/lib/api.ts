@@ -8,6 +8,7 @@ import {
   DashboardSummary,
   DetailedAttendanceRow,
   Employee,
+  Designation,
   HolidayRow,
   LeaveRecordRow,
   PaginatedData,
@@ -218,6 +219,20 @@ export const api = {
       body: JSON.stringify(payload),
     }),
 
+  updateEmployee: (
+    id: string,
+    payload: {
+      first_name?: string;
+      last_name?: string;
+      designation_id?: string;
+      attendance_rule_id?: string;
+    }
+  ) =>
+    request<Employee>(`/employees/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
+
   activateEmployee: (id: string) =>
     request<Employee>(`/employees/${id}/activate`, { method: "POST" }),
 
@@ -233,6 +248,10 @@ export const api = {
         reason: reason || "Section update from web UI",
       }),
     }),
+
+  // Designations List
+  listDesignations: () =>
+    request<Designation[]>("/designations"),
 
   // Sections List
   listSections: () =>

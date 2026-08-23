@@ -298,6 +298,15 @@ export interface Employee {
   created_at: string;
 }
 
+export interface Designation {
+  id: string;
+  organization_id: string;
+  code: string;
+  title: string;
+  level: number;
+  active: boolean;
+}
+
 export interface AttendanceRule {
   id: string;
   organization_id: string;

@@ -11,6 +11,7 @@ ENV SQLX_OFFLINE=true
 COPY Cargo.toml Cargo.lock ./
 COPY apps ./apps
 COPY crates ./crates
+COPY database ./database
 COPY .sqlx ./.sqlx
 
 # Build using BuildKit cache mounts for Cargo registry & build target

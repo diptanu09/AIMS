@@ -13,7 +13,7 @@ use uuid::Uuid;
 
 async fn setup_db() -> sqlx::PgPool {
     let database_url = std::env::var("DATABASE_URL").unwrap_or_else(|_| {
-        "postgres://aims_app:change_this_password@127.0.0.1:5434/aims".to_string()
+        "postgres://postgres:root@123@127.0.0.1:5432/AIMS?search_path=AIMS".to_string()
     });
 
     let pool = PgPoolOptions::new()

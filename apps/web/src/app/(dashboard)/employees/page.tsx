@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { Users, Plus, Search, Filter, RefreshCw, UserCheck, UserX, ArrowRightLeft } from "lucide-react";
 import { api } from "../../../lib/api";
-import { Employee, SectionSummary, AttendanceRule } from "../../../types/api";
+import { Employee, SectionSummary, AttendanceRule, Designation } from "../../../types/api";
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [sectionsList, setSectionsList] = useState<Array<{ id: string; code: string; name: string }>>([]);
   const [rules, setRules] = useState<AttendanceRule[]>([]);
+  const [designationsList, setDesignationsList] = useState<Designation[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -19,6 +20,7 @@ export default function EmployeesPage() {
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState<Employee | null>(null);
+  const [showDesignationModal, setShowDesignationModal] = useState<Employee | null>(null);
 
   // Form State
   const [empCode, setEmpCode] = useState("");
@@ -29,27 +31,33 @@ export default function EmployeesPage() {
   const [selectedDesignation, setSelectedDesignation] = useState("");
   const [selectedRule, setSelectedRule] = useState("");
   const [newSectionId, setNewSectionId] = useState("");
+  const [newDesignationId, setNewDesignationId] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const [empRes, secList, ruleRes] = await Promise.all([
+      const [empRes, secList, ruleRes, desList] = await Promise.all([
         api.listEmployees({ search: search || undefined, section_id: sectionFilter || undefined, page_size: 200 }),
         api.listSections().catch(() => []),
         api.listRules().catch(() => []),
+        api.listDesignations().catch(() => []),
       ]);
       setEmployees(empRes.items);
       setTotal(empRes.total);
       setSectionsList(secList);
       setRules(ruleRes);
+      setDesignationsList(desList);
 
-      if (secList.length > 0) {
+      if (secList.length > 0 && !selectedSection) {
         setSelectedSection(secList[0].id);
         setNewSectionId(secList[0].id);
       }
-      if (ruleRes.length > 0) {
+      if (ruleRes.length > 0 && !selectedRule) {
         setSelectedRule(ruleRes[0].id);
+      }
+      if (desList.length > 0 && !selectedDesignation) {
+        setSelectedDesignation(desList[0].id);
       }
     } catch (err) {
       console.error("Failed to load employee master:", err);
@@ -107,6 +115,29 @@ export default function EmployeesPage() {
   const openTransferModal = (emp: Employee) => {
     setShowTransferModal(emp);
     setNewSectionId(emp.section_id);
+  };
+
+  const openDesignationModal = (emp: Employee) => {
+    setShowDesignationModal(emp);
+    setNewDesignationId(emp.designation_id || (designationsList.length > 0 ? designationsList[0].id : ""));
+  };
+
+  const handleUpdateDesignation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!showDesignationModal) return;
+
+    setSubmitting(true);
+    try {
+      await api.updateEmployee(showDesignationModal.id, {
+        designation_id: newDesignationId,
+      });
+      setShowDesignationModal(null);
+      await loadData();
+    } catch (err: any) {
+      alert(err.message || "Failed to update employee designation");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleToggleStatus = async (emp: Employee) => {
@@ -246,6 +277,14 @@ export default function EmployeesPage() {
                             <span>Update Section</span>
                           </button>
                           <button
+                            onClick={() => openDesignationModal(emp)}
+                            className="p-1.5 rounded bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 transition-colors flex items-center gap-1 text-[11px] px-2"
+                            title="Update Designation Set"
+                          >
+                            <UserCheck className="h-3.5 w-3.5" />
+                            <span>Update Designation</span>
+                          </button>
+                          <button
                             onClick={() => handleToggleStatus(emp)}
                             className={`p-1.5 rounded transition-colors border ${
                               emp.is_active
@@ -352,6 +391,25 @@ export default function EmployeesPage() {
 
               <div>
                 <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                  Designation Set
+                </label>
+                <select
+                  value={selectedDesignation}
+                  onChange={(e) => setSelectedDesignation(e.target.value)}
+                  required
+                  className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none"
+                >
+                  <option value="">Select Designation</option>
+                  {designationsList.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.title} ({d.code})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
                   Shift Attendance Rule
                 </label>
                 <select
@@ -430,6 +488,55 @@ export default function EmployeesPage() {
                   className="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs px-4 py-2 rounded-lg transition-colors shadow-lg shadow-indigo-600/30"
                 >
                   {submitting ? "Transferring..." : "Confirm Transfer"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Update Designation Modal */}
+      {showDesignationModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#151D2A] border border-[#1E293B] rounded-2xl p-6 w-full max-w-sm space-y-4 shadow-2xl">
+            <h2 className="text-sm font-bold text-slate-100">
+              Update Designation: {showDesignationModal.first_name} {showDesignationModal.last_name || ""} ({showDesignationModal.employee_code})
+            </h2>
+
+            <form onSubmit={handleUpdateDesignation} className="space-y-4">
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+                  Select Designation Set
+                </label>
+                <select
+                  value={newDesignationId}
+                  onChange={(e) => setNewDesignationId(e.target.value)}
+                  required
+                  className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none"
+                >
+                  <option value="">Select Designation</option>
+                  {designationsList.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.title} ({d.code})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDesignationModal(null)}
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2 rounded-lg transition-colors shadow-lg shadow-emerald-600/30"
+                >
+                  {submitting ? "Updating..." : "Confirm Designation"}
                 </button>
               </div>
             </form>
