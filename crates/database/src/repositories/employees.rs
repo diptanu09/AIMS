@@ -500,7 +500,7 @@ impl EmployeeRepository {
         );
 
         // Fetch items query
-        builder.push(" ORDER BY e.first_name ASC, e.last_name ASC LIMIT ");
+        builder.push(" ORDER BY e.created_at ASC LIMIT ");
         builder.push_bind(limit);
         builder.push(" OFFSET ");
         builder.push_bind(offset);

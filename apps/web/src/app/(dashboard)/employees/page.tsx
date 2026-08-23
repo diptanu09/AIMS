@@ -7,7 +7,7 @@ import { Employee, SectionSummary, AttendanceRule } from "../../../types/api";
 
 export default function EmployeesPage() {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [sections, setSections] = useState<SectionSummary[]>([]);
+  const [sectionsList, setSectionsList] = useState<Array<{ id: string; code: string; name: string }>>([]);
   const [rules, setRules] = useState<AttendanceRule[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -34,18 +34,19 @@ export default function EmployeesPage() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [empRes, secRes, ruleRes] = await Promise.all([
-        api.listEmployees({ search: search || undefined, section_id: sectionFilter || undefined }),
-        api.getSectionSummaries("2026-08-22"),
-        api.listRules(),
+      const [empRes, secList, ruleRes] = await Promise.all([
+        api.listEmployees({ search: search || undefined, section_id: sectionFilter || undefined, page_size: 200 }),
+        api.listSections().catch(() => []),
+        api.listRules().catch(() => []),
       ]);
       setEmployees(empRes.items);
       setTotal(empRes.total);
-      setSections(secRes);
+      setSectionsList(secList);
       setRules(ruleRes);
-      if (secRes.length > 0) {
-        setSelectedSection(secRes[0].section_id);
-        setNewSectionId(secRes[0].section_id);
+
+      if (secList.length > 0) {
+        setSelectedSection(secList[0].id);
+        setNewSectionId(secList[0].id);
       }
       if (ruleRes.length > 0) {
         setSelectedRule(ruleRes[0].id);
@@ -97,10 +98,15 @@ export default function EmployeesPage() {
       setShowTransferModal(null);
       await loadData();
     } catch (err: any) {
-      alert(err.message || "Failed to transfer employee");
+      alert(err.message || "Failed to transfer employee section");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const openTransferModal = (emp: Employee) => {
+    setShowTransferModal(emp);
+    setNewSectionId(emp.section_id);
   };
 
   const handleToggleStatus = async (emp: Employee) => {
@@ -126,7 +132,7 @@ export default function EmployeesPage() {
             <span>Employee Master Administration</span>
           </h1>
           <p className="text-xs text-slate-400">
-            Manage employee profiles, section assignments, biometric device IDs & shift rules
+            Manage employee profiles, section assignments, biometric device IDs & shift rules ({total} Total Employees)
           </p>
         </div>
         <button
@@ -161,10 +167,10 @@ export default function EmployeesPage() {
             onChange={(e) => setSectionFilter(e.target.value)}
             className="bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
           >
-            <option value="">All Sections</option>
-            {sections.map((sec) => (
-              <option key={sec.section_id} value={sec.section_id}>
-                {sec.section_name}
+            <option value="">All Sections ({sectionsList.length})</option>
+            {sectionsList.map((sec) => (
+              <option key={sec.id} value={sec.id}>
+                {sec.name}
               </option>
             ))}
           </select>
@@ -185,6 +191,7 @@ export default function EmployeesPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-[#1E293B]/60 text-slate-400 uppercase font-semibold text-[10px]">
                 <tr>
+                  <th className="p-3 text-center w-12">#</th>
                   <th className="p-3">Employee</th>
                   <th className="p-3 text-center">Attendance Device ID</th>
                   <th className="p-3">Section</th>
@@ -196,13 +203,16 @@ export default function EmployeesPage() {
               <tbody className="divide-y divide-[#1E293B] text-slate-200">
                 {employees.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-slate-500">
+                    <td colSpan={7} className="p-8 text-center text-slate-500">
                       No employee records found matching query.
                     </td>
                   </tr>
                 ) : (
-                  employees.map((emp) => (
+                  employees.map((emp, index) => (
                     <tr key={emp.id} className="hover:bg-[#1E293B]/30 transition-colors">
+                      <td className="p-3 text-center font-mono text-slate-500 text-[11px] font-semibold">
+                        {index + 1}
+                      </td>
                       <td className="p-3">
                         <div className="font-semibold text-slate-100">
                           {emp.first_name} {emp.last_name || ""}
@@ -212,7 +222,7 @@ export default function EmployeesPage() {
                       <td className="p-3 text-center font-mono font-bold text-cyan-400">
                         {emp.attendance_device_user_id}
                       </td>
-                      <td className="p-3 text-slate-300">{emp.section_name || "Assigned Section"}</td>
+                      <td className="p-3 text-slate-300 font-medium">{emp.section_name || "Assigned Section"}</td>
                       <td className="p-3 text-slate-400">{emp.designation_name || "Staff"}</td>
                       <td className="p-3 text-center">
                         {emp.is_active ? (
@@ -228,11 +238,12 @@ export default function EmployeesPage() {
                       <td className="p-3 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={() => setShowTransferModal(emp)}
-                            className="p-1.5 rounded bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 transition-colors"
-                            title="Transfer Section"
+                            onClick={() => openTransferModal(emp)}
+                            className="p-1.5 rounded bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 transition-colors flex items-center gap-1 text-[11px] px-2"
+                            title="Update Section Assignment"
                           >
                             <ArrowRightLeft className="h-3.5 w-3.5" />
+                            <span>Update Section</span>
                           </button>
                           <button
                             onClick={() => handleToggleStatus(emp)}
@@ -331,9 +342,9 @@ export default function EmployeesPage() {
                   required
                   className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none"
                 >
-                  {sections.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
+                  {sectionsList.map((sec) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
                     </option>
                   ))}
                 </select>
@@ -383,7 +394,7 @@ export default function EmployeesPage() {
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
           <div className="bg-[#151D2A] border border-[#1E293B] rounded-2xl p-6 w-full max-w-sm space-y-4 shadow-2xl">
             <h2 className="text-sm font-bold text-slate-100">
-              Transfer Employee: {showTransferModal.first_name} {showTransferModal.last_name || ""}
+              Update Section: {showTransferModal.first_name} {showTransferModal.last_name || ""} ({showTransferModal.employee_code})
             </h2>
 
             <form onSubmit={handleTransfer} className="space-y-4">
@@ -397,9 +408,9 @@ export default function EmployeesPage() {
                   required
                   className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none"
                 >
-                  {sections.map((sec) => (
-                    <option key={sec.section_id} value={sec.section_id}>
-                      {sec.section_name}
+                  {sectionsList.map((sec) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
                     </option>
                   ))}
                 </select>

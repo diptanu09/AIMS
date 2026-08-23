@@ -180,11 +180,12 @@ export const api = {
     }),
 
   // Employee Master Administration
-  listEmployees: (params?: { search?: string; section_id?: string; is_active?: boolean }) => {
+  listEmployees: (params?: { search?: string; section_id?: string; is_active?: boolean; page_size?: number }) => {
     const query = new URLSearchParams();
     if (params?.search) query.set("search", params.search);
     if (params?.section_id) query.set("section_id", params.section_id);
     if (params?.is_active !== undefined) query.set("is_active", String(params.is_active));
+    if (params?.page_size) query.set("page_size", String(params.page_size));
     return request<PaginatedData<Employee>>(`/employees?${query.toString()}`);
   },
 
@@ -208,11 +209,19 @@ export const api = {
   deactivateEmployee: (id: string) =>
     request<Employee>(`/employees/${id}/deactivate`, { method: "POST" }),
 
-  transferEmployee: (id: string, new_section_id: string) =>
+  transferEmployee: (id: string, new_section_id: string, effective_date?: string, reason?: string) =>
     request<Employee>(`/employees/${id}/transfer`, {
       method: "POST",
-      body: JSON.stringify({ new_section_id }),
+      body: JSON.stringify({
+        new_section_id,
+        effective_date: effective_date || new Date().toISOString().split("T")[0],
+        reason: reason || "Section update from web UI",
+      }),
     }),
+
+  // Sections List
+  listSections: () =>
+    request<Array<{ id: string; code: string; name: string }>>("/sections"),
 
   // Shift Rules
   listRules: () => request<AttendanceRule[]>("/attendance-rules"),

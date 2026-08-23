@@ -55,7 +55,10 @@ with open(input_file, mode="r", encoding="utf-8-sig") as f:
         })
 
 sql_lines = []
-sql_lines.append("-- Section Upserts")
+sql_lines.append("-- Reset and Truncate Employees Table")
+sql_lines.append("TRUNCATE TABLE employees CASCADE;")
+
+sql_lines.append("\n-- Section Upserts")
 for dep, code in sections.items():
     dep_escaped = dep.replace("'", "''")
     sql_lines.append(f"""
@@ -74,7 +77,7 @@ ON CONFLICT (organization_id, code) DO UPDATE SET title = EXCLUDED.title;
 """.strip())
 
 sql_lines.append("\n-- Employee Upserts")
-for emp in employees:
+for idx, emp in enumerate(employees):
     fn = emp["first_name"].replace("'", "''")
     ln = emp["last_name"].replace("'", "''")
     em_sql = f"'{emp['email'].replace('\'', '\'\'')}'" if emp["email"] else "NULL"
@@ -106,15 +109,10 @@ BEGIN
     VALUES (
         gen_random_uuid(), '{org_id}', '{emp_id}', '{emp_id}',
         '{fn}', '{ln}', {em_sql}, v_sec_id, v_des_id,
-        '{default_rule_id}', CURRENT_DATE, 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
-    )
-    ON CONFLICT (organization_id, attendance_device_user_id) DO UPDATE SET
-        first_name = EXCLUDED.first_name,
-        last_name = EXCLUDED.last_name,
-        email = COALESCE(EXCLUDED.email, employees.email),
-        section_id = EXCLUDED.section_id,
-        designation_id = EXCLUDED.designation_id,
-        updated_at = CURRENT_TIMESTAMP;
+        '{default_rule_id}', CURRENT_DATE, 'ACTIVE',
+        CURRENT_TIMESTAMP + ({idx} * INTERVAL '1 millisecond'),
+        CURRENT_TIMESTAMP + ({idx} * INTERVAL '1 millisecond')
+    );
 END $$;
 """.strip())
 
