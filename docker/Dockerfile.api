@@ -1,4 +1,5 @@
-# docker/Dockerfile.api
+# syntax=docker/dockerfile:1
+# docker/Dockerfile.api - Optimized Incremental Build
 FROM rust:1-slim as builder
 
 WORKDIR /usr/src/aims
@@ -12,7 +13,11 @@ COPY apps ./apps
 COPY crates ./crates
 COPY .sqlx ./.sqlx
 
-RUN cargo build --release --package aims-api
+# Build using BuildKit cache mounts for Cargo registry & build target
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/src/aims/target \
+    cargo build --release --package aims-api && \
+    cp /usr/src/aims/target/release/aims-api /usr/src/aims/aims-api-bin
 
 FROM debian:bookworm-slim
 
@@ -20,7 +25,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y ca-certificates libssl3 postgresql-client curl && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/src/aims/target/release/aims-api /app/aims-api
+COPY --from=builder /usr/src/aims/aims-api-bin /app/aims-api
 COPY database/migrations /app/migrations
 
 EXPOSE 8080

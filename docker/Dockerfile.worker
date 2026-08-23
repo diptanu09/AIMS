@@ -1,4 +1,5 @@
-# docker/Dockerfile.worker
+# syntax=docker/dockerfile:1
+# docker/Dockerfile.worker - Optimized Incremental Build
 FROM rust:1-slim as builder
 
 WORKDIR /usr/src/aims
@@ -12,7 +13,11 @@ COPY apps ./apps
 COPY crates ./crates
 COPY .sqlx ./.sqlx
 
-RUN cargo build --release --package aims_worker
+# Build using BuildKit cache mounts for Cargo registry & build target
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/src/aims/target \
+    cargo build --release --package aims_worker && \
+    cp /usr/src/aims/target/release/aims_worker /usr/src/aims/aims-worker-bin
 
 FROM debian:bookworm-slim
 
@@ -20,6 +25,6 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y ca-certificates libssl3 && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/src/aims/target/release/aims_worker /app/aims-worker
+COPY --from=builder /usr/src/aims/aims-worker-bin /app/aims-worker
 
 ENTRYPOINT ["/app/aims-worker"]
