@@ -51,7 +51,7 @@ pub fn parse_monthly_matrix_csv(
     // 2. Find header row (starts with "Attendance ID")
     let mut header_row_idx = None;
     for (idx, line) in lines.iter().enumerate() {
-        if line.contains("Attendance ID") && line.contains("In-Time") || line.contains("1") {
+        if line.contains("Attendance ID") {
             header_row_idx = Some(idx);
             break;
         }

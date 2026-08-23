@@ -104,16 +104,15 @@ pub fn validate_parsed_punches(
 
         if is_unknown_emp {
             summary.unknown_employees += 1;
-            summary.errors.push(ImportRowError {
+            summary.warnings_count += 1;
+            summary.warnings.push(ImportWarning {
                 row_number: p.source_row_number,
                 raw_text: p.raw_text.clone(),
-                error_type: "UNKNOWN_EMPLOYEE".into(),
                 message: format!(
-                    "Attendance Device User ID '{}' not found in active employee master",
+                    "Attendance Device User ID '{}' will be auto-registered into employee master",
                     p.attendance_device_user_id
                 ),
             });
-            continue;
         }
 
         if is_future {

@@ -131,7 +131,7 @@ export default function DashboardLayout({
       href: "/import",
       icon: UploadCloud,
       color: "text-cyan-400",
-      show: hasPermission("import.execute"),
+      show: true,
     },
   ];
 
