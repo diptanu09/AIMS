@@ -116,6 +116,10 @@ async fn main() -> anyhow::Result<()> {
 
     info!("database connection verified");
 
+    if let Err(e) = auto_bootstrap_admin(&db).await {
+        tracing::warn!("Auto-bootstrap admin check notice: {:?}", e);
+    }
+
     let state = AppState {
         config: Arc::new(config.clone()),
         db,
@@ -157,6 +161,54 @@ async fn main() -> anyhow::Result<()> {
     );
 
     axum::serve(listener, app).await?;
+
+    Ok(())
+}
+
+async fn auto_bootstrap_admin(db: &sqlx::PgPool) -> anyhow::Result<()> {
+    let username = "admin";
+    let email = "admin@aims.internal";
+    let password = "Admin@Aims123!";
+
+    let org = match OrganizationRepository::find_by_code(db, "DEFAULT").await? {
+        Some(o) => o,
+        None => {
+            OrganizationRepository::create(
+                db,
+                "DEFAULT",
+                "Default Organization",
+                "Asia/Kolkata",
+            )
+            .await?
+        }
+    };
+
+    let user = match UserRepository::find_by_username(db, username).await? {
+        Some(u) => u,
+        None => {
+            let password_hash = hash_password(password)?;
+            UserRepository::create(
+                db,
+                org.id,
+                username,
+                email,
+                &password_hash,
+                "System Administrator",
+            )
+            .await?
+        }
+    };
+
+    let role = sqlx::query_scalar::<_, uuid::Uuid>(
+        "SELECT id FROM roles WHERE organization_id = $1 AND name = 'SUPER_ADMIN'",
+    )
+    .bind(org.id)
+    .fetch_optional(db)
+    .await?;
+
+    if let Some(role_id) = role {
+        let _ = UserRepository::assign_role(db, user.id, role_id).await;
+    }
 
     Ok(())
 }

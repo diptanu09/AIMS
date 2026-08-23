@@ -10,6 +10,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
       - ../database/migrations:/docker-entrypoint-initdb.d
+      - ../database/seeds/001_default_roles_permissions.sql:/docker-entrypoint-initdb.d/024_default_roles_permissions.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U aims_app -d aims"]
       interval: 10s
@@ -17,6 +18,7 @@ services:
       retries: 5
     networks:
       - aims-internal
+      - production_default
 
   aims-api:
     build:
@@ -31,7 +33,7 @@ services:
       SERVER_PORT: 8080
       DATABASE_URL: postgres://aims_app:${DB_APP_PASSWORD:-change_this_password}@aims-postgres:5432/aims
       SESSION_COOKIE_NAME: aims_session
-      ALLOWED_ORIGINS: http://aims.internal,https://aims.internal,http://localhost
+      ALLOWED_ORIGINS: http://aims.internal,https://aims.internal,http://aims.local,https://aims.local,http://amis.local,https://amis.local,http://localhost
     depends_on:
       aims-postgres:
         condition: service_healthy
@@ -42,6 +44,7 @@ services:
       retries: 3
     networks:
       - aims-internal
+      - production_default
 
   aims-worker:
     build:
@@ -70,6 +73,7 @@ services:
       - aims-api
     networks:
       - aims-internal
+      - production_default
 
   aims-proxy:
     image: caddy:2-alpine
@@ -95,3 +99,5 @@ volumes:
 networks:
   aims-internal:
     driver: bridge
+  production_default:
+    external: true

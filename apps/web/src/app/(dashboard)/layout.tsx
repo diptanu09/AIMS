@@ -292,14 +292,14 @@ export default function DashboardLayout({
             {/* Profile Avatar */}
             <div className="flex items-center gap-3 pl-2 border-l border-slate-800">
               <div className="text-right hidden sm:block">
-                <p className="text-xs font-semibold text-slate-100">{user.username}</p>
+                <p className="text-xs font-semibold text-slate-100">{user?.username || "Admin"}</p>
                 <p className="text-[10px] text-indigo-400 font-mono font-medium">
-                  {user.roles.join(" • ") || "SUPER_ADMIN"}
+                  {user?.roles?.join(" • ") || "SUPER_ADMIN"}
                 </p>
               </div>
               <div className="h-9 w-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 p-0.5 shadow-md shadow-indigo-500/20">
                 <div className="h-full w-full rounded-full bg-[#151D2A] flex items-center justify-center font-bold text-xs text-indigo-300">
-                  {user.username.substring(0, 2).toUpperCase()}
+                  {(user?.username || "Admin").substring(0, 2).toUpperCase()}
                 </div>
               </div>
             </div>

@@ -10,7 +10,7 @@ use axum::{
 use serde::Deserialize;
 use uuid::Uuid;
 
-use crate::{error::ErrorResponse, state::AppState};
+use crate::{api::response::ApiResponse, error::ErrorResponse, state::AppState};
 
 pub fn routes() -> Router<AppState> {
     Router::new()
@@ -43,7 +43,7 @@ async fn list_scheduled_reports(
             )
         })?;
 
-    Ok(Json(records))
+    Ok(Json(ApiResponse::ok(records)))
 }
 
 async fn create_scheduled_report(
@@ -74,5 +74,5 @@ async fn create_scheduled_report(
         )
     })?;
 
-    Ok((StatusCode::CREATED, Json(record)))
+    Ok((StatusCode::CREATED, Json(ApiResponse::ok(record))))
 }

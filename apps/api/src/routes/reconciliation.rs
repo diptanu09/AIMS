@@ -12,7 +12,7 @@ use axum::{
 use chrono::NaiveDate;
 use uuid::Uuid;
 
-use crate::{error::ErrorResponse, state::AppState};
+use crate::{api::response::ApiResponse, error::ErrorResponse, state::AppState};
 
 pub fn routes() -> Router<AppState> {
     Router::new()
@@ -26,7 +26,7 @@ async fn get_summary(
 ) -> std::result::Result<impl IntoResponse, (StatusCode, Json<ErrorResponse>)> {
     let mock_discrepancies = get_mock_discrepancies(actor.organization_id);
     let summary = calculate_reconciliation_summary("August 2026".to_string(), 12845, &mock_discrepancies);
-    Ok(Json(summary))
+    Ok(Json(ApiResponse::ok(summary)))
 }
 
 async fn get_discrepancies(
@@ -34,7 +34,7 @@ async fn get_discrepancies(
     Extension(actor): Extension<CurrentUser>,
 ) -> std::result::Result<impl IntoResponse, (StatusCode, Json<ErrorResponse>)> {
     let mock_discrepancies = get_mock_discrepancies(actor.organization_id);
-    Ok(Json(mock_discrepancies))
+    Ok(Json(ApiResponse::ok(mock_discrepancies)))
 }
 
 fn get_mock_discrepancies(org_id: Uuid) -> Vec<ReconciliationDiscrepancy> {

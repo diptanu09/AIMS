@@ -39,15 +39,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const hasPermission = (permission: string) => {
     if (!user) return false;
-    if (user.roles.includes("SUPER_ADMIN") || user.permissions.includes("all")) return true;
-    return user.permissions.includes(permission);
+    const roles = user.roles || [];
+    const permissions = user.permissions || [];
+    if (roles.includes("SUPER_ADMIN") || permissions.includes("all")) return true;
+    return permissions.includes(permission);
   };
 
   const canAccessSection = (sectionId: string) => {
     if (!user) return false;
-    if (user.roles.includes("SUPER_ADMIN") || user.permissions.includes("attendance.view.all"))
+    const roles = user.roles || [];
+    const permissions = user.permissions || [];
+    const sectionIds = user.section_ids || [];
+    if (roles.includes("SUPER_ADMIN") || permissions.includes("attendance.view.all"))
       return true;
-    return user.section_ids.includes(sectionId);
+    return sectionIds.includes(sectionId);
   };
 
   return (

@@ -285,4 +285,35 @@ export const api = {
 
   markNotificationRead: (id: string) =>
     request<void>(`/notifications/${id}/read`, { method: "POST" }),
+
+  // Biometric CSV/XLSX Import
+  uploadImportPreview: async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`${API_BASE}/imports/preview`, {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+    });
+    if (!res.ok) {
+      throw new Error(`Import preview failed with status ${res.status}`);
+    }
+    const json = await res.json();
+    return json.data;
+  },
+
+  commitImport: async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch(`${API_BASE}/imports/commit`, {
+      method: "POST",
+      body: formData,
+      credentials: "include",
+    });
+    if (!res.ok) {
+      throw new Error(`Import commit failed with status ${res.status}`);
+    }
+    const json = await res.json();
+    return json.data;
+  },
 };

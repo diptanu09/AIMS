@@ -9,7 +9,7 @@ use axum::{
 };
 use uuid::Uuid;
 
-use crate::{error::ErrorResponse, state::AppState};
+use crate::{api::response::ApiResponse, error::ErrorResponse, state::AppState};
 
 pub fn routes() -> Router<AppState> {
     Router::new()
@@ -34,7 +34,7 @@ async fn list_notifications(
             )
         })?;
 
-    Ok(Json(records))
+    Ok(Json(ApiResponse::ok(records)))
 }
 
 async fn mark_read(
