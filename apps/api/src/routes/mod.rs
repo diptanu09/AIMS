@@ -65,7 +65,9 @@ pub fn router(state: AppState) -> Router<AppState> {
         )
         .route(
             "/sections/{id}",
-            get(sections::get_section).patch(sections::update_section),
+            get(sections::get_section)
+                .patch(sections::update_section)
+                .put(sections::update_section),
         )
         .route("/sections/{id}/activate", post(sections::activate_section))
         .route(
@@ -95,7 +97,9 @@ pub fn router(state: AppState) -> Router<AppState> {
         )
         .route(
             "/designations/{id}",
-            get(designations::get_designation).patch(designations::update_designation),
+            get(designations::get_designation)
+                .patch(designations::update_designation)
+                .put(designations::update_designation),
         )
         .route(
             "/designations/{id}/activate",
@@ -112,7 +116,9 @@ pub fn router(state: AppState) -> Router<AppState> {
         )
         .route(
             "/attendance-rules/{id}",
-            get(attendance_rules::get_rule).patch(attendance_rules::update_rule),
+            get(attendance_rules::get_rule)
+                .patch(attendance_rules::update_rule)
+                .put(attendance_rules::update_rule),
         )
         // Employees
         .route(
@@ -121,7 +127,9 @@ pub fn router(state: AppState) -> Router<AppState> {
         )
         .route(
             "/employees/{id}",
-            get(employees::get_employee).patch(employees::update_employee),
+            get(employees::get_employee)
+                .patch(employees::update_employee)
+                .put(employees::update_employee),
         )
         .route(
             "/employees/{id}/activate",
