@@ -166,7 +166,11 @@ pub struct Employee {
     pub email: Option<String>,
     pub mobile: Option<String>,
     pub section_id: Uuid,
+    #[sqlx(default)]
+    pub section_name: Option<String>,
     pub designation_id: Uuid,
+    #[sqlx(default)]
+    pub designation_name: Option<String>,
     pub attendance_rule_id: Uuid,
     pub joining_date: NaiveDate,
     pub leaving_date: Option<NaiveDate>,

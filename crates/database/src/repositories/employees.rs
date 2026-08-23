@@ -426,77 +426,81 @@ impl EmployeeRepository {
         let limit = page_size.clamp(1, 100) as i64;
         let offset = ((page - 1) as i64) * limit;
 
-        let mut builder: QueryBuilder<Postgres> = QueryBuilder::new(
+        let mut builder: QueryBuilder<'_, Postgres> = QueryBuilder::new(
             r#"
-            SELECT id, organization_id, employee_code, attendance_device_user_id,
-                   first_name, middle_name, last_name, email, mobile, section_id,
-                   designation_id, attendance_rule_id, joining_date, leaving_date,
-                   status, created_at, updated_at
-            FROM employees
-            WHERE organization_id =
+            SELECT e.id, e.organization_id, e.employee_code, e.attendance_device_user_id,
+                   e.first_name, e.middle_name, e.last_name, e.email, e.mobile,
+                   e.section_id, s.name as section_name,
+                   e.designation_id, d.title as designation_name,
+                   e.attendance_rule_id, e.joining_date, e.leaving_date,
+                   e.status, e.created_at, e.updated_at
+            FROM employees e
+            LEFT JOIN sections s ON e.section_id = s.id
+            LEFT JOIN designations d ON e.designation_id = d.id
+            WHERE e.organization_id = 
             "#,
         );
         builder.push_bind(organization_id);
 
         if let Some(search) = filter.search {
             let pattern = format!("%{}%", search);
-            builder.push(" AND (employee_code ILIKE ");
+            builder.push(" AND (e.employee_code ILIKE ");
             builder.push_bind(pattern.clone());
-            builder.push(" OR attendance_device_user_id ILIKE ");
+            builder.push(" OR e.attendance_device_user_id ILIKE ");
             builder.push_bind(pattern.clone());
-            builder.push(" OR first_name ILIKE ");
+            builder.push(" OR e.first_name ILIKE ");
             builder.push_bind(pattern.clone());
-            builder.push(" OR middle_name ILIKE ");
+            builder.push(" OR e.middle_name ILIKE ");
             builder.push_bind(pattern.clone());
-            builder.push(" OR last_name ILIKE ");
+            builder.push(" OR e.last_name ILIKE ");
             builder.push_bind(pattern.clone());
             builder.push(")");
         }
 
         if let Some(sec_id) = filter.section_id {
-            builder.push(" AND section_id = ");
+            builder.push(" AND e.section_id = ");
             builder.push_bind(sec_id);
         }
 
         if let Some(ref allowed_secs) = filter.allowed_section_ids {
-            builder.push(" AND section_id = ANY(");
+            builder.push(" AND e.section_id = ANY(");
             builder.push_bind(allowed_secs);
             builder.push(")");
         }
 
         if let Some(des_id) = filter.designation_id {
-            builder.push(" AND designation_id = ");
+            builder.push(" AND e.designation_id = ");
             builder.push_bind(des_id);
         }
 
         if let Some(st) = filter.status {
-            builder.push(" AND status = ");
+            builder.push(" AND e.status = ");
             builder.push_bind(st);
         }
 
         if let Some(rule_id) = filter.attendance_rule_id {
-            builder.push(" AND attendance_rule_id = ");
+            builder.push(" AND e.attendance_rule_id = ");
             builder.push_bind(rule_id);
         }
 
         if let Some(from_date) = filter.joining_date_from {
-            builder.push(" AND joining_date >= ");
+            builder.push(" AND e.joining_date >= ");
             builder.push_bind(from_date);
         }
 
         if let Some(to_date) = filter.joining_date_to {
-            builder.push(" AND joining_date <= ");
+            builder.push(" AND e.joining_date <= ");
             builder.push_bind(to_date);
         }
 
         // Count query
         let count_sql = builder.sql().replace(
-            "SELECT id, organization_id, employee_code, attendance_device_user_id,\n                   first_name, middle_name, last_name, email, mobile, section_id,\n                   designation_id, attendance_rule_id, joining_date, leaving_date,\n                   status, created_at, updated_at",
-            "SELECT COUNT(*)"
+            "SELECT e.id, e.organization_id, e.employee_code, e.attendance_device_user_id,\n                   e.first_name, e.middle_name, e.last_name, e.email, e.mobile,\n                   e.section_id, s.name as section_name,\n                   e.designation_id, d.title as designation_name,\n                   e.attendance_rule_id, e.joining_date, e.leaving_date,\n                   e.status, e.created_at, e.updated_at\n            FROM employees e\n            LEFT JOIN sections s ON e.section_id = s.id\n            LEFT JOIN designations d ON e.designation_id = d.id",
+            "SELECT COUNT(*)\n            FROM employees e\n            LEFT JOIN sections s ON e.section_id = s.id\n            LEFT JOIN designations d ON e.designation_id = d.id"
         );
 
         // Fetch items query
-        builder.push(" ORDER BY first_name ASC, last_name ASC LIMIT ");
+        builder.push(" ORDER BY e.first_name ASC, e.last_name ASC LIMIT ");
         builder.push_bind(limit);
         builder.push(" OFFSET ");
         builder.push_bind(offset);
