@@ -238,17 +238,25 @@ impl AttendanceQueryRepository {
         .map_err(|e| AimsError::Database(format!("Failed to query section: {}", e)))?
         .ok_or_else(|| AimsError::NotFound("Section not found".into()))?;
 
-        let officers = sqlx::query!(
+        #[derive(sqlx::FromRow)]
+        struct OfficerRow {
+            name: Option<String>,
+            designation_title: String,
+        }
+
+        let officers = sqlx::query_as::<_, OfficerRow>(
             r#"
-            SELECT
+            SELECT DISTINCT
                 CONCAT(e.first_name, ' ', COALESCE(e.last_name, '')) AS name,
                 d.title AS designation_title
             FROM employees e
             JOIN designations d ON e.designation_id = d.id
-            WHERE e.section_id = $1 AND e.status = 'ACTIVE'
+            LEFT JOIN section_officer_assignments soa ON soa.employee_id = e.id
+            WHERE (e.section_id = $1 OR soa.section_id = $1)
+              AND e.status = 'ACTIVE'
             "#,
-            section_id
         )
+        .bind(section_id)
         .fetch_all(pool)
         .await
         .map_err(|e| AimsError::Database(format!("Failed to query section officers: {}", e)))?;

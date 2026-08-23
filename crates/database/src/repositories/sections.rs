@@ -1,5 +1,6 @@
 use aims_common::{AimsError, Result};
 use aims_domain::Section;
+use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 use uuid::Uuid;
 
@@ -225,4 +226,143 @@ impl SectionRepository {
     ) -> Result<Vec<Section>> {
         Self::list_filtered(pool, organization_id, None, None, None).await
     }
+
+    pub async fn get_section_officer_assignments(
+        pool: &PgPool,
+        organization_id: Uuid,
+        section_id: Uuid,
+    ) -> Result<Vec<SectionOfficerAssignmentRow>> {
+        let rows = sqlx::query_as::<_, SectionOfficerAssignmentRow>(
+            r#"
+            SELECT
+                soa.id,
+                soa.section_id,
+                soa.employee_id,
+                e.employee_code,
+                CONCAT(e.first_name, ' ', COALESCE(e.last_name, '')) AS employee_name,
+                d.title AS designation_title,
+                soa.role_title,
+                soa.assigned_at
+            FROM section_officer_assignments soa
+            JOIN employees e ON soa.employee_id = e.id
+            JOIN designations d ON e.designation_id = d.id
+            WHERE soa.organization_id = $1
+              AND soa.section_id = $2
+            ORDER BY soa.role_title ASC, e.first_name ASC
+            "#,
+        )
+        .bind(organization_id)
+        .bind(section_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query section officer assignments: {}", e)))?;
+
+        Ok(rows)
+    }
+
+    pub async fn update_section_officer_assignments(
+        pool: &PgPool,
+        organization_id: Uuid,
+        section_id: Uuid,
+        role_title: &str,
+        employee_ids: &[Uuid],
+    ) -> Result<()> {
+        let mut tx = pool
+            .begin()
+            .await
+            .map_err(|e| AimsError::Database(format!("Failed to begin transaction: {}", e)))?;
+
+        sqlx::query(
+            r#"
+            DELETE FROM section_officer_assignments
+            WHERE organization_id = $1 AND section_id = $2 AND role_title = $3
+            "#,
+        )
+        .bind(organization_id)
+        .bind(section_id)
+        .bind(role_title)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to clear existing section officers: {}", e)))?;
+
+        for emp_id in employee_ids {
+            sqlx::query(
+                r#"
+                INSERT INTO section_officer_assignments (organization_id, section_id, employee_id, role_title)
+                VALUES ($1, $2, $3, $4)
+                ON CONFLICT (section_id, employee_id, role_title) DO NOTHING
+                "#,
+            )
+            .bind(organization_id)
+            .bind(section_id)
+            .bind(emp_id)
+            .bind(role_title)
+            .execute(&mut *tx)
+            .await
+            .map_err(|e| AimsError::Database(format!("Failed to insert section officer assignment: {}", e)))?;
+        }
+
+        tx.commit()
+            .await
+            .map_err(|e| AimsError::Database(format!("Failed to commit section officer assignment transaction: {}", e)))?;
+
+        Ok(())
+    }
+
+    pub async fn get_candidate_officers(
+        pool: &PgPool,
+        organization_id: Uuid,
+    ) -> Result<Vec<CandidateOfficerRow>> {
+        let rows = sqlx::query_as::<_, CandidateOfficerRow>(
+            r#"
+            SELECT
+                e.id,
+                e.employee_code,
+                CONCAT(e.first_name, ' ', COALESCE(e.last_name, '')) AS employee_name,
+                d.title AS designation_title,
+                CASE
+                    WHEN LOWER(d.title) LIKE '%senior accounts officer%' OR LOWER(d.title) LIKE '%sao%' OR LOWER(d.title) LIKE '%branch officer%' OR LOWER(d.title) LIKE '%bo%' THEN 'BRANCH_OFFICER'
+                    WHEN LOWER(d.title) LIKE '%assistant accounts officer%' OR LOWER(d.title) LIKE '%aao%' THEN 'SECTION_OFFICER'
+                    ELSE 'OTHER'
+                END AS category
+            FROM employees e
+            JOIN designations d ON e.designation_id = d.id
+            WHERE e.organization_id = $1
+              AND e.status = 'ACTIVE'
+              AND (
+                  LOWER(d.title) LIKE '%senior accounts officer%' OR LOWER(d.title) LIKE '%sao%' OR LOWER(d.title) LIKE '%branch officer%' OR LOWER(d.title) LIKE '%bo%'
+                  OR LOWER(d.title) LIKE '%assistant accounts officer%' OR LOWER(d.title) LIKE '%aao%'
+              )
+            ORDER BY d.title ASC, e.first_name ASC
+            "#,
+        )
+        .bind(organization_id)
+        .fetch_all(pool)
+        .await
+        .map_err(|e| AimsError::Database(format!("Failed to query candidate officers: {}", e)))?;
+
+        Ok(rows)
+    }
 }
+
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+pub struct SectionOfficerAssignmentRow {
+    pub id: Uuid,
+    pub section_id: Uuid,
+    pub employee_id: Uuid,
+    pub employee_code: String,
+    pub employee_name: String,
+    pub designation_title: String,
+    pub role_title: String,
+    pub assigned_at: chrono::DateTime<chrono::Utc>,
+}
+
+#[derive(Debug, Serialize, Deserialize, sqlx::FromRow)]
+pub struct CandidateOfficerRow {
+    pub id: Uuid,
+    pub employee_code: String,
+    pub employee_name: String,
+    pub designation_title: String,
+    pub category: String,
+}
+

@@ -102,6 +102,30 @@ export interface SectionHierarchy {
   total_employees: number;
 }
 
+export interface CandidateOfficer {
+  id: string;
+  employee_code: string;
+  employee_name: string;
+  designation_title: string;
+  category: 'BRANCH_OFFICER' | 'SECTION_OFFICER' | 'OTHER';
+}
+
+export interface SectionOfficerAssignment {
+  id: string;
+  section_id: string;
+  employee_id: string;
+  employee_code: string;
+  employee_name: string;
+  designation_title: string;
+  role_title: string;
+  assigned_at: string;
+}
+
+export interface UpdateSectionOfficersRequest {
+  role_title: string;
+  employee_ids: string[];
+}
+
 export interface SystemSetting {
   id: string;
   setting_key: string;

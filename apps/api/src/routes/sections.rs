@@ -16,7 +16,8 @@ use crate::{
     api::response::ApiResponse,
     error::AppError,
     services::sections::{
-        CreateSectionRequest, SectionQuery, SectionService, UpdateSectionRequest,
+        CreateSectionRequest, SectionQuery, SectionService, UpdateSectionOfficersRequest,
+        UpdateSectionRequest,
     },
     state::AppState,
 };
@@ -130,3 +131,37 @@ pub async fn get_section_hierarchy(
     let hierarchy = AttendanceQueryRepository::get_section_hierarchy(&state.db, id).await?;
     Ok((StatusCode::OK, Json(ApiResponse::ok(hierarchy))))
 }
+
+pub async fn get_section_officers(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+) -> Result<impl IntoResponse, AppError> {
+    let officers = SectionService::get_section_officers(&state, &actor, id).await?;
+    Ok(Json(ApiResponse::ok(officers)))
+}
+
+pub async fn update_section_officers(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+    Path(id): Path<Uuid>,
+    Json(payload): Json<UpdateSectionOfficersRequest>,
+) -> Result<impl IntoResponse, AppError> {
+    if !actor.has_permission("section.manage") && !actor.has_permission("attendance.view.all") {
+        return Err(AppError::Forbidden(
+            "Permission 'section.manage' required".to_string(),
+        ));
+    }
+
+    SectionService::update_section_officers(&state, &actor, id, payload).await?;
+    Ok(Json(ApiResponse::ok(true)))
+}
+
+pub async fn get_candidate_officers(
+    State(state): State<AppState>,
+    Extension(actor): Extension<CurrentUser>,
+) -> Result<impl IntoResponse, AppError> {
+    let candidates = SectionService::get_candidate_officers(&state, &actor).await?;
+    Ok(Json(ApiResponse::ok(candidates)))
+}
+

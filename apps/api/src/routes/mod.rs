@@ -77,6 +77,14 @@ pub fn router(state: AppState) -> Router<AppState> {
             get(sections::get_section_attendance),
         )
         .route(
+            "/sections/candidate-officers",
+            get(sections::get_candidate_officers),
+        )
+        .route(
+            "/sections/{id}/officers",
+            get(sections::get_section_officers).put(sections::update_section_officers),
+        )
+        .route(
             "/sections/{id}/hierarchy",
             get(sections::get_section_hierarchy),
         )

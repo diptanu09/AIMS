@@ -226,4 +226,86 @@ impl SectionService {
 
         Ok(sections)
     }
+
+    pub async fn get_section_officers(
+        state: &AppState,
+        actor: &CurrentUser,
+        section_id: Uuid,
+    ) -> Result<Vec<aims_database::repositories::sections::SectionOfficerAssignmentRow>, AppError> {
+        let _ = SectionRepository::find_by_id(&state.db, actor.organization_id, section_id)
+            .await?
+            .ok_or_else(|| AppError::NotFound(format!("Section {} not found", section_id)))?;
+
+        let officers = SectionRepository::get_section_officer_assignments(
+            &state.db,
+            actor.organization_id,
+            section_id,
+        )
+        .await?;
+
+        Ok(officers)
+    }
+
+    pub async fn update_section_officers(
+        state: &AppState,
+        actor: &CurrentUser,
+        section_id: Uuid,
+        req: UpdateSectionOfficersRequest,
+    ) -> Result<(), AppError> {
+        req.validate()
+            .map_err(|e| AppError::Validation(e.to_string()))?;
+
+        let _ = SectionRepository::find_by_id(&state.db, actor.organization_id, section_id)
+            .await?
+            .ok_or_else(|| AppError::NotFound(format!("Section {} not found", section_id)))?;
+
+        let role_title = req.role_title.to_uppercase();
+        if role_title != "BRANCH_OFFICER" && role_title != "SECTION_OFFICER" && role_title != "GROUP_OFFICER" {
+            return Err(AppError::Validation(
+                "role_title must be 'BRANCH_OFFICER', 'SECTION_OFFICER', or 'GROUP_OFFICER'".to_string(),
+            ));
+        }
+
+        SectionRepository::update_section_officer_assignments(
+            &state.db,
+            actor.organization_id,
+            section_id,
+            &role_title,
+            &req.employee_ids,
+        )
+        .await?;
+
+        let _ = AuditLogRepository::log(
+            &state.db,
+            Some(actor.organization_id),
+            Some(actor.user_id),
+            "SECTION_OFFICERS_UPDATED",
+            "section_officer_assignments",
+            Some(section_id),
+            None,
+            None,
+            None,
+            None,
+        )
+        .await;
+
+        Ok(())
+    }
+
+    pub async fn get_candidate_officers(
+        state: &AppState,
+        actor: &CurrentUser,
+    ) -> Result<Vec<aims_database::repositories::sections::CandidateOfficerRow>, AppError> {
+        let candidates =
+            SectionRepository::get_candidate_officers(&state.db, actor.organization_id).await?;
+        Ok(candidates)
+    }
 }
+
+#[derive(Debug, Deserialize, Validate)]
+pub struct UpdateSectionOfficersRequest {
+    #[validate(length(min = 1))]
+    pub role_title: String,
+    pub employee_ids: Vec<Uuid>,
+}
+

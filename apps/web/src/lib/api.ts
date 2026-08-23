@@ -20,6 +20,9 @@ import {
   ReconciliationSummary,
   InAppNotification,
   ScheduledReport,
+  CandidateOfficer,
+  SectionOfficerAssignment,
+  UpdateSectionOfficersRequest,
 } from "../types/api";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
@@ -128,9 +131,21 @@ export const api = {
     return request<PaginatedData<AttendanceExceptionRow>>(`/exceptions?${query.toString()}`);
   },
 
-  // Section Hierarchy
+  // Section Hierarchy & Officers
   getSectionHierarchy: (sectionId: string) =>
     request<SectionHierarchy>(`/sections/${sectionId}/hierarchy`),
+
+  getSectionOfficers: (sectionId: string) =>
+    request<SectionOfficerAssignment[]>(`/sections/${sectionId}/officers`),
+
+  updateSectionOfficers: (sectionId: string, payload: UpdateSectionOfficersRequest) =>
+    request<boolean>(`/sections/${sectionId}/officers`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
+
+  getCandidateOfficers: () =>
+    request<CandidateOfficer[]>("/sections/candidate-officers"),
 
   // Reports
   getReportDefinitions: () => request<ReportDefinition[]>("/reports/definitions"),
