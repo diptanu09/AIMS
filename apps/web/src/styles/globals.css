@@ -1,44 +1,79 @@
 @import "tailwindcss";
 
-:root {
-  --bg-main: #0b0f17;
-  --bg-surface: #151d2a;
-  --bg-card: #1c2638;
-  --border-color: #2a364f;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  
-  --status-present: #10b981;
-  --status-late: #f59e0b;
-  --status-absent: #ef4444;
-  --status-incomplete: #0284c7;
-  --status-holiday: #8b5cf6;
+@layer base {
+  :root {
+    --bg-main: #0b0f17;
+    --bg-surface: #151d2a;
+    --bg-card: #1c2638;
+    --border-color: #1e293b;
+    --border-highlight: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+
+    --status-present: #10b981;
+    --status-late: #f59e0b;
+    --status-absent: #ef4444;
+    --status-incomplete: #0284c7;
+    --status-holiday: #8b5cf6;
+  }
+
+  body {
+    background-color: #0b0f17;
+    color: #f8fafc;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
-body {
-  background-color: var(--bg-main);
-  color: var(--text-primary);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  margin: 0;
-  padding: 0;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Custom scrollbars */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-main);
+  background: #0b0f17;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
-  border-radius: 3px;
+  background: #1e293b;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b4d6e;
+  background: #334155;
+}
+
+/* Glassmorphism & UI Utilities */
+.glass-panel {
+  background: rgba(21, 29, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.8);
+}
+
+.glass-card {
+  background: rgba(28, 38, 56, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.glow-indigo {
+  box-shadow: 0 0 20px -5px rgba(99, 102, 241, 0.3);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.3);
+}
+
+.glow-amber {
+  box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.3);
+}
+
+.glow-rose {
+  box-shadow: 0 0 20px -5px rgba(239, 68, 68, 0.3);
 }
