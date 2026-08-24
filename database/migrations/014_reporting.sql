@@ -1,4 +1,4 @@
-CREATE TABLE report_definitions (
+CREATE TABLE IF NOT EXISTS report_definitions (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -18,12 +18,13 @@ CREATE TABLE report_definitions (
         UNIQUE (organization_id, code)
 );
 
+DROP TRIGGER IF EXISTS trg_report_definitions_updated_at ON report_definitions;
 CREATE TRIGGER trg_report_definitions_updated_at
 BEFORE UPDATE ON report_definitions
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE report_runs (
+CREATE TABLE IF NOT EXISTS report_runs (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -47,5 +48,5 @@ CREATE TABLE report_runs (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_report_runs_org_status
+CREATE INDEX IF NOT EXISTS idx_report_runs_org_status
     ON report_runs(organization_id, status);

@@ -1,4 +1,4 @@
-CREATE TABLE employee_section_assignments (
+CREATE TABLE IF NOT EXISTS employee_section_assignments (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     employee_id UUID NOT NULL
@@ -22,13 +22,13 @@ CREATE TABLE employee_section_assignments (
         )
 );
 
-CREATE INDEX idx_employee_section_assignments_employee
+CREATE INDEX IF NOT EXISTS idx_employee_section_assignments_employee
     ON employee_section_assignments(
         employee_id,
         effective_from
     );
 
-CREATE INDEX idx_employee_section_assignments_section
+CREATE INDEX IF NOT EXISTS idx_employee_section_assignments_section
     ON employee_section_assignments(
         section_id,
         effective_from

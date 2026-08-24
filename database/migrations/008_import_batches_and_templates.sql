@@ -1,4 +1,4 @@
-CREATE TABLE import_templates (
+CREATE TABLE IF NOT EXISTS import_templates (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -23,12 +23,13 @@ CREATE TABLE import_templates (
         UNIQUE (organization_id, name)
 );
 
+DROP TRIGGER IF EXISTS trg_import_templates_updated_at ON import_templates;
 CREATE TRIGGER trg_import_templates_updated_at
 BEFORE UPDATE ON import_templates
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE attendance_import_batches (
+CREATE TABLE IF NOT EXISTS attendance_import_batches (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -55,5 +56,5 @@ CREATE TABLE attendance_import_batches (
     imported_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_import_batches_org_status
+CREATE INDEX IF NOT EXISTS idx_import_batches_org_status
     ON attendance_import_batches(organization_id, status);

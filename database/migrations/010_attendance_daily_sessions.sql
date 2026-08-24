@@ -1,4 +1,4 @@
-CREATE TABLE attendance_daily (
+CREATE TABLE IF NOT EXISTS attendance_daily (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -30,21 +30,22 @@ CREATE TABLE attendance_daily (
         UNIQUE (employee_id, attendance_date)
 );
 
-CREATE INDEX idx_daily_emp_date
+CREATE INDEX IF NOT EXISTS idx_daily_emp_date
     ON attendance_daily(employee_id, attendance_date);
 
-CREATE INDEX idx_daily_section_date
+CREATE INDEX IF NOT EXISTS idx_daily_section_date
     ON attendance_daily(section_id, attendance_date);
 
-CREATE INDEX idx_daily_status_date
+CREATE INDEX IF NOT EXISTS idx_daily_status_date
     ON attendance_daily(status, attendance_date);
 
+DROP TRIGGER IF EXISTS trg_attendance_daily_updated_at ON attendance_daily;
 CREATE TRIGGER trg_attendance_daily_updated_at
 BEFORE UPDATE ON attendance_daily
 FOR EACH ROW
 EXECUTE FUNCTION set_updated_at();
 
-CREATE TABLE attendance_sessions (
+CREATE TABLE IF NOT EXISTS attendance_sessions (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     attendance_daily_id UUID NOT NULL
@@ -59,5 +60,5 @@ CREATE TABLE attendance_sessions (
     is_inferred BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE INDEX idx_sessions_daily
+CREATE INDEX IF NOT EXISTS idx_sessions_daily
     ON attendance_sessions(attendance_daily_id, session_order);

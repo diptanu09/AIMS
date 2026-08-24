@@ -1,4 +1,4 @@
-CREATE TABLE audit_logs (
+CREATE TABLE IF NOT EXISTS audit_logs (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID
@@ -20,8 +20,8 @@ CREATE TABLE audit_logs (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_audit_created
+CREATE INDEX IF NOT EXISTS idx_audit_created
     ON audit_logs(created_at DESC);
 
-CREATE INDEX idx_audit_org_action
+CREATE INDEX IF NOT EXISTS idx_audit_org_action
     ON audit_logs(organization_id, action);

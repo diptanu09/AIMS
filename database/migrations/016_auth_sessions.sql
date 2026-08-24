@@ -1,4 +1,4 @@
-CREATE TABLE user_sessions (
+CREATE TABLE IF NOT EXISTS user_sessions (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     user_id UUID NOT NULL
@@ -23,9 +23,9 @@ CREATE TABLE user_sessions (
         CHECK (expires_at > created_at)
 );
 
-CREATE INDEX idx_user_sessions_user
+CREATE INDEX IF NOT EXISTS idx_user_sessions_user
     ON user_sessions(user_id, expires_at DESC);
 
-CREATE INDEX idx_user_sessions_active
+CREATE INDEX IF NOT EXISTS idx_user_sessions_active
     ON user_sessions(token_hash, expires_at)
     WHERE revoked_at IS NULL;

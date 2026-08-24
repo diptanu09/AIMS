@@ -1,4 +1,4 @@
-CREATE TABLE system_settings (
+CREATE TABLE IF NOT EXISTS system_settings (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -16,6 +16,7 @@ CREATE TABLE system_settings (
         UNIQUE (organization_id, key)
 );
 
+DROP TRIGGER IF EXISTS trg_system_settings_updated_at ON system_settings;
 CREATE TRIGGER trg_system_settings_updated_at
 BEFORE UPDATE ON system_settings
 FOR EACH ROW

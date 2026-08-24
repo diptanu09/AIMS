@@ -1,21 +1,10 @@
 # docker/Caddyfile
 {
     admin off
-    auto_https off
 }
 
-:80 {
+http://aims.local, http://localhost, :80 {
     encode gzip zstd
-
-    # Security Headers
-    header {
-        Strict-Transport-Security "max-age=31536000; includeSubDomains"
-        X-Content-Type-Options "nosniff"
-        X-Frame-Options "DENY"
-        Referrer-Policy "no-referrer"
-        Permissions-Policy "camera=(), microphone=(), geolocation=()"
-        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' http: https: ws: wss:; frame-ancestors 'none'; object-src 'none';"
-    }
 
     # API Proxy Routing
     handle /api/* {
@@ -24,6 +13,37 @@
 
     # Web UI Proxy Routing
     handle {
+        header {
+            Strict-Transport-Security "max-age=31536000; includeSubDomains"
+            X-Content-Type-Options "nosniff"
+            X-Frame-Options "DENY"
+            Referrer-Policy "no-referrer"
+            Permissions-Policy "camera=(), microphone=(), geolocation=()"
+            Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' http: https: ws: wss:; frame-ancestors 'none'; object-src 'none';"
+        }
+        reverse_proxy aims-web:3000
+    }
+}
+
+https://aims.local, https://localhost, :443 {
+    tls internal
+    encode gzip zstd
+
+    # API Proxy Routing
+    handle /api/* {
+        reverse_proxy aims-api:8080
+    }
+
+    # Web UI Proxy Routing
+    handle {
+        header {
+            Strict-Transport-Security "max-age=31536000; includeSubDomains"
+            X-Content-Type-Options "nosniff"
+            X-Frame-Options "DENY"
+            Referrer-Policy "no-referrer"
+            Permissions-Policy "camera=(), microphone=(), geolocation=()"
+            Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' http: https: ws: wss:; frame-ancestors 'none'; object-src 'none';"
+        }
         reverse_proxy aims-web:3000
     }
 }

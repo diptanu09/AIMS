@@ -118,9 +118,9 @@ async fn test_canonical_import_parsing_and_validation() -> Result<()> {
         &mut summary,
     );
 
-    // 5 total: 3 valid (1001 IN, 1001 OUT, 1002 IN), 1 unknown (1003), 1 duplicate (1001 IN duplicate row)
+    // 5 total: 4 valid (1001 IN, 1001 OUT, 1002 IN, 1003 IN auto-registered), 1 unknown (1003), 1 duplicate (1001 IN duplicate row)
     assert_eq!(summary.total_records, 5);
-    assert_eq!(summary.valid_records, 3);
+    assert_eq!(summary.valid_records, 4);
     assert_eq!(summary.unknown_employees, 1);
     assert_eq!(summary.duplicate_records, 1);
     assert_eq!(summary.invalid_records, 0);

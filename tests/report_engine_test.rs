@@ -216,7 +216,7 @@ async fn test_monthly_section_report_generation_and_export() -> Result<()> {
 
     // 3. Generate PDF Payload
     let pdf_bytes = generate_monthly_section_pdf(&report_data)?;
-    let pdf_str = String::from_utf8(pdf_bytes).unwrap();
+    let pdf_str = String::from_utf8_lossy(&pdf_bytes);
     assert!(pdf_str.contains("%PDF-1.4"));
     assert!(pdf_str.contains("Accounts Section"));
 

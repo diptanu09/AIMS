@@ -1,7 +1,7 @@
 -- 023_scheduled_reports_and_notifications.sql
 -- Enables Step 18 automated scheduled reporting & proactive notification engine
 
-CREATE TABLE scheduled_reports (
+CREATE TABLE IF NOT EXISTS scheduled_reports (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     name VARCHAR(128) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE scheduled_reports (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE in_app_notifications (
+CREATE TABLE IF NOT EXISTS in_app_notifications (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
     organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -27,5 +27,5 @@ CREATE TABLE in_app_notifications (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_scheduled_reports_org ON scheduled_reports(organization_id, is_active);
-CREATE INDEX idx_notifications_user_unread ON in_app_notifications(user_id, is_read, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_scheduled_reports_org ON scheduled_reports(organization_id, is_active);
+CREATE INDEX IF NOT EXISTS idx_notifications_user_unread ON in_app_notifications(user_id, is_read, created_at DESC);

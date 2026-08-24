@@ -29,6 +29,8 @@ pub struct UserSummary {
     pub username: String,
     pub full_name: String,
     pub roles: Vec<String>,
+    pub permissions: Vec<String>,
+    pub section_ids: Vec<Uuid>,
 }
 
 #[derive(Debug, Serialize)]
@@ -188,8 +190,16 @@ pub async fn login(
         )
     })?;
 
-    // Fetch user roles
+    // Fetch user roles & authorization scope
     let roles = UserRepository::get_user_roles(&state.db, user.id)
+        .await
+        .unwrap_or_default();
+
+    let permissions = UserRepository::get_user_permissions(&state.db, user.id)
+        .await
+        .unwrap_or_default();
+
+    let section_ids = UserRepository::get_user_section_ids(&state.db, user.id)
         .await
         .unwrap_or_default();
 
@@ -228,6 +238,8 @@ pub async fn login(
             username: user.username,
             full_name: user.full_name,
             roles,
+            permissions,
+            section_ids,
         },
     });
 

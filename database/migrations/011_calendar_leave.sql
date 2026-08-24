@@ -1,4 +1,4 @@
-CREATE TABLE holidays (
+CREATE TABLE IF NOT EXISTS holidays (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -16,7 +16,7 @@ CREATE TABLE holidays (
         UNIQUE (organization_id, holiday_date)
 );
 
-CREATE TABLE weekly_offs (
+CREATE TABLE IF NOT EXISTS weekly_offs (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -31,7 +31,7 @@ CREATE TABLE weekly_offs (
         UNIQUE (organization_id, day_of_week)
 );
 
-CREATE TABLE leave_records (
+CREATE TABLE IF NOT EXISTS leave_records (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -63,9 +63,10 @@ CREATE TABLE leave_records (
         CHECK (end_date >= start_date)
 );
 
-CREATE INDEX idx_leave_records_emp_dates
+CREATE INDEX IF NOT EXISTS idx_leave_records_emp_dates
     ON leave_records(employee_id, start_date, end_date);
 
+DROP TRIGGER IF EXISTS trg_leave_records_updated_at ON leave_records;
 CREATE TRIGGER trg_leave_records_updated_at
 BEFORE UPDATE ON leave_records
 FOR EACH ROW

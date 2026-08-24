@@ -134,57 +134,57 @@ ON CONFLICT DO NOTHING;
 
 -- Master Designations
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ACCOUNTANT', 'Accountant', 1, TRUE);
+VALUES ('9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ACCOUNTANT', 'Accountant', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('a342a2b4-36e0-4fb9-9085-480a39b9242e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ACCOUNTANT_GENERAL_A_E', 'Accountant General (A&E)', 1, TRUE);
+VALUES ('b8aff575-2699-465f-a9bb-f4857f0dba3a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ACCOUNTANT_GENERAL_A_E', 'Accountant General (A&E)', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ASSISTANT_SUPERVISOR', 'Assistant Supervisor', 1, TRUE);
+VALUES ('d39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ASSISTANT_SUPERVISOR', 'Assistant Supervisor', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ASST_ACCOUNTS_OFFICER', 'Asst. Accounts Officer', 1, TRUE);
+VALUES ('01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ASST_ACCOUNTS_OFFICER', 'Asst. Accounts Officer', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('ecf5609e-2177-4a80-a7dc-53c20ed5adf2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CANTEEN_ATTENDANT', 'Canteen Attendant', 1, TRUE);
+VALUES ('5130e2e2-284b-4734-b3ae-f03ab429c98b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CANTEEN_ATTENDANT', 'Canteen Attendant', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('3fe94c8a-513f-4c39-96fb-48145c879187'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CANTEEN_ATTENDANT_OUTSOURCED', 'Canteen Attendant (Outsourced)', 1, TRUE);
+VALUES ('722b832c-d849-4feb-89f2-cb81123799f7'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CANTEEN_ATTENDANT_OUTSOURCED', 'Canteen Attendant (Outsourced)', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('62fc0ad3-6102-4034-9109-6c90e753f2c8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CANTEEN_CLERK', 'Canteen Clerk', 1, TRUE);
+VALUES ('65c743d5-7753-4da8-8234-b3e00d653ab4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CANTEEN_CLERK', 'Canteen Clerk', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CASUAL_WORKER_TRIPURA', 'Casual Worker Tripura', 1, TRUE);
+VALUES ('50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CASUAL_WORKER_TRIPURA', 'Casual Worker Tripura', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('512fff2d-c82c-447e-bf48-65452771c13d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CLERK_TYPIST', 'Clerk Typist', 1, TRUE);
+VALUES ('aa8c0392-25b1-4e2e-8247-90a7ce1ab86d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CLERK_TYPIST', 'Clerk Typist', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('71f94ebb-f5cf-425e-9606-943a9532c632'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CONSULTANT_ACCOUNTANT', 'Consultant Accountant', 1, TRUE);
+VALUES ('91e17439-7382-4917-9968-f7fd136059a6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_CONSULTANT_ACCOUNTANT', 'Consultant Accountant', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_DATA_ENTRY_OPERATOR_OUTSOURC', 'Data Entry Operator (Outsourced)', 1, TRUE);
+VALUES ('c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_DATA_ENTRY_OPERATOR_OUTSOURC', 'Data Entry Operator (Outsourced)', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('05948772-7b5b-4bbb-9c33-4be963a4efb9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_DATA_ENTRY_OPERATOR_GR_A', 'Data Entry Operator Gr A', 1, TRUE);
+VALUES ('b73ec969-5c70-4ef6-9e72-e3700487724f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_DATA_ENTRY_OPERATOR_GR_A', 'Data Entry Operator Gr A', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('489154f1-2e0a-4fe7-8914-6a96ba283a3c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_DATA_ENTRY_OPERATOR_GR_B', 'Data Entry Operator Gr B', 1, TRUE);
+VALUES ('4e4861d1-89c5-4577-adc5-f2ffecbdaa1d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_DATA_ENTRY_OPERATOR_GR_B', 'Data Entry Operator Gr B', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('c926ead9-513a-48d0-a01f-673bbf746c0f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_HALWAI', 'Halwai', 1, TRUE);
+VALUES ('b61f093e-9d9d-4aa2-ba77-0285be2925c9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_HALWAI', 'Halwai', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('86743cee-16d0-4ffa-9dd5-8fbdc667507d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_JUNIOR_TRANSLATOR', 'Junior Translator', 1, TRUE);
+VALUES ('2ca2964b-d8ea-4330-99de-effe1676b4f8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_JUNIOR_TRANSLATOR', 'Junior Translator', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_MULTI_TASK_STAFF', 'Multi Task Staff', 1, TRUE);
+VALUES ('df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_MULTI_TASK_STAFF', 'Multi Task Staff', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_MULTI_TASKING_STAFF_OUTSOURC', 'Multi Tasking Staff (Outsourced)', 1, TRUE);
+VALUES ('2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_MULTI_TASKING_STAFF_OUTSOURC', 'Multi Tasking Staff (Outsourced)', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('1af17377-1156-4995-986b-380077b5bee9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_OUTSOURCED_CANTEEN_MANAGER', 'Outsourced Canteen Manager', 1, TRUE);
+VALUES ('84d1d5dc-f0db-47be-9a38-f709b62c8d22'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_OUTSOURCED_CANTEEN_MANAGER', 'Outsourced Canteen Manager', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('edc1ccd5-4f92-4007-80bd-015071ad889d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ROLL_OUT_SUPPORT_ENGINEER', 'Roll out Support Engineer', 1, TRUE);
+VALUES ('0809b3e4-b19e-4479-9e6f-8984f53e5e81'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_ROLL_OUT_SUPPORT_ENGINEER', 'Roll out Support Engineer', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_ACCOUNTANT', 'Senior Accountant', 1, TRUE);
+VALUES ('ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_ACCOUNTANT', 'Senior Accountant', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_ACCOUNTS_OFFICER', 'Senior Accounts Officer', 1, TRUE);
+VALUES ('41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_ACCOUNTS_OFFICER', 'Senior Accounts Officer', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('7a1f7531-67ef-4ba6-b733-8a1faa6efd7f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_DEPUTY_ACCOUNTANT_GEN', 'Senior Deputy Accountant General', 1, TRUE);
+VALUES ('b705160b-dae1-4c4e-be76-fea2d0e63f47'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_DEPUTY_ACCOUNTANT_GEN', 'Senior Deputy Accountant General', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('6799326c-81cc-41c7-affb-411a21186908'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_HINDI_TRANSLATOR', 'Senior Hindi Translator', 1, TRUE);
+VALUES ('e123a08c-45f8-41fb-9005-3a7f1eac629b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SENIOR_HINDI_TRANSLATOR', 'Senior Hindi Translator', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('6ea94e07-25dd-41d0-ac5e-9df1109b2123'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_STENOGRAPHER', 'Stenographer', 1, TRUE);
+VALUES ('7343b953-9cb5-4d77-9b6a-bcbd7366c037'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_STENOGRAPHER', 'Stenographer', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('73b386cf-b408-4c59-82c7-e12f45fb4465'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_STENOGRAPHER_OUTSOURCED', 'Stenographer (Outsourced)', 1, TRUE);
+VALUES ('cb5b04a2-124d-474d-98bd-cecbacc3fa42'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_STENOGRAPHER_OUTSOURCED', 'Stenographer (Outsourced)', 1, TRUE);
 INSERT INTO designations (id, organization_id, code, title, level, active)
-VALUES ('17c472a1-2f6a-4113-8ec7-b1aed72d3f8c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SUPERVISOR', 'Supervisor', 1, TRUE);
+VALUES ('fa00304f-739d-4cdd-bb75-cb6a1d2518d2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, 'DES_SUPERVISOR', 'Supervisor', 1, TRUE);
 
 -- Master Sections
 INSERT INTO sections (id, organization_id, code, name, active)
@@ -217,9 +217,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '653ecd7c-ce48-49bf-a269-f65ac53e4d12'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '045677', '045677',
+    '0370ecdd-aa5b-47d7-b7f0-ee2f18d23c5a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '045677', '045677',
     'Amar', 'Chandra', 'De', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -228,9 +228,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '81b7a1db-6e76-4a0b-83f7-cb6e7bfd9e76'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '716775', '716775',
+    'a82bba9a-8d2a-4400-a897-9af3e197d7ef'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '716775', '716775',
     'Lokesh', 'Singh', 'Manral', 'manral.lokesh@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -239,9 +239,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '02c3eef5-24e2-4a3b-aee8-015ca0ee3648'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '258696', '258696',
+    'f9b533ce-7779-4231-8e16-f7e2acf5db97'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '258696', '258696',
     'Nipun', NULL, 'Jain', 'nipunj.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -250,9 +250,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '9b0e3732-6d29-42b5-bae1-fcc074b349b5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '419627', '419627',
+    '92e91dc3-8da3-40ee-854f-90c504888555'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '419627', '419627',
     'Palash', NULL, 'Banerjee', 'banerjeepalas@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -261,9 +261,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'f6b37292-d3ac-4c70-a39a-8b5f241bdb7e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '787234', '787234',
+    '21418aab-d114-44a4-92a9-1fafb6137e3a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '787234', '787234',
     'Piyush', NULL, 'Prabhakar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -272,9 +272,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '85be849e-a724-4833-b6e5-2ee77b6e40fb'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '382834', '382834',
+    '386e9a59-b733-41b8-bc74-a0e9bd0030db'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '382834', '382834',
     'Priyadarshini', NULL, 'Singh', 'prdrshn91113@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -283,9 +283,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7e198d41-87c7-4da2-a912-3d29d59b97b9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '991014', '991014',
+    '72ff1719-2f1f-4779-8f96-df78e3f9fe54'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '991014', '991014',
     'Rahul', NULL, 'Kumar', 'rahulk.wbl.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -294,9 +294,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '671a643e-8cc0-4dd1-847d-ca468ae80b2b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '551720', '551720',
+    '0a4532e2-1322-4d2c-8c52-560ea46bc4ab'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '551720', '551720',
     'Rakesh', 'Chandra', 'Srivastav', 'rakeshcs.wbl.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -305,9 +305,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '5187e626-e9ad-48f6-b7d6-8ca0966a05f0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '296861', '296861',
+    '3c554e64-9cc6-438b-9ce3-4a059e3bf4fe'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '296861', '296861',
     'Rohit', NULL, 'Yadav', 'rohity.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -316,9 +316,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd6dc4a16-23eb-4f7c-bb68-0e3c64517557'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '457386', '457386',
+    '8a058c57-4f75-4e31-a633-6af53d815298'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '457386', '457386',
     'Sourav', NULL, 'Maji', 'souravm.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -327,9 +327,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'e8ce5752-aa69-467b-960c-ff9031497954'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '354091', '354091',
+    '0488a779-8e9c-4cbc-a53a-2383c5877bb8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '354091', '354091',
     'Suraj', NULL, 'Kishore', 'surajk.wbl.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -338,9 +338,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c6dcb08e-6e98-41d0-bd9c-f8c6dbb04b89'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '081342', '081342',
+    '7efc8366-8034-406d-89e2-48e0f619993e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '081342', '081342',
     'Vishal', NULL, 'Verma', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -349,9 +349,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7d8a9f52-7daa-42b3-902a-349084f813e7'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '925906', '925906',
+    '27e5d747-5298-44e9-992b-2cc124aa117f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '925906', '925906',
     'Ashish', NULL, 'Verma', 'ashishv.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -360,9 +360,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c1b846fd-9e8d-400e-bba0-64951bae6c3c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '412074', '412074',
+    'bef8f67b-ee82-4c2c-812f-31ced7d94056'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '412074', '412074',
     'Bubai', NULL, 'Mondal', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -371,9 +371,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'e2788f42-fcf8-474b-959f-0c063069d0fa'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '273329', '273329',
+    'ec78e75a-9b88-48a9-86eb-e679eaff655a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '273329', '273329',
     'Dibakar', NULL, 'Das', 'dibakard.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -382,9 +382,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '6be0acf6-827b-428f-a7ca-156c64a75221'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '454543', '454543',
+    'bb1bf17c-1035-4670-bab6-0fd62d8d866d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '454543', '454543',
     'Dipa', NULL, 'Karmakar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -393,9 +393,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a5280a8a-1585-4010-8351-3daa1856bba0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '625079', '625079',
+    '8ee0da2a-6481-4f9a-916d-3c57c4824fba'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '625079', '625079',
     'Gautam', NULL, 'Kumar', 'gautamk.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -404,9 +404,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '1ff56cf2-d2b1-4d6a-a70d-e36ff558453d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '970806', '970806',
+    '9842b1de-2df8-47f9-850e-aac700559857'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '970806', '970806',
     'Jayanti', NULL, 'Saha', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -415,9 +415,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '45adf888-a31a-4d9e-b42d-374d71b739f8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '192266', '192266',
+    'a23c1250-da9a-411e-9fca-9c8b4da672be'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '192266', '192266',
     'Jishan', NULL, 'Choudhuri', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -426,9 +426,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd5b19dd3-ac02-40e2-93d8-ee1d74640152'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '570806', '570806',
+    '174bbed9-cbf6-43d1-87c1-1f3482400c1d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '570806', '570806',
     'Keya', NULL, 'Sarkar', 'keyas.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -437,9 +437,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '10cf60bc-fe3c-4808-8382-7fa905d9c8f0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '970592', '970592',
+    '221123bb-8d7b-4178-91a4-b592afd3584c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '970592', '970592',
     'Kishlay', NULL, 'Raj', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -448,9 +448,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '11019aa3-8eda-41cc-a951-58fb651673ff'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '222819', '222819',
+    '74f2727f-7b6a-49b8-b249-0e4cfd25822b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '222819', '222819',
     'Mohammad', 'Naqi', 'Ali', 'naqimadina12@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -459,9 +459,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '34bbb6a9-1698-45b4-8536-ddd5e824bd6c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '229834', '229834',
+    '966f0688-d0e1-4f91-8be0-0756d368af71'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '229834', '229834',
     'Paramita', NULL, 'Bhattacharjee', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -470,9 +470,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '6241cb95-9076-4e3d-8a7e-61f9eaa4995a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '789991', '789991',
+    'e2cb2515-b3a2-40d2-9602-310ba1dc420b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '789991', '789991',
     'Partha', NULL, 'Debnath', 'parthad.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -481,9 +481,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'f0f9455d-ec26-4be3-9a9b-e2635d63e8fc'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '008233', '008233',
+    'acf83b2a-216d-483f-8adc-b40c1c1f4490'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '008233', '008233',
     'Pilan', NULL, 'Ngullie', 'pilann.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -492,9 +492,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '743dcfd5-8402-4ade-8e44-e4fc277d0d59'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '275804', '275804',
+    'bf8cfc82-01f9-45ba-894a-71aec0126ba0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '275804', '275804',
     'Pranav', NULL, 'Kumar', 'pranavk.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -503,9 +503,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'b681461f-7c32-404c-acd8-bef7bb8ff6c4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '296851', '296851',
+    '10df96da-bf0b-4cd7-8e52-e708cd6cded3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '296851', '296851',
     'Rajeev', NULL, 'Kumar', 'rajeevkumarag1985@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -514,9 +514,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '10b2c805-b922-495c-96db-cb52604af66d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '405349', '405349',
+    '1672b6dc-4c19-436f-bc09-6b9eb9789ce8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '405349', '405349',
     'Rajeev', NULL, 'Kumar', 'rajeevkr.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -525,9 +525,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '232e34d9-576b-4715-86c4-8d5a8392c20c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '786890', '786890',
+    '70504cd0-751e-49c3-8c32-3968c97d4ef6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '786890', '786890',
     'Subham', NULL, 'Ghosh', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -536,9 +536,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '1fb8da91-2f71-4b6c-8a65-d5a6b39831e2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '642211', '642211',
+    '005c15f7-aac6-49e8-9917-f88656c874b8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '642211', '642211',
     'Sudip', NULL, 'Barman', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -547,9 +547,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '49497be7-fa74-4094-9995-6d4c2b3bc571'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '482594', '482594',
+    '650556ec-deea-4d33-a8a7-dcb96a0da9d4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '482594', '482594',
     'Sunil', NULL, 'Kumar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -558,9 +558,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '4d52482a-7ad9-4e93-93ca-30973be4bc1a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '515186', '515186',
+    'd470f886-dbe8-4ecc-a6a3-3e8e45756128'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '515186', '515186',
     'Udiyan', NULL, 'Bose', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f83bff18-b6dc-47ac-9581-cfb2860b7cfe'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9d279cb8-40cb-47dd-8328-a866f7d8a76f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -569,9 +569,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c1e05498-265b-42dd-8511-af4c9b8af30b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '871058', '871058',
+    '07f0b2d8-f986-44ce-af02-18d841e06a52'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '871058', '871058',
     'Ranendu', NULL, 'Sarkar', 'sarkarr@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'a342a2b4-36e0-4fb9-9085-480a39b9242e'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'b8aff575-2699-465f-a9bb-f4857f0dba3a'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -580,9 +580,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'b39180bb-35ff-4773-9ac4-6fb2a78c8771'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '202868', '202868',
+    'ba968760-31b0-4845-a6aa-9fda714e43ec'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '202868', '202868',
     'Amit', NULL, 'Gaurav', 'amitgaurav.wbl.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'baef3247-4108-4365-9c44-1bbedd61465b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '01ab0a9e-4b81-495b-980b-4df6d227bc7b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -591,9 +591,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd3a27180-40df-461c-9100-b6e8498e674f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '231116', '231116',
+    '26b4c069-2788-4aa3-99eb-6e371697e4dd'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '231116', '231116',
     'Anjana', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -602,9 +602,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'e53b993f-82bf-457c-842c-1d8b5d3aa64b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '587084', '587084',
+    'c2ab379d-67ef-4fac-9337-eed99f7c9f38'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '587084', '587084',
     'Ankur', NULL, 'Debbarma', 'ankurd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -613,9 +613,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c420e359-6f99-4ae7-89e7-4c39d70505fb'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '863010', '863010',
+    '3b031dec-ed58-48c7-8907-410b39cee656'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '863010', '863010',
     'Babul', NULL, 'Bhowmik', 'babulb.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -624,9 +624,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a3073e35-5251-42b5-b83f-adc52f9cbf57'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '545651', '545651',
+    '2a6c812f-b15e-4028-ab2e-5ce01886e2f4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '545651', '545651',
     'Banani', NULL, 'Das', 'babanib.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -635,9 +635,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '4a1a80f7-ba9c-41d2-afd2-80a1713210b3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '788426', '788426',
+    '451893f0-44c5-4a06-94de-30b6e6817bfb'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '788426', '788426',
     'Biswajit', NULL, 'Datta', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -646,9 +646,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '621a02e4-fcf4-4ee6-8803-bd0ed01f77b2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '802702', '802702',
+    '853e4d03-d0da-4209-a7c1-f79aa333d38e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '802702', '802702',
     'Biswanath', NULL, 'Chakraborty', 'biswanathc.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -657,9 +657,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c051b845-a5de-4ae7-8c58-fe5f8509bd2e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '604228', '604228',
+    '66f936ea-2e90-4e00-bbb9-656211131e5d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '604228', '604228',
     'Champakali', NULL, 'Debbarma', 'champa68@rediffmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -668,9 +668,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '67d90fbc-2c6b-4447-8b2e-aaf0e4b692c3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '510884', '510884',
+    'adc25d1f-311b-4996-be5c-b382fa1537bc'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '510884', '510884',
     'Chandan', NULL, 'Debnath', 'chandand.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -679,9 +679,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'f3ce5d9a-224e-415f-b3e4-dbc727b7878a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '310789', '310789',
+    '78250558-e849-4f10-91d0-b7801568b29b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '310789', '310789',
     'Chhanda', 'Banik', 'Bhaumik', 'chhandab.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -690,9 +690,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '98a01771-03bc-4a9d-9c75-39e8c1c0f5e0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '545958', '545958',
+    '8f47e9ab-b331-4a1a-8420-0a0ba2f590ca'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '545958', '545958',
     'Debabrata', NULL, 'Bhattacharjee', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -701,9 +701,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd718b5c7-cb61-4fee-9dd3-eb25416dc510'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '452643', '452643',
+    'fd15fb15-155a-4bfe-9a2a-db0bd9adf484'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '452643', '452643',
     'Debasis', NULL, 'Biswas', 'debasisb.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -712,9 +712,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd86dfa49-c53e-44bd-9328-4980f0d919c8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '177893', '177893',
+    '0133e342-c915-4c20-a88d-5c1aa82ee2ac'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '177893', '177893',
     'Malabika', NULL, 'Rakshit', 'mablabikar.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -723,9 +723,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '75f24a92-070b-4039-8b0a-763634171627'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '300159', '300159',
+    '8aee632f-f35e-4910-ba4e-5e32f2790d55'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '300159', '300159',
     'Mrityunjoy', NULL, 'Bhowmik', 'mrityunjoyb.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -734,9 +734,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '27d26051-7bcf-4ea6-89fd-3aea45ef04e7'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '280235', '280235',
+    '59100e93-e170-4dfe-89db-b65c6025fd60'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '280235', '280235',
     'Pradip', NULL, 'Karmakar', 'pradipk.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -745,9 +745,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '442959ab-e09d-49e3-bc8d-8e14a26336c8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '483866', '483866',
+    '6c73ce55-1699-4b0d-b8ae-45f25eed8eba'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '483866', '483866',
     'Prasenjit', NULL, 'Pal', 'prasenjitp.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -756,9 +756,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a74ca1ae-3286-472a-9fc6-f4c6c97368c5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '558271', '558271',
+    '1885e891-a3f8-4d85-9aa8-a4b8a3e45e05'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '558271', '558271',
     'Raj', 'Kumar', 'Debbarma', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -767,9 +767,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a2062566-6014-48f1-b3d3-e08fc7f96484'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '605543', '605543',
+    '3a4ce449-4c30-4f25-a0a0-7b6b899e807b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '605543', '605543',
     'Rama', NULL, 'Bhattacharya', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -778,9 +778,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'eb108408-521a-48c2-aaa2-2a5866804761'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '265793', '265793',
+    '60a75c5c-7cfb-49e1-ab15-03ac76e808f7'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '265793', '265793',
     'Sanjoy', 'Krishna', 'Debbarma', 'sanjoykd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -789,9 +789,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'b2a83dab-e7bc-4dc6-90e6-02071d18082e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '738761', '738761',
+    'a6cfe225-295f-4be4-8570-4b2260fe3480'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '738761', '738761',
     'Satish', NULL, 'Debbarma', 'satish71debbarma@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -800,9 +800,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'afac1f7e-3723-4ea6-ab13-8b4ccfc2ad81'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '318974', '318974',
+    '6f46e42e-4be0-47f5-916c-db6c27968eee'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '318974', '318974',
     'Srilekha', NULL, 'Dey', 'srilekhad.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -811,9 +811,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '6153a465-1667-4840-a946-150b95e249c2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '502040', '502040',
+    '4b4e5fc9-a598-41f9-9325-2fb140e98b9f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '502040', '502040',
     'Subh', 'Karan', 'Chauhan', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -822,9 +822,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '77f337e1-584d-4f21-b156-27383cab99aa'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '603680', '603680',
+    '9379645c-d9fd-409c-a857-3e627df9a640'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '603680', '603680',
     'Suchana', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -833,9 +833,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '6a395027-2086-4298-94fd-d73edaca50b2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '137660', '137660',
+    '66c016fb-6eee-43f2-8859-93810e38eed1'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '137660', '137660',
     'Sudha', 'Ranjan', 'Debbarma', 'sudharanjand.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -844,9 +844,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '86d09d34-20d6-45de-b9d3-fac32a819450'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '423533', '423533',
+    '92686911-7719-4661-8ebb-c9e66d0d3acc'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '423533', '423533',
     'Sukhendu', NULL, 'Bhaumik', 'sukhendub.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -855,9 +855,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '3d942cd8-59a4-41e7-934b-33889e6c3d3c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '090908', '090908',
+    '72947843-cd05-4a65-96d2-e81c517d6455'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '090908', '090908',
     'Tapan', 'Kumar', 'Sarkar', 'tapankumars.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f9610d6a-81bd-46db-a73a-16331f0c3a6c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'd39a15ad-ced9-4757-8890-f7d9285709a1'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -866,9 +866,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '12cbcf19-6818-4dda-ab3a-aeb14d20b8d3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '149565', '149565',
+    '86fa592c-e7ee-4bb9-ac50-5fd45083453e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '149565', '149565',
     'Chandan', 'Kumar', 'Das', 'Chandankd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ecf5609e-2177-4a80-a7dc-53c20ed5adf2'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '5130e2e2-284b-4734-b3ae-f03ab429c98b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -877,9 +877,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '2390b7b8-5e6b-49f9-aab8-785e9ceab2a6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '037947', '037947',
+    '01534c33-6437-4830-a198-d6a751d92d67'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '037947', '037947',
     'Ratan', NULL, 'Ghosh', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ecf5609e-2177-4a80-a7dc-53c20ed5adf2'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '5130e2e2-284b-4734-b3ae-f03ab429c98b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -888,9 +888,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '3e25901f-5912-47e4-9069-687da5860f55'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '711741', '711741',
+    '291a1762-cec9-4c77-93d0-40f0b821f0d7'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '711741', '711741',
     'Nayan', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '3fe94c8a-513f-4c39-96fb-48145c879187'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '722b832c-d849-4feb-89f2-cb81123799f7'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -899,9 +899,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '205dd969-67ef-4341-83ea-913bfe34d5d5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '060574', '060574',
+    '4d4c7b7b-326d-41f5-92ec-84dfe69f81ba'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '060574', '060574',
     'Shahil', NULL, 'Singha', 'shahilsingha321@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '3fe94c8a-513f-4c39-96fb-48145c879187'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '722b832c-d849-4feb-89f2-cb81123799f7'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -910,9 +910,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '4b0dadb8-197c-4a37-9a40-720979ce6aa8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '998024', '998024',
+    '55d433ed-998e-4fc6-be07-b60aa4d7ba07'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '998024', '998024',
     'Swapan', NULL, 'Bhowmik', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '62fc0ad3-6102-4034-9109-6c90e753f2c8'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '65c743d5-7753-4da8-8234-b3e00d653ab4'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -921,9 +921,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7bbb8dcf-ff3c-4b84-b6c8-9684c8736f9f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '586589', '586589',
+    '2abd8f9e-b964-45cc-8e20-c49473fead48'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '586589', '586589',
     'Bimal', NULL, 'Sarkar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -932,9 +932,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '1163bdd0-8265-4c3e-b5a1-2fd66f7b1307'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '969535', '969535',
+    '9408e0d5-0e08-4e3f-9236-8042708bd0cf'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '969535', '969535',
     'Gopal', NULL, 'Karmakar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -943,9 +943,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '4b0690d1-8777-47b1-930d-174890113810'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '942482', '942482',
+    'b7fba5f6-b71a-4a2b-820a-29cc278c7214'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '942482', '942482',
     'Raja', NULL, 'Biswas', 'rajabiswas16696@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -954,9 +954,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'e332e293-108e-4c40-b6ef-3367266ebc84'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '756473', '756473',
+    '8f2b717c-5a2e-4c32-9a87-3ddf0ced2b3c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '756473', '756473',
     'Shibu', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -965,9 +965,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '67fea134-27bd-4a97-89af-ee4c72a03234'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '859252', '859252',
+    '71012139-a6ed-4103-a933-cc94ad9852e0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '859252', '859252',
     'Sumit', NULL, 'Dhanuk', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -976,9 +976,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7ac3fda6-ac75-4910-8826-7b23c15054e9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '258186', '258186',
+    '7928c03d-833f-4837-833b-f914fb87f326'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '258186', '258186',
     'Sumita', 'Bose', 'Dey', 'sumitab.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '512fff2d-c82c-447e-bf48-65452771c13d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'aa8c0392-25b1-4e2e-8247-90a7ce1ab86d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -987,9 +987,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '404a8917-800f-4c45-80a0-121c68e70291'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '792890', '792890',
+    'd694b3c3-cbfa-4798-ad6e-c532987b1beb'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '792890', '792890',
     'Saurabh', NULL, 'Das', 'saurabhd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '512fff2d-c82c-447e-bf48-65452771c13d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'aa8c0392-25b1-4e2e-8247-90a7ce1ab86d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -998,9 +998,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7eec5780-31fc-4202-86e3-6afad3a2ea32'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '992660', '992660',
+    '584897da-d533-4162-8dc3-7454b58c0193'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '992660', '992660',
     'Pankaj', 'Kumar', 'Sarkar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '71f94ebb-f5cf-425e-9606-943a9532c632'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '91e17439-7382-4917-9968-f7fd136059a6'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1009,9 +1009,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '22f5a005-ded7-425a-a0ce-a60cb600bad9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '126173', '126173',
+    'f2835931-b5ae-4fe7-8b33-66a5430dcb48'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '126173', '126173',
     'Dipankar', NULL, 'Debnath', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '71f94ebb-f5cf-425e-9606-943a9532c632'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '91e17439-7382-4917-9968-f7fd136059a6'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1020,9 +1020,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'ab819e2e-d95c-4b02-834a-0fb4b7fab709'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '223506', '223506',
+    'd0f1b5b6-76ca-4369-b23d-bd8f25c0a1b8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '223506', '223506',
     'Thaingla', NULL, 'Mog', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1031,9 +1031,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '627623d5-2bff-4efc-bd70-a396692205b7'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '541791', '541791',
+    'a406b3ca-cdb6-4090-98f8-7bd5fd77acb3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '541791', '541791',
     'Subhranil', NULL, 'Debroy', 'subhranil191@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1042,9 +1042,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7cd7bf75-b9d5-43de-b274-534358d50ec9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '786106', '786106',
+    '57b6d6b9-50bb-44a5-a0de-cee6f761b78b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '786106', '786106',
     'Diptanu', NULL, 'Roy', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1053,9 +1053,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a7074a50-f26f-481d-9b5c-e79eb5f5ef79'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '351307', '351307',
+    '0f14d20d-e5b4-4815-a3c4-883806295d9b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '351307', '351307',
     'Gobinda', NULL, 'Bhowmik', 'bhowmikgobinda19@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1064,9 +1064,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '62fa4d76-eb3c-4cb7-880e-9bdb32bc13bc'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '073976', '073976',
+    '055dda91-c65a-4631-82f6-d8336caa1451'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '073976', '073976',
     'Himanshu', NULL, 'Khokhar', 'himnshuk.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '489154f1-2e0a-4fe7-8914-6a96ba283a3c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '4e4861d1-89c5-4577-adc5-f2ffecbdaa1d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1075,9 +1075,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '697b3d09-6c13-4ae0-9c11-c4d14748fe96'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '944337', '944337',
+    '25e8d651-40cd-4bba-9d79-f92458b25598'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '944337', '944337',
     'Sayani', NULL, 'Nandy', 'sayanin.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '05948772-7b5b-4bbb-9c33-4be963a4efb9'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'b73ec969-5c70-4ef6-9e72-e3700487724f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1086,9 +1086,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '3ab9fe78-b02f-4bf8-8625-de108fe67608'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '358367', '358367',
+    '8e58f6db-1ad9-48d4-906e-bb841ef84838'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '358367', '358367',
     'Pramod', NULL, 'Kumar', 'pramodp.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '489154f1-2e0a-4fe7-8914-6a96ba283a3c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '4e4861d1-89c5-4577-adc5-f2ffecbdaa1d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1097,9 +1097,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '5b3567d1-fe6c-4d89-9a99-676d3a02a650'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '464696', '464696',
+    'a4d7ff78-55c4-4f40-b188-1434335b3c7b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '464696', '464696',
     'Ankan', NULL, 'Paul', 'paulankan16@gamil.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1108,9 +1108,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'e8829bc7-b477-451b-8ef8-afaa4716a697'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '611223', '611223',
+    '595dfcf7-f776-474c-af07-914558eef11b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '611223', '611223',
     'Hritam', NULL, 'Bhattacharyya', 'hrikbhattacharyya@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1119,9 +1119,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd1312646-791b-4b4e-8b47-3faeb751e6d2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '260758', '260758',
+    '6ebe35d9-2335-45b8-b0ac-a626ff9e8ee2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '260758', '260758',
     'Kuldeep', NULL, 'Debnath', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1130,9 +1130,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '81325d63-9296-415a-9ffd-a3472e6d3683'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '773969', '773969',
+    '3a07b74c-4351-4a47-bf59-5d57346876f3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '773969', '773969',
     'Pranay', NULL, 'Singha', 'pranay.singha2011@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1141,9 +1141,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'de1cacf1-1120-4566-a1af-03b79c21392d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '432043', '432043',
+    'c7e7e297-4b87-4477-b352-ddb547942aeb'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '432043', '432043',
     'Dipak', NULL, 'Kumar', 'deepakk.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '489154f1-2e0a-4fe7-8914-6a96ba283a3c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '4e4861d1-89c5-4577-adc5-f2ffecbdaa1d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1152,9 +1152,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '4b9cd115-6de0-4563-810e-3ec49b84d88d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '425230', '425230',
+    '10786b06-8486-475c-a7d7-815bf3f8a50b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '425230', '425230',
     'Gaurav', 'Kumar', 'Tomar', 'gauravkumart.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '489154f1-2e0a-4fe7-8914-6a96ba283a3c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '4e4861d1-89c5-4577-adc5-f2ffecbdaa1d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1163,9 +1163,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '9ac9a66d-6658-45fb-8a43-ad0b09fbfccc'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '168844', '168844',
+    'fc0cf294-47ad-44a0-a088-505ffa15d2be'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '168844', '168844',
     'Rajeev', NULL, 'Ranjan', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '489154f1-2e0a-4fe7-8914-6a96ba283a3c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '4e4861d1-89c5-4577-adc5-f2ffecbdaa1d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1174,9 +1174,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd98ba84b-4689-487e-a5ad-674720d8f57f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '322963', '322963',
+    '2bf20e89-ef92-4631-b40f-8cf06bc5b0ef'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '322963', '322963',
     'Arindam', NULL, 'Chakraborty', 'carindam410@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '281be55c-ba18-421b-bb1f-f948853faf4c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c9ff8064-e9d7-4dfd-913a-4c4036298697'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1185,9 +1185,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '3eade3cd-d881-4701-a1c9-b63f2a59a383'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '774775', '774775',
+    'bfd305f7-3a7c-4f6b-ab28-4c94ade26265'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '774775', '774775',
     'Ashish', NULL, 'Chakraborty', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'c926ead9-513a-48d0-a01f-673bbf746c0f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'b61f093e-9d9d-4aa2-ba77-0285be2925c9'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1196,9 +1196,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '0d274288-9d5e-4125-b983-8201ad0f0e88'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '418960', '418960',
+    'a3a74c81-a78e-4af6-bd3a-af85a37b5dd4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '418960', '418960',
     'Ankita', NULL, 'Koiri', 'ankita.anp.au@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '86743cee-16d0-4ffa-9dd5-8fbdc667507d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2ca2964b-d8ea-4330-99de-effe1676b4f8'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1207,9 +1207,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '5a68153f-131e-454c-8608-5867781f2230'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '089422', '089422',
+    'd2487f59-43eb-4907-ae3b-c26ae6920195'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '089422', '089422',
     'Gita', 'Rani Das', 'Dhanuk', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1218,9 +1218,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '3af76f51-da06-4155-ae2f-4840f95239f2'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '776568', '776568',
+    '1c216df9-1594-4ee1-9446-cd2f207f31fa'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '776568', '776568',
     'Haradhan', NULL, 'Dey', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1229,9 +1229,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7882b08a-79ef-4893-9d5f-994fcb5fc40a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '595944', '595944',
+    '720a40de-9123-40a9-af16-dac6fea7cd49'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '595944', '595944',
     'Kshitish', 'Chandra', 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1240,9 +1240,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '72daee8b-723a-4fa1-a112-10523f89e59f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '705463', '705463',
+    '1428a62f-e27e-489d-954a-53be55cec2f9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '705463', '705463',
     'Nitai', 'Chandra', 'Saha', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1251,9 +1251,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c6ba4bab-6af0-4aeb-aa2f-540c2e89fbb6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '867836', '867836',
+    'fece2d04-3271-40e9-bc89-0ae848e23253'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '867836', '867836',
     'Rajani', NULL, 'Dhanuk', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1262,9 +1262,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a8d63197-6d1f-4cce-9ff3-4ba62b21ffb5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '059931', '059931',
+    '5302510c-4d31-4cfe-a46b-baf180d62693'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '059931', '059931',
     'Rohit', NULL, 'Dhanuk', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1273,9 +1273,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'be66690b-b32f-4a18-973f-735b477df974'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '537725', '537725',
+    'e1ec55fe-c6b7-4c52-afe5-b5ca97296267'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '537725', '537725',
     'Samir', NULL, 'Sutradhar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1284,9 +1284,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '96bd98cc-24ff-4392-adc3-e867732c860f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '837817', '837817',
+    '00938647-8f68-46f6-8c60-706b86406069'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '837817', '837817',
     'Sanjoy', 'Kumar', 'Deb', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1295,9 +1295,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '34263190-6b98-4709-a0c0-9d2f76aa34e0'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '660611', '660611',
+    '2a3335b3-6019-43f7-ac4e-6a86ba05a535'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '660611', '660611',
     'Siman', NULL, 'Rakshit', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1306,9 +1306,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c68d553e-731c-4b60-9569-4ad7a4251915'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '675239', '675239',
+    '2c0d2bf3-18c7-4a7f-b7f4-c41c16cc1f17'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '675239', '675239',
     'Sudhir', NULL, 'Uria', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1317,9 +1317,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd161aa1c-b06b-4318-ba94-1ee7c8584545'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '977332', '977332',
+    '09a0d9c9-efee-483e-9d9d-24e870bb99e6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '977332', '977332',
     'Swadesh', NULL, 'Dhanuk', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1328,9 +1328,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '68522b20-b513-42b0-aa84-31eaf27e613c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '554361', '554361',
+    '3b98d95f-b933-4f28-a647-dbb49b5ac6b6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '554361', '554361',
     'Bijoy', NULL, 'Shil', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1339,9 +1339,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7bf8bb63-5a03-4a46-821c-ca267c103287'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '814841', '814841',
+    '936816fd-1169-4fee-8d11-ccd188409806'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '814841', '814841',
     'Chiranjit', NULL, 'Sutradhar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1350,9 +1350,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '8de291b1-ea73-4ae2-aba3-999a884d2280'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '119700', '119700',
+    '3f0838a2-d3ab-46e8-b4c8-abddcd7419af'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '119700', '119700',
     'Koushik', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1361,9 +1361,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'ab7588f0-801d-4c17-aca5-efaf12822085'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '089261', '089261',
+    '13520517-13ed-4a62-a472-47606ee17a8f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '089261', '089261',
     'Manjushree', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1372,9 +1372,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '0501afd8-d2e2-4e70-b1cf-6094e64158c9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '991831', '991831',
+    'e9a85124-1ffe-4f44-9830-8c4447a648d8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '991831', '991831',
     'Sagar', NULL, 'Majumder', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1383,9 +1383,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'ce236545-075b-41b0-be40-7ecd9368f862'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '103575', '103575',
+    'e9dbe841-5c39-44c7-81d3-d6d6ed5c9451'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '103575', '103575',
     'Sujal', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1394,9 +1394,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd5775831-50ae-42c1-9ae9-79e1c716437e'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '692945', '692945',
+    '9bef4677-f8ca-4a67-b802-770efdde5cac'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '692945', '692945',
     'Biswajit', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1405,9 +1405,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7f8192b1-7df0-4de7-9f5b-e6538cc76610'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '221497', '221497',
+    '13e51edc-abe4-4b60-939e-43a7096b334f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '221497', '221497',
     'Sudip', NULL, 'Biswas', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1416,9 +1416,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '1d742691-8030-4b28-82a1-6ba6520e14c6'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '723614', '723614',
+    '40f3fec1-19b3-4d66-b85d-3791add23509'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '723614', '723614',
     'Asam', 'Ray', 'Debbarma', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1427,9 +1427,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd35bde8b-bde8-4168-b6c3-da524ca47271'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '334054', '334054',
+    'ab1adecb-f0b2-4544-b6c4-ad969d72bb2d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '334054', '334054',
     'Babul', NULL, 'Karmakar', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1438,9 +1438,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '03334e39-8573-47d4-b5f1-2df6883fee16'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '069114', '069114',
+    'cc79acba-e79d-480e-8c6c-8618818f5162'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '069114', '069114',
     'Charan', 'Manik', 'Halam', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1449,9 +1449,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'f8c74a23-c90a-49fd-98c0-36a5131d4c09'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '266707', '266707',
+    '224b52e2-c46b-4355-9cfd-a0f8c49ac247'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '266707', '266707',
     'Rajesh', NULL, 'Debbarma', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1460,9 +1460,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '9f5148c4-42f3-4c56-97f6-42bbd83a14ba'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '496988', '496988',
+    'b1175426-2af4-4847-89c3-6795cf77a46c'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '496988', '496988',
     'Sabitri', 'Podder', 'Roy', 'sabitripodderr.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7737f836-991a-4045-a4fc-fcb2c201967f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'df529faa-8780-4d26-81cd-9903ac642750'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1471,9 +1471,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '929d1f96-672f-4528-9df1-a4c3f0b82fc3'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '829528', '829528',
+    'fcf489ca-739e-4b38-a97e-b24a6580f565'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '829528', '829528',
     'Goutam', NULL, 'Roy', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'f91a0789-5093-4461-80e5-66ebfbd399bd'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '50f8d28b-f6c6-4ea0-b2af-e343871e8b07'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1482,9 +1482,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '9acec630-7d5c-48e5-ba20-b64d3cc1c344'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '273300', '273300',
+    'bd3e0484-22a1-4b11-9668-8df6f21902e5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '273300', '273300',
     'Arpan', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1493,9 +1493,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '6a2fbd4d-1b73-44cd-940e-156ce4d7b240'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '117874', '117874',
+    'ac62b66b-00bb-4790-89cb-992339e5fe08'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '117874', '117874',
     'Jadab', NULL, 'Das', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fe769eae-2d31-4c06-a66b-dc348e94ad59'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '2dcc0fa5-6dd2-467f-ae00-cea9290b3791'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1504,9 +1504,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'a07998e9-944d-4a6e-915f-c360794c82f5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '989373', '989373',
+    '939f27a6-375a-4f0b-a62c-0d6d0d9d2071'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '989373', '989373',
     'Rajesh', NULL, 'Chakraborty', 'chakraj27@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '1af17377-1156-4995-986b-380077b5bee9'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '84d1d5dc-f0db-47be-9a38-f709b62c8d22'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1515,9 +1515,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '29b1bfb3-adeb-4a11-b1ba-17b54b4b9a4a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '878245', '878245',
+    '1eb061b4-8c8e-49dd-bd8b-adc4c9ec0fde'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '878245', '878245',
     'Diptanu', NULL, 'Deb', 'deb.diptanu09@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'edc1ccd5-4f92-4007-80bd-015071ad889d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '0809b3e4-b19e-4479-9e6f-8984f53e5e81'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1526,9 +1526,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'eed7ab96-2107-4edd-838e-d4743f999530'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '287245', '287245',
+    'f5a5339c-8795-445a-bee1-0223bb020ba1'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '287245', '287245',
     'Jhuntu', NULL, 'Dasgupta', 'jhuntudd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1537,9 +1537,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '19b8cc8e-e022-46b4-912e-49b94c337784'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '083321', '083321',
+    '2e0c758c-d3ee-45a8-b69a-9c8cb6b476a5'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '083321', '083321',
     'Nabajyoti', NULL, 'Debnath', 'nabajyotid.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1548,9 +1548,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'd840033b-bb19-4372-bf2a-a8d7660b6447'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '508317', '508317',
+    'a87e9a5f-0203-4e9f-829e-a64fe70cad30'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '508317', '508317',
     'Samar', 'Chandra', 'Deb', 'samarchandrad.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1559,9 +1559,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '9c6d3257-6ea7-4ded-8fea-7a03d36da645'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '599624', '599624',
+    '1ad9561f-488d-44b2-8762-fb1fe7db7e8d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '599624', '599624',
     'Santosh', NULL, 'Das', 'das71santosh@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1570,9 +1570,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'e59b856e-8fff-4438-b78a-bddc5a218b2b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '677853', '677853',
+    '5f4158bd-a867-410b-9783-4222ba9754e8'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '677853', '677853',
     'Soumen', NULL, 'Banik', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1581,9 +1581,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '3d25b2e3-0caa-4d50-8282-e7a546c0c677'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '404232', '404232',
+    '5c2597a5-e7aa-4f47-bd87-cf65357906cb'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '404232', '404232',
     'Ajoy', NULL, 'Dutta', 'ajoyd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1592,9 +1592,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'c7624708-4ade-472e-ad85-18ac546c06db'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '567588', '567588',
+    '3e15052a-e647-432a-acd5-17358a0e6454'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '567588', '567588',
     'Debabrato', NULL, 'Chowdhury', 'debabratoc.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1603,9 +1603,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '6df10c16-b199-4ba0-8c19-d2581c596449'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '799528', '799528',
+    '144caa5c-cd2a-44a5-82a8-d8c448c88c0d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '799528', '799528',
     'Subodh', NULL, 'Debbarma', 'subodhd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1614,9 +1614,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '29c33035-c1f0-4434-a0ef-4bfeff080894'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '923432', '923432',
+    '79a7c61a-a851-4c8f-b261-71912a58f457'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '923432', '923432',
     'Uttam', NULL, 'Chakraborty', 'uttamc.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1625,9 +1625,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '0bc279c7-ef22-4557-81a1-9b0a53bb8ad9'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '919704', '919704',
+    '4dbe8583-cc9c-4c25-a475-97fc246f4f3d'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '919704', '919704',
     'Tanushree', NULL, 'Biswas', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7a1f7531-67ef-4ba6-b733-8a1faa6efd7f'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'b705160b-dae1-4c4e-be76-fea2d0e63f47'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1636,9 +1636,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'bf82474d-3beb-4fe9-b61e-e772b0d7e7aa'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '326801', '326801',
+    'aaac98d2-6b96-4f8d-bae2-390ad2064862'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '326801', '326801',
     'Dipannita', NULL, 'Das', 'dipannitad.kol.pdac@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '6799326c-81cc-41c7-affb-411a21186908'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'e123a08c-45f8-41fb-9005-3a7f1eac629b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1647,9 +1647,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'deb347b0-7b79-4295-84ce-d451cfc4a3a1'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '510617', '510617',
+    '6ef8a785-293b-400c-9561-e42e905c2f90'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '510617', '510617',
     'Bishu', NULL, 'Nandi', NULL,
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1658,9 +1658,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'cef21bc2-588b-45b0-9925-39296816e467'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '382713', '382713',
+    'd72be525-fe94-44bb-a444-06dc6e2bf5cd'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '382713', '382713',
     'Subhrajit', NULL, 'Roy', 'subhrajitr.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1669,9 +1669,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'da3ef4ba-83cf-401b-a67d-7062714598a4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '980071', '980071',
+    '9c39b0ad-ee9f-4189-b66c-166a470ccc38'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '980071', '980071',
     'Subrata', 'Das', 'Choudhury', 'chowdhurysd.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ebaca2db-8e57-4de3-bcf5-9587f063447d'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '41b069e3-f675-423c-a6e7-4421a5a43a2b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1680,9 +1680,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'cc09d4b0-2842-46df-8b14-5a209fda330f'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '952380', '952380',
+    '246aaeac-6d42-480e-bf06-8aff7d3389a4'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '952380', '952380',
     'Rajashree', NULL, 'Chakraborty', 'rajashreec.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '9c8b9a5e-a4d6-48e1-b7fc-d97af334fe3b'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'ea9f26b2-0845-4801-8c22-5b4848da43ce'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1691,9 +1691,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    'ade6db1b-80a0-4390-8c6a-02c56b23977b'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '109614', '109614',
+    'ad461957-9069-42e4-9569-d45419001860'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '109614', '109614',
     'Sanjay', 'Kumar', 'Yadav', 'sanjoykumary.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '6ea94e07-25dd-41d0-ac5e-9df1109b2123'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '7343b953-9cb5-4d77-9b6a-bcbd7366c037'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1702,9 +1702,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '60084d60-2c11-4376-9544-a4a16927fa10'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '795304', '795304',
+    'a7813b3a-aa9d-41dc-8266-fb689aee6f2a'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '795304', '795304',
     'Arpan', NULL, 'Shil', 'arpanshil.agt@gmail.com',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '73b386cf-b408-4c59-82c7-e12f45fb4465'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'cb5b04a2-124d-474d-98bd-cecbacc3fa42'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 INSERT INTO employees (
@@ -1713,9 +1713,9 @@ INSERT INTO employees (
     section_id, designation_id, attendance_rule_id,
     joining_date, status
 ) VALUES (
-    '7d3cab35-8399-4b3b-9de7-8dc4d263a826'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '042174', '042174',
+    '74ba3c2c-9468-4bb2-b920-7e482d2a2711'::uuid, '01a029f9-4568-7c32-9782-f69a23782652'::uuid, '042174', '042174',
     'Pradip', 'Kumar', 'Nandi', 'pradipkn.tri.ae@cag.gov.in',
-    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, '17c472a1-2f6a-4113-8ec7-b1aed72d3f8c'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
+    'a49e4762-813b-4bbe-b997-172fcf55a05a'::uuid, 'fa00304f-739d-4cdd-bb75-cb6a1d2518d2'::uuid, '01a02d55-d7a6-7df4-99b1-ee21116f52a6'::uuid,
     '2026-01-01', 'ACTIVE'::employee_status
 );
 

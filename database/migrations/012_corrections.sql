@@ -1,4 +1,4 @@
-CREATE TABLE attendance_corrections (
+CREATE TABLE IF NOT EXISTS attendance_corrections (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     attendance_daily_id UUID NOT NULL
@@ -32,9 +32,10 @@ CREATE TABLE attendance_corrections (
         CHECK (approved_by IS NULL OR approved_by <> requested_by)
 );
 
-CREATE INDEX idx_corrections_daily_status
+CREATE INDEX IF NOT EXISTS idx_corrections_daily_status
     ON attendance_corrections(attendance_daily_id, status);
 
+DROP TRIGGER IF EXISTS trg_attendance_corrections_updated_at ON attendance_corrections;
 CREATE TRIGGER trg_attendance_corrections_updated_at
 BEFORE UPDATE ON attendance_corrections
 FOR EACH ROW

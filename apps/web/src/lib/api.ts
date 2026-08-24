@@ -51,7 +51,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
       try {
         const text = await res.text();
         if (text) errorMsg = text;
-      } catch {}
+      } catch { }
     }
     throw new Error(errorMsg);
   }

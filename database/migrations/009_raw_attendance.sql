@@ -8,7 +8,7 @@ BEGIN
 END;
 $$;
 
-CREATE TABLE attendance_raw_events (
+CREATE TABLE IF NOT EXISTS attendance_raw_events (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -40,17 +40,19 @@ CREATE TABLE attendance_raw_events (
         UNIQUE (organization_id, event_fingerprint)
 );
 
-CREATE INDEX idx_raw_events_emp_time
+CREATE INDEX IF NOT EXISTS idx_raw_events_emp_time
     ON attendance_raw_events(employee_id, punch_timestamp);
 
-CREATE INDEX idx_raw_events_org_device
+CREATE INDEX IF NOT EXISTS idx_raw_events_org_device
     ON attendance_raw_events(organization_id, attendance_device_user_id, punch_timestamp);
 
+DROP TRIGGER IF EXISTS trg_raw_events_no_update ON attendance_raw_events;
 CREATE TRIGGER trg_raw_events_no_update
 BEFORE UPDATE ON attendance_raw_events
 FOR EACH ROW
 EXECUTE FUNCTION prevent_raw_event_mutation();
 
+DROP TRIGGER IF EXISTS trg_raw_events_no_delete ON attendance_raw_events;
 CREATE TRIGGER trg_raw_events_no_delete
 BEFORE DELETE ON attendance_raw_events
 FOR EACH ROW

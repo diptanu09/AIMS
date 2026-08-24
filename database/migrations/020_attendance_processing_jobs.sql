@@ -1,4 +1,4 @@
-CREATE TABLE attendance_processing_jobs (
+CREATE TABLE IF NOT EXISTS attendance_processing_jobs (
     id UUID PRIMARY KEY DEFAULT uuidv7(),
 
     organization_id UUID NOT NULL
@@ -29,5 +29,5 @@ CREATE TABLE attendance_processing_jobs (
     completed_at TIMESTAMPTZ
 );
 
-CREATE INDEX idx_processing_jobs_org_status
+CREATE INDEX IF NOT EXISTS idx_processing_jobs_org_status
     ON attendance_processing_jobs(organization_id, status);
