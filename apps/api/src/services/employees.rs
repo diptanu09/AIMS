@@ -42,6 +42,7 @@ pub struct UpdateEmployeeRequest {
     #[validate(email)]
     pub email: Option<Option<String>>,
     pub mobile: Option<Option<String>>,
+    pub section_id: Option<Uuid>,
     pub designation_id: Option<Uuid>,
     pub attendance_rule_id: Option<Uuid>,
 }
@@ -235,6 +236,19 @@ impl EmployeeService {
         }
 
         #[allow(clippy::collapsible_if)]
+        if let Some(sec_id) = req.section_id {
+            if SectionRepository::find_by_id(&state.db, actor.organization_id, sec_id)
+                .await?
+                .is_none()
+            {
+                return Err(AppError::Validation(format!(
+                    "Section {} not found",
+                    sec_id
+                )));
+            }
+        }
+
+        #[allow(clippy::collapsible_if)]
         if let Some(des_id) = req.designation_id {
             if DesignationRepository::find_by_id(&state.db, actor.organization_id, des_id)
                 .await?
@@ -269,6 +283,7 @@ impl EmployeeService {
             req.last_name.as_ref().map(|o| o.as_deref()),
             req.email.as_ref().map(|o| o.as_deref()),
             req.mobile.as_ref().map(|o| o.as_deref()),
+            req.section_id,
             req.designation_id,
             req.attendance_rule_id,
         )

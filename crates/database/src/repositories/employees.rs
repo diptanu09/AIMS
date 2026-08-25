@@ -227,6 +227,7 @@ impl EmployeeRepository {
         last_name: Option<Option<&str>>,
         email: Option<Option<&str>>,
         mobile: Option<Option<&str>>,
+        section_id: Option<Uuid>,
         designation_id: Option<Uuid>,
         attendance_rule_id: Option<Uuid>,
     ) -> Result<Employee> {
@@ -251,6 +252,7 @@ impl EmployeeRepository {
             Some(v) => v,
             None => current.mobile.as_deref(),
         };
+        let new_section = section_id.unwrap_or(current.section_id);
         let new_desig = designation_id.unwrap_or(current.designation_id);
         let new_rule = attendance_rule_id.unwrap_or(current.attendance_rule_id);
 
@@ -258,9 +260,9 @@ impl EmployeeRepository {
             r#"
             UPDATE employees
             SET first_name = $1, middle_name = $2, last_name = $3,
-                email = $4, mobile = $5, designation_id = $6,
-                attendance_rule_id = $7, updated_at = CURRENT_TIMESTAMP
-            WHERE id = $8 AND organization_id = $9
+                email = $4, mobile = $5, section_id = $6, designation_id = $7,
+                attendance_rule_id = $8, updated_at = CURRENT_TIMESTAMP
+            WHERE id = $9 AND organization_id = $10
             RETURNING id, organization_id, employee_code, attendance_device_user_id,
                       first_name, middle_name, last_name, email, mobile, section_id,
                       designation_id, attendance_rule_id, joining_date, leaving_date,
@@ -272,6 +274,7 @@ impl EmployeeRepository {
         .bind(new_last)
         .bind(new_email)
         .bind(new_mobile)
+        .bind(new_section)
         .bind(new_desig)
         .bind(new_rule)
         .bind(id)

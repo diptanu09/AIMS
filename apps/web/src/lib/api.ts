@@ -224,6 +224,7 @@ export const api = {
     payload: {
       first_name?: string;
       last_name?: string;
+      section_id?: string;
       designation_id?: string;
       attendance_rule_id?: string;
     }
@@ -263,6 +264,12 @@ export const api = {
   createRule: (payload: Partial<AttendanceRule>) =>
     request<AttendanceRule>("/attendance-rules", {
       method: "POST",
+      body: JSON.stringify(payload),
+    }),
+
+  updateRule: (id: string, payload: Partial<AttendanceRule>) =>
+    request<AttendanceRule>(`/attendance-rules/${id}`, {
+      method: "PUT",
       body: JSON.stringify(payload),
     }),
 

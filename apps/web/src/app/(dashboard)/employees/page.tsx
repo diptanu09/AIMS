@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Users, Plus, Search, Filter, RefreshCw, UserCheck, UserX, ArrowRightLeft } from "lucide-react";
+import { Users, Plus, Search, Filter, RefreshCw, UserCheck, UserX, ArrowRightLeft, Edit3 } from "lucide-react";
 import { api } from "../../../lib/api";
 import { Employee, SectionSummary, AttendanceRule, Designation } from "../../../types/api";
 
@@ -19,6 +19,7 @@ export default function EmployeesPage() {
 
   // Modals
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState<Employee | null>(null);
   const [showTransferModal, setShowTransferModal] = useState<Employee | null>(null);
   const [showDesignationModal, setShowDesignationModal] = useState<Employee | null>(null);
 
@@ -32,6 +33,13 @@ export default function EmployeesPage() {
   const [selectedRule, setSelectedRule] = useState("");
   const [newSectionId, setNewSectionId] = useState("");
   const [newDesignationId, setNewDesignationId] = useState("");
+
+  // Edit Form State
+  const [editFirstName, setEditFirstName] = useState("");
+  const [editLastName, setEditLastName] = useState("");
+  const [editSectionId, setEditSectionId] = useState("");
+  const [editDesignationId, setEditDesignationId] = useState("");
+  const [editRuleId, setEditRuleId] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const loadData = async () => {
@@ -107,6 +115,37 @@ export default function EmployeesPage() {
       await loadData();
     } catch (err: any) {
       alert(err.message || "Failed to transfer employee section");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const openEditModal = (emp: Employee) => {
+    setShowEditModal(emp);
+    setEditFirstName(emp.first_name || "");
+    setEditLastName(emp.last_name || "");
+    setEditSectionId(emp.section_id || (sectionsList.length > 0 ? sectionsList[0].id : ""));
+    setEditDesignationId(emp.designation_id || (designationsList.length > 0 ? designationsList[0].id : ""));
+    setEditRuleId(emp.attendance_rule_id || (rules.length > 0 ? rules[0].id : ""));
+  };
+
+  const handleUpdateEmployee = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!showEditModal) return;
+
+    setSubmitting(true);
+    try {
+      await api.updateEmployee(showEditModal.id, {
+        first_name: editFirstName,
+        last_name: editLastName || undefined,
+        section_id: editSectionId,
+        designation_id: editDesignationId,
+        attendance_rule_id: editRuleId,
+      });
+      setShowEditModal(null);
+      await loadData();
+    } catch (err: any) {
+      alert(err.message || "Failed to update employee details");
     } finally {
       setSubmitting(false);
     }
@@ -268,6 +307,14 @@ export default function EmployeesPage() {
                       </td>
                       <td className="p-3 text-right">
                         <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => openEditModal(emp)}
+                            className="p-1.5 rounded bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 transition-colors flex items-center gap-1 text-[11px] px-2 font-medium"
+                            title="Edit Employee Details (Name, Section, Designation & Shift Rule)"
+                          >
+                            <Edit3 className="h-3.5 w-3.5" />
+                            <span>Edit Profile</span>
+                          </button>
                           <button
                             onClick={() => openTransferModal(emp)}
                             className="p-1.5 rounded bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 transition-colors flex items-center gap-1 text-[11px] px-2"
@@ -537,6 +584,125 @@ export default function EmployeesPage() {
                   className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2 rounded-lg transition-colors shadow-lg shadow-emerald-600/30"
                 >
                   {submitting ? "Updating..." : "Confirm Designation"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Employee Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#151D2A] border border-[#1E293B] rounded-2xl p-6 w-full max-w-md space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-[#1E293B] pb-3">
+              <h2 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                <Edit3 className="h-4 w-4 text-sky-400" />
+                <span>Edit Employee Profile</span>
+              </h2>
+              <span className="text-[10px] font-mono text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">
+                {showEditModal.employee_code}
+              </span>
+            </div>
+
+            <form onSubmit={handleUpdateEmployee} className="space-y-3">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editFirstName}
+                    onChange={(e) => setEditFirstName(e.target.value)}
+                    className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    value={editLastName}
+                    onChange={(e) => setEditLastName(e.target.value)}
+                    className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                  Section Assignment
+                </label>
+                <select
+                  value={editSectionId}
+                  onChange={(e) => setEditSectionId(e.target.value)}
+                  required
+                  className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="">Select Section</option>
+                  {sectionsList.map((sec) => (
+                    <option key={sec.id} value={sec.id}>
+                      {sec.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                  Designation Set
+                </label>
+                <select
+                  value={editDesignationId}
+                  onChange={(e) => setEditDesignationId(e.target.value)}
+                  required
+                  className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="">Select Designation</option>
+                  {designationsList.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.title} ({d.code})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                  Shift Attendance Rule
+                </label>
+                <select
+                  value={editRuleId}
+                  onChange={(e) => setEditRuleId(e.target.value)}
+                  required
+                  className="w-full bg-[#0B0F17] border border-[#1E293B] rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+                >
+                  <option value="">Select Shift Rule</option>
+                  {rules.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name} ({r.shift_start} - {r.shift_end})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#1E293B]">
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(null)}
+                  className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-sky-600 hover:bg-sky-500 text-white font-semibold text-xs px-4 py-2 rounded-lg transition-colors shadow-lg shadow-sky-600/30"
+                >
+                  {submitting ? "Saving..." : "Save Changes"}
                 </button>
               </div>
             </form>
